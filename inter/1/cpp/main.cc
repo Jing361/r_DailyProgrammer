@@ -1,4 +1,6 @@
-#include<stdio.h>
+#include<iostream>
+using std::cout;
+using std::endl;
 
 int main(int argc, char **argv){
     int i;
@@ -21,38 +23,38 @@ int main(int argc, char **argv){
     };
 
     for(i = 0; i < 64; i++){
-        calendar[i] = malloc(sizeof(struct event));
+        calendar[i] = new struct event;
     }
 
     while(choice != 4){
-        printf(" ======================================\n");
-        printf("|\t\t\t\t\t|\n");
-        printf("|\t1. View events\t\t\t|\n");
-        printf("|\t2. Add event\t\t\t|\n");
-        printf("|\t3. Delete event\t\t\t|\n");
-        printf("|\t4. Exit\t\t\t\t|\n");
-        printf("|\t\t\t\t\t|\n");
-        printf(" ======================================\n");
-        printf("Choose an option: ");
+        cout << " ======================================" << endl;
+        cout << "|\t\t\t\t\t|" << endl;
+        cout << "|\t1. View events\t\t\t|" << endl;
+        cout << "|\t2. Add event\t\t\t|" << endl;
+        cout << "|\t3. Delete event\t\t\t|" << endl;
+        cout << "|\t4. Exit\t\t\t\t|" << endl;
+        cout << "|\t\t\t\t\t|" << endl;
+        cout << " ======================================" << endl;
+        cout << "Choose an option: ";
         scanf("%d", &choice);
         getchar();
         switch(choice){
             // Show events
             case 1:{
-                printf("Event listing: ");
+                cout << "Event listing: ";
                 for(i = 0; i < numEvent; i++){
-                    printf("Date:%d\nEvent:%s\n\n", calendar[i]->date, eventList[calendar[i]->event]);
+                    cout << "Date:" << calendar[i]->date << endl << "Event:" << eventList[calendar[i]->event] << endl;
                 }
-                printf("\n");
+                cout << "" << endl;
             }break;
             // Create event
             case 2:{
                 int time;
                 int thing;
 
-                printf("When would you like to schedule: ");
+                cout << "When would you like to schedule: ";
                 scanf("%d", &time);
-                printf("What would you like to schedule: ");
+                cout << "What would you like to schedule: ";
                 scanf("%d", &thing);
                 calendar[numEvent]->date = time;
                 calendar[numEvent]->event = thing - 1;
@@ -62,7 +64,7 @@ int main(int argc, char **argv){
             case 3:{
                 int time;
 
-                printf("When would you like to unschedule: ");
+                cout << "When would you like to unschedule: ";
                 scanf("%d", &time);
                 for(i = 0; i < numEvent; i++){
                     if(calendar[i]->date == time){
@@ -77,10 +79,10 @@ int main(int argc, char **argv){
             }break;
             // Exit program
             case 4:{
-                printf("Exiting..\n");
+                cout << "Exiting.." << endl;
             }break;
             default:{
-                printf("Invalid option! Try again.\n");
+                cout << "Invalid option! Try again." << endl;
             break;
             }
         }
