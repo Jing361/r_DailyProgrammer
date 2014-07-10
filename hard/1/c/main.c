@@ -11,7 +11,7 @@ int main(int argc, char **argv){
   int low = 1;
   int guess;
   //TODO: let it terminate!! wtfff
-  while(resp != 'y' || resp != 'Y'){
+  while(resp != 'y' && resp != 'Y'){
     guess = eval(high, low);
     printf("Is %d your number?\n(y or Y for correct numberh or H for too high and l or L for too low)\n", guess);
     scanf(" %c", &resp);
