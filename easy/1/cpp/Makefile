@@ -12,5 +12,5 @@ main.o:main.cc
 	$(CC) $(cflags) $(flags) main.cc
 
 clean:
-	rm *.o core main
+	rm *.o core main record
 
