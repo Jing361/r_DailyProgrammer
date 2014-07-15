@@ -6,9 +6,10 @@ using std::endl;
 using std::cin;
 using std::ofstream;
 
+//TODO: Add input type checking.
 int main(int argc, char **argv){
     char name[255];
-    int age;
+    char age[5];
     char username[255];
     ofstream oFile;
     oFile.open("record");
