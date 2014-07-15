@@ -41,9 +41,9 @@ int main(int argc, char **argv){
       // Show events
       case 1:{
         printf("Event listing: ");
-        if(numEvent == 0)
+        if(numEvent == 0){
           printf("No events!\n");
-        else{
+        } else {
           for(i = 0; i < numEvent; i++){
             printf("Date:%d\nEvent:%s\n\n", calendar[i]->date, eventList[calendar[i]->event]);
           }
@@ -55,9 +55,9 @@ int main(int argc, char **argv){
         int time;
         int thing;
 
-        printf("When would you like to schedule: ");
+        printf("When would you like to schedule?: ");
         scanf("%d", &time);
-        printf("What would you like to schedule: ");
+        printf("What would you like to schedule?: ");
         scanf("%d", &thing);
         calendar[numEvent]->date = time;
         calendar[numEvent]->event = thing - 1;
@@ -67,7 +67,7 @@ int main(int argc, char **argv){
       case 3:{
         int time;
 
-        printf("When would you like to unschedule: ");
+        printf("What time would you like to unschedule?: ");
         scanf("%d", &time);
         for(i = 0; i < numEvent; i++){
             if(calendar[i]->date == time){
