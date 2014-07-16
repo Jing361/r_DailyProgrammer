@@ -9,7 +9,7 @@ typedef struct event{
 
 void enumerate(event **list, unsigned int size);
 void create(event **list, unsigned int size);
-void delete(event **list, unsigned int size);
+void remove(event **list, unsigned int size);
 
 int main(int argc, char **argv){
   int i;
@@ -17,7 +17,7 @@ int main(int argc, char **argv){
   event *calendar[64];
   int numEvent = 0;
 
-  for(i = 0; i < 64; i++){
+  for(i = 0; i < 64; ++i){
     calendar[i] = malloc(sizeof(event));
   }
 
@@ -45,7 +45,7 @@ int main(int argc, char **argv){
       }break;
       // Delete event
       case 3:{
-        delete(calendar, numEvent);
+        remove(calendar, numEvent);
         --numEvent;
       }break;
       // Exit program
@@ -54,8 +54,7 @@ int main(int argc, char **argv){
       }break;
       default:{
         printf("Invalid option! Try again.\n");
-      break;
-      }
+      }break;
     }
   }
 
@@ -68,7 +67,7 @@ void enumerate(event **list, unsigned int size){
   if(size == 0){
     printf("No events!\n");
   } else {
-    for(i = 0; i < size; i++){
+    for(i = 0; i < size; ++i){
       printf("Date:%d\nEvent:%s\n\n", list[i]->date, list[i]->event);
     }
     printf("\n");
@@ -87,16 +86,16 @@ void create(event **list, unsigned int size){
   strcpy(list[size]->event, thing);
 }
 
-void delete(event **list, unsigned int size){
+void remove(event **list, unsigned int size){
   int time;
   int i;
 
   printf("What time would you like to unschedule?: ");
   scanf("%d", &time);
-  for(i = 0; i < size; i++){
+  for(i = 0; i < size; ++i){
     if(list[i]->date == time){
       int j;
-      for(j = i + 1; j < size; j++){
+      for(j = i + 1; j < size; ++j){
         list[j - 1] = list[j];
       }
       break;
