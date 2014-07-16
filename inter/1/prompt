@@ -2,3 +2,4 @@ Create a program that will allow you to enter events organizable by hour.
 There must be menu options of some form, and you must be able to easily edit, add, and delete events without directly changing the source code.
   Note that by 'menu' I dont necessarily mean 'gui'.
   So long as different options can be easily accessed and the user receives prompts and instructions describing how to use the program, it is fine.
+Save list for future recovery.
