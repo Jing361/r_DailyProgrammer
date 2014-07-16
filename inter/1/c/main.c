@@ -1,28 +1,24 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
+
+typedef struct event{
+  int date;
+  char event[255];
+}event;
+
+void enumerate(event **list, unsigned int size);
+void create(event **list, unsigned int size);
+void delete(event **list, unsigned int size);
 
 int main(int argc, char **argv){
   int i;
   int choice = 0;
-  struct event *calendar[64];
-  char *eventList[8];
+  event *calendar[64];
   int numEvent = 0;
-  eventList[0] = "Birthday";
-  eventList[1] = "Anniversary";
-  eventList[2] = "Three";
-  eventList[3] = "Four";
-  eventList[4] = "Five";
-  eventList[5] = "Six";
-  eventList[6] = "Seven";
-  eventList[7] = "Eight";
-
-  struct event{
-    int date;
-    int event;
-  };
 
   for(i = 0; i < 64; i++){
-    calendar[i] = malloc(sizeof(struct event));
+    calendar[i] = malloc(sizeof(event));
   }
 
   while(choice != 4){
@@ -40,45 +36,17 @@ int main(int argc, char **argv){
     switch(choice){
       // Show events
       case 1:{
-        printf("Event listing: ");
-        if(numEvent == 0){
-          printf("No events!\n");
-        } else {
-          for(i = 0; i < numEvent; i++){
-            printf("Date:%d\nEvent:%s\n\n", calendar[i]->date, eventList[calendar[i]->event]);
-          }
-          printf("\n");
-        }
+        enumerate(calendar, numEvent);
       }break;
       // Create event
       case 2:{
-        int time;
-        int thing;
-
-        printf("When would you like to schedule?: ");
-        scanf("%d", &time);
-        printf("What would you like to schedule?: ");
-        scanf("%d", &thing);
-        calendar[numEvent]->date = time;
-        calendar[numEvent]->event = thing - 1;
-        numEvent++;
+        create(calendar, numEvent);
+        ++numEvent;
       }break;
       // Delete event
       case 3:{
-        int time;
-
-        printf("What time would you like to unschedule?: ");
-        scanf("%d", &time);
-        for(i = 0; i < numEvent; i++){
-            if(calendar[i]->date == time){
-                int j;
-                for(j = i + 1; j < numEvent; j++){
-                    calendar[j - 1] = calendar[j];
-                }
-                break;
-            }
-        }
-        numEvent--;
+        delete(calendar, numEvent);
+        --numEvent;
       }break;
       // Exit program
       case 4:{
@@ -92,5 +60,47 @@ int main(int argc, char **argv){
   }
 
   return 0;
+}
+
+void enumerate(event **list, unsigned int size){
+  int i;
+  printf("Event listing: ");
+  if(size == 0){
+    printf("No events!\n");
+  } else {
+    for(i = 0; i < size; i++){
+      printf("Date:%d\nEvent:%s\n\n", list[i]->date, list[i]->event);
+    }
+    printf("\n");
+  }
+}
+
+void create(event **list, unsigned int size){
+  int time;
+  char thing[255];
+
+  printf("When would you like to schedule?: ");
+  scanf("%d", &time);
+  printf("What would you like to schedule?: ");
+  scanf("%s", thing);
+  list[size]->date = time;
+  strcpy(list[size]->event, thing);
+}
+
+void delete(event **list, unsigned int size){
+  int time;
+  int i;
+
+  printf("What time would you like to unschedule?: ");
+  scanf("%d", &time);
+  for(i = 0; i < size; i++){
+    if(list[i]->date == time){
+      int j;
+      for(j = i + 1; j < size; j++){
+        list[j - 1] = list[j];
+      }
+      break;
+    }
+  }
 }
 
