@@ -1,6 +1,7 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<cmath>
 
 using std::cout;
 using std::endl;
@@ -44,10 +45,12 @@ int main(int argc, char** argv){
     if(*it >= 65 && *it <= 90){
       shift -= 65;
       shift %= 90;
+      shift = std::abs(shift);
       shift += 65;
     } else if(*it >= 97 && *it <= 122){
       shift -= 97;
       shift %= 26;
+      shift = std::abs(shift);
       shift += 97;
     }
 
