@@ -24,14 +24,14 @@ int main(int argc, char **argv){
   }
 
   while(choice != 4){
-    cout << " ======================================" << endl;
+    cout << "+=======================================+" << endl;
     cout << "|\t\t\t\t\t|" << endl;
     cout << "|\t1. View events\t\t\t|" << endl;
     cout << "|\t2. Add event\t\t\t|" << endl;
     cout << "|\t3. Delete event\t\t\t|" << endl;
     cout << "|\t4. Exit\t\t\t\t|" << endl;
     cout << "|\t\t\t\t\t|" << endl;
-    cout << " ======================================" << endl;
+    cout << "+=======================================+" << endl;
     cout << "Choose an option: ";
     cin >> choice;
     getchar();
