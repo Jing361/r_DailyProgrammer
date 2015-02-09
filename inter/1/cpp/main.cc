@@ -1,13 +1,22 @@
 #include<iostream>
+#include<vector>
+#include<string>
 #include<string.h>
 using std::cout;
 using std::cin;
 using std::endl;
+using std::vector;
+using std::string;
 
-typedef struct event{
+class event{
+public:
   int date;
-  char event[255];
-}event;
+  string event;
+  event(int d, string evt){
+    this->date = d;
+    this->event = evt;
+  }
+};
 
 void enumerate(event **list, unsigned int size);
 void create(event **list, unsigned int size);
@@ -16,12 +25,8 @@ void remove(event **list, unsigned int size);
 int main(int argc, char **argv){
   int i;
   int choice = 0;
-  event *calendar[64];
+  vector<event> calendar;
   int numEvent = 0;
-
-  for(i = 0; i < 64; ++i){
-    calendar[i] = new event;
-  }
 
   while(choice != 4){
     cout << "+=======================================+" << endl;
@@ -38,17 +43,15 @@ int main(int argc, char **argv){
     switch(choice){
       // Show events
       case 1:{
-        enumerate(calendar, numEvent);
+        enumerate(calendar);
       }break;
       // Create event
       case 2:{
-        create(calendar, numEvent);
-        ++numEvent;
+        create(calendar);
       }break;
       // Delete event
       case 3:{
-        remove(calendar, numEvent);
-        --numEvent;
+        remove(calendar);
       }break;
       // Exit program
       case 4:{
@@ -63,20 +66,20 @@ int main(int argc, char **argv){
   return 0;
 }
 
-void enumerate(event **list, unsigned int size){
+void enumerate(vector<event>& list){
   unsigned int i;
   cout << "Event listing:" << endl;
-  if(size == 0){
+  if(list.empty()){
     cout << "No events!" << endl;
   } else {
-    for(i = 0; i < size; ++i){
-      cout << "Date:" << list[i]->date << endl << "Event:" << list[i]->event << endl;
+    for(std::vector<event>::iterator it = list.begin(); it != it.end(); ++it){
+      cout << "Date:" << *it.date << endl << "Event:" << *it.event << endl;
       cout << endl;
     }
   }
 }
 
-void create(event **list, unsigned int size){
+void create(vector<event>& list){
   int time;
   char thing[255];
 
@@ -84,22 +87,18 @@ void create(event **list, unsigned int size){
   cin >> time;
   cout << "What would you like to schedule: ";
   cin >> thing;
-  list[size]->date = time;
-  strcpy(list[size]->event, thing);
+  list.push_back(event(time, string(thing) ) );
 }
 
-void remove(event **list, unsigned int size){
+void remove(vector<event>& list){
   unsigned int i;
   int time;
 
   cout << "When would you like to unschedule: ";
   cin >> time;
-  for(i = 0; i < size; i++){
-    if(list[i]->date == time){
-      unsigned int j;
-      for(j = i + 1; j < size; j++){
-        list[j - 1] = list[j];
-      }
+  for(std::vector<event>::iterator it = list.begin(); it != it.end(); ++it){
+    if(*it.date == time){
+      list.erase(it);
       break;
     }
   }
