@@ -11,19 +11,18 @@ using std::string;
 class event{
 public:
   int date;
-  string event;
-  event(int d, string evt){
+  string evt;
+  event(int d, string evnt){
     this->date = d;
-    this->event = evt;
+    this->evt = evnt;
   }
 };
 
-void enumerate(event **list, unsigned int size);
-void create(event **list, unsigned int size);
-void remove(event **list, unsigned int size);
+void create(vector<event>& list);
+void remove(vector<event>& list);
+void enumerate(vector<event>& list);
 
 int main(int argc, char **argv){
-  int i;
   int choice = 0;
   vector<event> calendar;
   int numEvent = 0;
@@ -72,8 +71,8 @@ void enumerate(vector<event>& list){
   if(list.empty()){
     cout << "No events!" << endl;
   } else {
-    for(std::vector<event>::iterator it = list.begin(); it != it.end(); ++it){
-      cout << "Date:" << *it.date << endl << "Event:" << *it.event << endl;
+    for(std::vector<event>::iterator it = list.begin(); it != list.end(); ++it){
+      cout << "Date:" << (*it).date << endl << "Event:" << (*it).evt << endl;
       cout << endl;
     }
   }
@@ -96,8 +95,8 @@ void remove(vector<event>& list){
 
   cout << "When would you like to unschedule: ";
   cin >> time;
-  for(std::vector<event>::iterator it = list.begin(); it != it.end(); ++it){
-    if(*it.date == time){
+  for(std::vector<event>::iterator it = list.begin(); it != list.end(); ++it){
+    if((*it).date == time){
       list.erase(it);
       break;
     }
