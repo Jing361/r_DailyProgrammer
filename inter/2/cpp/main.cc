@@ -1,6 +1,4 @@
-#include"Door.hh"
-#include"Room.hh"
-#include"Stuff.hh"
+#include"AdventureGame.hh"
 
 int main(int argc, char** argv){
   Game& game = *new AdventureGame;

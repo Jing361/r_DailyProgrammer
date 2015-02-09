@@ -1,13 +1,18 @@
 #ifndef __ROOM_H__
 #define __ROOM_H__
 
-class Room{
-  char* text;
+#include<string>
 
-  Stuff north;
-  Stuff south;
-  Stuff east;
-  Stuff west;
+using std::string;
+
+class Room{
+public:
+  string text;
+
+  Room* north;
+  Room* south;
+  Room* east;
+  Room* west;
 };
 
 #endif

@@ -3,14 +3,19 @@ flags:=-Wall -std=c++11
 dflags:=-ggdb3
 cflags:=-c
 
+name:=LunarAdventure
+
 default:main
 
-main:main.o
-	$(CC) main.o -o main
+AdventureGame.o:AdventureGame.cc
+	$(CC) $(cflags) $(flags) AdventureGame.cc
+
+main:main.o AdventureGame.o
+	$(CC) AdventureGame.o main.o -o $(name)
 
 main.o:main.cc
 	$(CC) $(cflags) $(flags) main.cc
 
 clean:
-	rm *.o core main
+	rm *.o core $(name)
 
