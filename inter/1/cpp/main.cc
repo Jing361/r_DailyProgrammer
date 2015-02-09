@@ -25,7 +25,6 @@ void enumerate(vector<event>& list);
 int main(int argc, char **argv){
   int choice = 0;
   vector<event> calendar;
-  int numEvent = 0;
 
   while(choice != 4){
     cout << "+=======================================+" << endl;
@@ -66,7 +65,6 @@ int main(int argc, char **argv){
 }
 
 void enumerate(vector<event>& list){
-  unsigned int i;
   cout << "Event listing:" << endl;
   if(list.empty()){
     cout << "No events!" << endl;
@@ -90,7 +88,6 @@ void create(vector<event>& list){
 }
 
 void remove(vector<event>& list){
-  unsigned int i;
   int time;
 
   cout << "When would you like to unschedule: ";
