@@ -9,14 +9,16 @@ using std::cin;
 using std::ofstream;
 using std::string;
 
+//string encrypt(string, int);
+//string decrypt(string, int);
+
 //TODO: Add input type checking.
 int main(int argc, char** argv){
   int crypt;
   bool encrypting;
-  ofstream oFile;
 
   if(argc < 3){
-    cout << "1" << endl;
+    cout << "Not enough arguments." << endl;
     return 1;
   }
 
@@ -24,42 +26,48 @@ int main(int argc, char** argv){
   string name(argv[0]);
   string result;
   crypt = atoi(argv[1]);
-  oFile.open("message");
 
-  if(name == "encrypt"){
+  if(name[name.size() - 7] == 'e'){
     encrypting = true;
-  } else if(name == "decrypt"){
+  } else if(name[name.size() - 7] == 'd'){
     encrypting = false;
   }
 
   for(std::string::iterator it = msg.begin(); it != msg.end(); ++it){
     //Assuming *it returns a char.
     //  Not 100% confident this is true.
-    int shift;
+    int val;
+    int lowBound;
+    int upBound;
+
     if(encrypting){
-      shift = (int)*it + crypt;
+      val = (int)*it + crypt;
     } else {
-      shift = (int)*it - crypt;
+      val = (int)*it - crypt;
     }
 
     if(*it >= 65 && *it <= 90){
-      shift -= 65;
-      shift %= 90;
-      shift = std::abs(shift);
-      shift += 65;
+      lowBound = 65;
+      upBound = 90;
     } else if(*it >= 97 && *it <= 122){
-      shift -= 97;
-      shift %= 26;
-      shift = std::abs(shift);
-      shift += 97;
+      lowBound = 97;
+      upBound = 122;
+    } else {
+      result += *it;
+      continue;
     }
 
-    result += (char)shift;
+    val -= lowBound;
+    if(val < 0){
+      val = 26 + val;
+    } else {
+      val %= 26;
+    }
+    val += lowBound;
+
+    result += (char)val;
   }
-
   cout << result << endl;
-
-  oFile.close();
   return 0;
 }
 
