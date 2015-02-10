@@ -1,6 +1,6 @@
 #include"AdventureGame.hh"
 
-AdventureGame::AdventureGame(){
+/*AdventureGame::AdventureGame(){
   Room* tempR;
 
   tempR = new Room;
@@ -8,7 +8,9 @@ AdventureGame::AdventureGame(){
   this->world.insert(pair<string, Room>("MainMenu", *tempR) );
   this->current = tempR;
 
-  tempR = new Room;
+  tempR->north = new Room;
+  tempR = tempR->north;
+  //tempR = new Room;
   tempR->text = string("This is the beginning\n");
   this->world.insert(pair<string, Room>("StartRoom", *tempR) );
   world["MainMenu"].north = tempR;
@@ -26,9 +28,35 @@ AdventureGame::AdventureGame(){
   world["StartRoom"].west = tempR;
 
   this->running = false;
+}*/
+AdventureGame::AdventureGame(){
+  this->world.insert(pair<string, Room*>("MainMenu", new Room) );
+  this->world["MainMenu"]->text = string("Welcome to this game!\n");
+  this->current = this->world["MainMenu"];
+
+  this->world.insert(pair<string, Room*>("StartRoom", new Room) );
+  this->world["StartRoom"]->text = string("This is the beginning!\n");
+  this->world["MainMenu"]->north = this->world["StartRoom"];
+
+  this->world.insert(pair<string, Room*>("WinningRoom", new Room) );
+  this->world["WinningRoom"]->text = string("Winrar!\n");
+  this->world["StartRoom"]->north = this->world["WinningRoom"];
+
+  this->world.insert(pair<string, Room*>("LosingRoom", new Room) );
+  this->world["LosingRoom"]->text = string("Losar!\n");
+  this->world["StartRoom"]->south = this->world["LosingRoom"];
+  this->world["StartRoom"]->east = this->world["LosingRoom"];
+  this->world["StartRoom"]->west = this->world["LosingRoom"];
+
+  this->running = false;
 }
 
 AdventureGame::~AdventureGame(){
+/*
+  for(std::map<string, Room*>::iterator it = map.begin(); it != map.end(); ++it){
+    delete *it;
+  }
+*/
 }
 
 void AdventureGame::run(){
@@ -52,7 +80,6 @@ void AdventureGame::tick(){
 
   cout << "Select an option." << endl;
   cin >> opt;
-  cout << opt << endl;
   switch(opt){
   case 1:
     this->current = this->current->north;

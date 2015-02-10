@@ -17,7 +17,7 @@ using std::pair;
 class AdventureGame:public Game{
 protected:
   bool running;
-  map<string, Room> world;
+  map<string, Room*> world;
   Room* current;
 
   void loop();
