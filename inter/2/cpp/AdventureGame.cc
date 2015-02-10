@@ -1,34 +1,5 @@
 #include"AdventureGame.hh"
 
-/*AdventureGame::AdventureGame(){
-  Room* tempR;
-
-  tempR = new Room;
-  tempR->text = string("Welcome to this game!\n");
-  this->world.insert(pair<string, Room>("MainMenu", *tempR) );
-  this->current = tempR;
-
-  tempR->north = new Room;
-  tempR = tempR->north;
-  //tempR = new Room;
-  tempR->text = string("This is the beginning\n");
-  this->world.insert(pair<string, Room>("StartRoom", *tempR) );
-  world["MainMenu"].north = tempR;
-
-  tempR = new Room;
-  tempR->text = string("Winrar!\n"); 
-  this->world.insert(pair<string, Room>("WinningRoom", *tempR) );
-  world["StartRoom"].north = tempR;
-
-  tempR = new Room;
-  tempR->text = string("Losar!\n"); 
-  this->world.insert(pair<string, Room>("LosingRoom", *tempR) );
-  world["StartRoom"].south = tempR;
-  world["StartRoom"].east = tempR;
-  world["StartRoom"].west = tempR;
-
-  this->running = false;
-}*/
 AdventureGame::AdventureGame(){
   this->world.insert(pair<string, Room*>("MainMenu", new Room) );
   this->world["MainMenu"]->text = string("Welcome to this game!\n");
@@ -52,11 +23,9 @@ AdventureGame::AdventureGame(){
 }
 
 AdventureGame::~AdventureGame(){
-/*
-  for(std::map<string, Room*>::iterator it = map.begin(); it != map.end(); ++it){
-    delete *it;
+  for(std::map<string, Room*>::iterator it = world.begin(); it != world.end(); ++it){
+    delete std::get<1>(*it);
   }
-*/
 }
 
 void AdventureGame::run(){
