@@ -9,8 +9,9 @@ using std::queue;
 using std::array;
 
 int main(int argc, char** argv){
-  int i;
+  int j;
   int crypt;
+  bool foundVal;
   queue<char> translate;
   array<char, 13> leftHalf;
   array<char, 13> rightHalf;
@@ -41,12 +42,27 @@ int main(int argc, char** argv){
     translate.pop();
   }
 
+  j = 0;
+  foundVal = false;
   for(string::iterator it = msg.begin(); it != msg.end(); ++it){
     for(auto ait = leftHalf.begin(); ait != leftHalf.end(); ++ait){
       if(*ait == *it){
+        foundVal = true;
         break;
       }
-      ++i;
+      ++j;
+    }
+    if(foundVal){
+      result += leftHalf[j];
+    } else {
+      j = 0;
+      for(auto ait = rightHalf.begin(); ait != rightHalf.end(); ++ait){
+        if(*ait == *it){
+          break;
+        }
+        ++j;
+      }
+      result += leftHalf[j];
     }
   }
 
