@@ -14,6 +14,9 @@ using std::string;
 //string decrypt(string, int);
 
 //TODO: Add input type checking.
+//TODO: Establish clearer differences between encrypt and decrypt.
+//          Whether the same number used to decrypt is used to encrypt etc
+//          If not same number then would be 26 - crypt
 int main(int argc, char** argv){
   int crypt;
   bool encrypting;
