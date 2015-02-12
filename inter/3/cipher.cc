@@ -3,6 +3,7 @@
 cipher::cipher(char* c):cipher(string(c)){
 }
 
+//Establish cipher alphabet using cip as cypher word to start.
 cipher::cipher(string cip){
   bool match;
 
@@ -25,23 +26,9 @@ cipher::cipher(string cip){
 }
 
 char cipher::encypher(char c){
-  unsigned int i;
-
   c = std::toupper(c, this->loc);
 
-  i = 0;
-  for(auto it = this->begin(); it != this->end(); ++it){
-    if(*it == c){
-      break;
-    }
-    ++i;
-  }
+  return (*this)[((int)c - 65)];
 
-  if(i < 13){
-    i += 13;
-  } else {
-    i -= 13;
-  }
-  return (*this)[i];
 }
 
