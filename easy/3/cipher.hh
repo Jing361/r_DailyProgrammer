@@ -1,21 +1,17 @@
 #ifndef __CIPHER_H__
 #define __CIPHER_H__
 
-#include<array>
 #include<string>
 #include<locale>
 
-using std::array;
-using std::string;
-
-class cipher:private string{
+class cipher{
 private:
-  unsigned int crypt;
   std::locale loc;
+  unsigned int crypt;
 public:
-  cipher(char* c);
-  cipher(string cip);
+  cipher(unsigned int cyp);
   char encypher(char c);
+  char decypher(char c);
 };
 
 #endif
