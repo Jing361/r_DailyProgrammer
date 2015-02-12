@@ -7,8 +7,11 @@ name:=AlphaCipher
 
 default:main
 
-main:main.o
-	$(CC) main.o -o $(name)
+cipher.o:cipher.cc
+	$(CC) $(cflags) $(flags) cipher.cc
+
+main:main.o cipher.o
+	$(CC) cipher.o main.o -o $(name)
 
 main.o:main.cc
 	$(CC) $(cflags) $(flags) main.cc
