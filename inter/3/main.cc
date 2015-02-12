@@ -13,8 +13,8 @@ int main(int argc, char** argv){
   int crypt;
   bool foundVal;
   queue<char> translate;
-  array<char, 13> leftHalf;
-  array<char, 13> rightHalf;
+  array<char, 64> leftHalf;
+  array<char, 64> rightHalf;
 
   if(argc < 3){
     cout << "Not enough arguments." << endl;
@@ -26,18 +26,19 @@ int main(int argc, char** argv){
   string result;
   crypt = atoi(argv[1]);
 
-  for(int i = 0; i < 26; ++i){
-    translate.push((char)(i + 65));
+  for(int i = 0; i < 127; ++i){
+    translate.push((char)(i));
   }
   for(int i = 0; i < crypt; ++i){
     translate.push(translate.front());
     translate.pop();
   }
-  for(int i = 0; i < 26; ++i){
-    if(i < 13){
+
+  for(int i = 0; i < 127; ++i){
+    if(i < 63){
       leftHalf[i] = translate.front();
-    }else if(i > 13){
-      rightHalf[i + 13] = translate.front();
+    }else if(i >= 63){
+      rightHalf[i - 63] = translate.front();
     }
     translate.pop();
   }
@@ -62,7 +63,7 @@ int main(int argc, char** argv){
         }
         ++j;
       }
-      result += leftHalf[j];
+      result += rightHalf[j];
     }
   }
 
