@@ -1,7 +1,7 @@
 CC:=g++
 flags:=-Wall
 dflags:=-ggdb3
-cflags:=-c
+cflags:=-c $(dflags)
 
 default:main
 

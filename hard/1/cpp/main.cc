@@ -13,7 +13,8 @@ using std::stringstream;
 int main(int argc, char** argv){
   int max = 100;
   int min = 0;
-  int val = 0;
+  int guesses = 0;
+  int guess;
   int upperBound = max;
   int lowerBound = min;
   char test[256];
@@ -46,18 +47,21 @@ int main(int argc, char** argv){
   }
 
   while(true){
+    ++guesses;
+    guess = (upperBound + lowerBound) / 2;
     do{
-      cout << "Ok, is your number above, below, or equal to:\t" << ((upperBound - lowerBound)/2) << "?[a/b/e]" << endl;
+      cout << "Ok, is your number above, below, or equal to:\t" << guess << "?[a/b/e]" << endl;
       cin.getline(test, 255);
       input = test;
     }while(input[0] != 'a' && input[0] != 'b' && input[0] != 'e');
 
     if(input[0] == 'a'){
-      lowerBound = (upperBound - lowerBound) / 2;
+      lowerBound = guess;
     }else if(input[0] == 'b'){
-      upperBound = (upperBound - lowerBound) / 2;
+      upperBound = guess;
     }else if(input[0] == 'e'){
-      cout << "AHA!! I win. Your number was " << ((upperBound - lowerBound) / 2) << "." << endl;
+      cout << "AHA!! I win.  Your number was " << guess << "." << endl;
+      cout << "I got it in " << guesses << " guesses." << endl;
       cout << "I told you I could get it." << endl;
       cout << "Better luck next time! :)" << endl;
       return 0;
@@ -68,13 +72,6 @@ int main(int argc, char** argv){
       return 1;
     }
   }
-
-  do{
-    cin.getline(test, 256);
-    input = test;
-    inputS.str(input);
-  }while(!(inputS >> val));
-  cout << "Ok, go!" << endl;
 
   return 0;
 }
