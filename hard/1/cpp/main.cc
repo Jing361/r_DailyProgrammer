@@ -15,8 +15,6 @@ int main(int argc, char** argv){
   int min = 0;
   int guesses = 0;
   int guess;
-  int upperBound = max;
-  int lowerBound = min;
   char test[256];
   string input;
 
@@ -29,6 +27,8 @@ int main(int argc, char** argv){
     min = atoi(argv[1]);
     max = atoi(argv[2]);
   }
+  int upperBound = max;
+  int lowerBound = min;
 
   stringstream inputS;
   cout << endl;
