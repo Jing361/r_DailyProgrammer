@@ -3,3 +3,6 @@ There must be menu options of some form, and you must be able to easily edit, ad
   Note that by 'menu' I dont necessarily mean 'gui'.
   So long as different options can be easily accessed and the user receives prompts and instructions describing how to use the program, it is fine.
 Save list for future recovery.
+
+from prompt:
+http://www.reddit.com/r/dailyprogrammer/comments/pihtx/intermediate_challenge_1/

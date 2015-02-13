@@ -3,3 +3,6 @@ Let's do a role reversal; you create a program that will guess numbers between 1
 Responding appropriately based on whether users say that the number is too high or too low.
 Try to make a program that can guess your number based on user input and great code!
 OPT:Allow as a program argument, different max number, and report on max required number of guesses.
+
+prompt from:
+http://www.reddit.com/r/dailyprogrammer/comments/pii6j/difficult_challenge_1/

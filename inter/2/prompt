@@ -54,3 +54,6 @@ An option list looks like this:
 [KEY] - [DESCRIPTION] - [FUNCTION NAME]
 You can fire your favorite text editor up and start writing your text adventure game.
 Then, assuming you save your story as adventure.story: gcc Cadventure-txt.c -o cadventure ./cadventure adventure.story
+
+from prompt:
+http://www.reddit.com/r/dailyprogrammer/comments/pjbuj/intermediate_challenge_2/
