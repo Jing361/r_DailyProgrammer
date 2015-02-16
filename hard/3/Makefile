@@ -1,11 +1,11 @@
 CC:=g++
-flags:=-Wall
+flags:=-Wall -std=c++11
 dflags:=-ggdb3
 cflags:=-c
 
 default:unscramble
 
-main:main.o
+unscramble:main.o
 	$(CC) main.o -o main
 
 main.o:main.cc
