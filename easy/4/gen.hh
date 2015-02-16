@@ -1,16 +1,15 @@
 #ifndef __RGEN_H__
 #define __RGEN_H__
 
-#include<random>
+#include<cstdlib>
+#include<ctime>
 
-template<int min, int max>
 class rGen{
 private:
-  std::default_random_engine genrtr;
-  std::uniform_int_distribution<int> dist(min, max);
-  auto dice = std::bind(dist, genrtr);
+  int min, max;
 public:
-  int operator();
+  rGen(int low, int high);
+  int operator()();
 };
 
 #endif
