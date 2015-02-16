@@ -11,8 +11,12 @@ using std::string;
 using std::vector;
 using std::sort;
 
+//Utility functions
 void sortstring(string& str){
   sort(str.begin(), str.end());
+}
+bool sortvect(string str1, string str2){
+  return str1.size() < str2.size();
 }
 
 int main(int argc, char** argv){
@@ -41,6 +45,9 @@ int main(int argc, char** argv){
     foundScram.push_back(scrmOrg[i]);
     ++i;
   }
+
+  sort(foundScram.begin(), foundScram.end(), sortvect);
+  sort(foundWord.begin(), foundWord.end(), sortvect);
 
   for(int i = 0; i < foundWord.size() && i < foundScram.size(); ++i){
     cout << "Scrambled word:\t" << foundScram[i] << "\tbecomes:\t" << foundWord[i] << endl;
