@@ -9,8 +9,7 @@ class calculator{
 private:
   int acc;
   std::map<char, int> precedence;
-  std::stack<char> eval;
-  std::stack<char> stk;
+  std::string rpn;
 public:
   calculator();
   calculator(std::string str);

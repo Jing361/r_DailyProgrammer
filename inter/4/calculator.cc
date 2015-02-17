@@ -15,45 +15,58 @@ calculator::calculator(std::string str):calculator(){
 }
 
 int calculator::evaluate(){
-  while(!stk.empty()){
-    if(precedence[stk.top()] == 0){
-      eval.push(stk.top());
-      stk.pop();
-    }else if(precedence[stk.top()] > 0){
-      this->evaluate();
+  std::stack<char> eval;
+
+  while(!this->rpn.empty()){
+    if(precedence[this->rpn.back()] == 0){
+      eval.push(this->rpn.back());
+      this->rpn.erase(this->rpn.size());
+    }else if(precedence[this->rpn.back()] > 0){
+      if(eval.size() < 2){
+        return -1;
+      }
+      int op1, op2, res;
+      op1 = ((int)eval.top() - (int)'0');
+      eval.pop();
+      op2 = ((int)eval.top() - (int)'0');
+      eval.pop();
+      if(this->rpn.back() == '*'){
+        res = op1 * op2;
+      } else if(this->rpn.back() == '/'){
+        res = op1 / op2;
+      } else if(this->rpn.back() == '+'){
+        res = op1 + op2;
+      } else if(this->rpn.back() == '-'){
+        res = op1 - op2;
+      }
+      eval.push(res);
     }
   }
-  return acc;
+  if(eval.size() == 1){
+    return eval.top();
+  } else {
+    return eval.size();
+  }
 }
 
 void calculator::parse(std::string str){
-  std::stack<char> stk;
   std::stack<char> ops;
-  while(!stk.empty())
-    this->stk.pop();
-  while(!eval.empty())
-    this->eval.pop();
+  this->rpn.clear();
 
   for(auto it = str.begin(); it != str.end(); ++it){
     if(this->precedence[*it] == 0){
-      stk.push(*it);
+      this->rpn += *it;
     } else if(this->precedence[*it] > 0){
-      while(!ops.empty() && this->precedence[*it] <= stk.top()){
-        stk.push(ops.top());
+      while(!ops.empty() && this->precedence[*it] <= this->rpn.back()){
+        this->rpn += ops.top();
         ops.pop();
       }
       ops.push(*it);
     }
   }
   while(!ops.empty()){
-    stk.push(ops.top());
+    this->rpn += ops.top();
     ops.pop();
-  }
-
-//reverse stack order
-  while(!stk.empty()){
-    this->stk.push(stk.top());
-    stk.pop();
   }
 }
 
