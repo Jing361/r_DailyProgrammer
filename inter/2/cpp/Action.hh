@@ -2,9 +2,11 @@
 #define __ACTION_H__
 
 #include<string>
+#include<functional>
 #include"Room.hh"
 
 using std::string;
+using std::function;
 
 //Forward declaration.
 class Room;
@@ -15,6 +17,7 @@ public:
   string desc;
   
   Room* next;
+  function<void(void)> func;
 };
 
 #endif
