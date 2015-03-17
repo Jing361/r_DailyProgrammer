@@ -20,6 +20,8 @@ int main(int argc, char** argv){
 
   if(argc > 3){
     cout << "Incorrect number of arguments." << endl;
+    cout << "Expected at most 3." << endl;
+    cout << "main [[min] max]" << endl;
     return 1;
   }else if(argc == 2){
     max = atoi(argv[1]);
@@ -36,7 +38,7 @@ int main(int argc, char** argv){
   cout << "I will guess it in about " << log2(max - min) << " guesses." << endl;
   cout << "Keep it in your mind." << endl;
   do{
-    cout << "I will try to guess it; are you ready?[y/n]" << endl;
+    cout << "I will try to guess your number; are you ready?[y/n]" << endl;
     cin.getline(test, 255);
     input = test;
   }while(input.length() > 1 || (input[0] != 'y' && input[0] != 'n'));
