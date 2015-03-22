@@ -5,13 +5,16 @@ cflags:=-c $(dflags)
 
 name:=LunarAdventure
 
-default:main
+default:$(name)
 
 AdventureGame.o:AdventureGame.cc
 	$(CC) $(cflags) $(flags) AdventureGame.cc
 
-main:main.o AdventureGame.o
-	$(CC) AdventureGame.o main.o -o $(name)
+Menu.o:Menu.cc
+	$(CC) $(cflags) $(flags) Menu.cc
+
+$(name):main.o AdventureGame.o Menu.o
+	$(CC) main.o AdventureGame.o Menu.o -o $(name)
 
 main.o:main.cc
 	$(CC) $(cflags) $(flags) main.cc

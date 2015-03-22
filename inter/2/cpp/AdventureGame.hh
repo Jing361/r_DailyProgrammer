@@ -7,6 +7,7 @@
 #include<utility>
 #include"Game.hh"
 #include"Room.hh"
+#include"Menu.hh"
 
 using std::cout;
 using std::endl;
@@ -18,8 +19,8 @@ using std::pair;
 class AdventureGame:public Game{
 protected:
   bool running;
-  map<string, Room*> world;
-  Room* current;
+  map<string, Menu*> world;
+  Menu* current;
 
   void loop();
   void render();
