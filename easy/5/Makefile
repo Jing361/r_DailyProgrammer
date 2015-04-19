@@ -7,11 +7,8 @@ name:=main
 
 default:main
 
-gen.o:gen.cc
-	$(CC) $(cflags) $(flags) gen.cc
-
-main:main.o gen.o
-	$(CC) gen.o main.o -o $(name)
+main:main.o
+	$(CC) main.o -o $(name)
 
 main.o:main.cc
 	$(CC) $(cflags) $(flags) main.cc
