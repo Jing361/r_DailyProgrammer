@@ -9,23 +9,26 @@ authenticator::authenticator(std::fstream& inFile):
   parseUsers();
 }
 
+authenticator::authenticator(std::string file){
+}
+
 bool authenticator::authenticate(std::string name, std::string pass){
   std::hash<std::string> str_hash;
   return users[name] == str_hash(pass);
 }
 
-void mkUser(std::string name, std::string pass){
+void authenticator::mkUser(std::string name, std::string pass){
   std::hash<std::string> str_hash;
   users[name] = str_hash(pass);
 }
 
-void rmUser(std::string name, std::string pass){
+void authenticator::rmUser(std::string name, std::string pass){
   if(authenticate(name, pass)){
     users.erase(name);
   }
 }
 
-std::tuple<std::string, std::size_t> authenticator::readUser(){
+bool authenticator::readUser(){
   std::string username;
   std::string password;
 
@@ -46,7 +49,13 @@ std::tuple<std::string, std::size_t> authenticator::readUser(){
   }
   std::cout << std::endl;
 
-  return std::tuple<std::string, std::size_t>(username, password);
+  return authenticate(username, password);
+}
+
+void authenticator::writeUsers(){
+  for(auto it = users.begin(); it != users.end(); ++it){
+    fstream << 
+  }
 }
 
 void authenticator::parseUsers(){

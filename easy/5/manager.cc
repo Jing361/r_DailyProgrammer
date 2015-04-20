@@ -27,12 +27,17 @@ int main(int argc, char** argv){
     }
     std::cout << "Please enter username and password for user:" << std::endl;
     std::cout << "username:\t";
+    std::cin >> name;
     std::cout << "password:\t";
+    auth.setStdinEcho(false);
+    std::cin >> pass;
+    auth.setStdinEcho(true);
     if(opt == 1){
       auth.mkUser(name, pass);
     }
     if(opt == 2){
-      auth.rmUser(name, pass);
+      std::cout << "Please implement" << std::endl;
+      //auth.rmUser(name, pass);
     }
   }
   return 0;
