@@ -22,8 +22,8 @@ bool authenticator::readUser(){
     return false;
   }
 
-  setStdinEcho(false);
   std::cout << "password:\t";
+  setStdinEcho(false);
   std::cin >> password;
   setStdinEcho(true);
   if(std::cin.fail()){
@@ -36,11 +36,13 @@ bool authenticator::readUser(){
 }
 
 void authenticator::parseUsers(){
-  char cname[256];
-  char cpass[256];
-  handle.getline(cname, 255);
-  handle.getline(cpass, 255);
-  users[std::string(cname)] = std::string(cpass);
+  while(!handle.eof()){
+    char cname[256];
+    char cpass[256];
+    handle.getline(cname, 255);
+    handle.getline(cpass, 255);
+    users[std::string(cname)] = std::string(cpass);
+  }
 }
 
 void authenticator::setStdinEcho(bool enable){
