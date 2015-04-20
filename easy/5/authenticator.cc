@@ -3,13 +3,11 @@
 #include<unistd.h>
 #include<functional>
 #include<exception>
+#include<sstream>
 
-authenticator::authenticator(std::fstream& inFile):
-  handle(inFile){
+authenticator::authenticator(std::string file):
+  fileName(file){
   parseUsers();
-}
-
-authenticator::authenticator(std::string file){
 }
 
 bool authenticator::authenticate(std::string name, std::string pass){
@@ -53,23 +51,30 @@ bool authenticator::readUser(){
 }
 
 void authenticator::writeUsers(){
+  std::fstream handle(fileName.c_str(), std::fstream::out | std::fstream::trunc);
   for(auto it = users.begin(); it != users.end(); ++it){
-    fstream << 
+    handle << std::get<0>(*it) << std::endl;
+    handle << std::get<1>(*it) << std::endl;
   }
+  handle.close();
 }
 
 void authenticator::parseUsers(){
+  std::fstream handle(fileName.c_str(), std::fstream::in);
   while(!handle.eof()){
+    std::stringstream stream;
+    size_t hash;
+    
     char cname[256];
     char cpass[256];
     handle.getline(cname, 255);
     handle.getline(cpass, 255);
-    try{
-      users[std::string(cname)] = std::stoi(std::string(cpass));
-    } catch(std::exception& e) {
-      users.erase(std::string(""));
-    }
+    stream << std::string(cpass);
+    stream >> hash;
+    users[std::string(cname)] = hash;
+    users.erase(std::string(""));
   }
+  handle.close();
 }
 
 void authenticator::setStdinEcho(bool enable){

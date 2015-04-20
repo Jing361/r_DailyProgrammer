@@ -3,8 +3,7 @@
 #include"authenticator.hh"
 
 int main(int argc, char** argv){
-  std::fstream inFile("user", std::fstream::in | std::fstream::out);
-  authenticator auth(inFile);
+  authenticator auth(std::string("user"));
   std::string user;
 
   unsigned int i = 0;
@@ -21,6 +20,7 @@ int main(int argc, char** argv){
     std::cout << "What would you like to do?\t" << std::endl;
     std::cout << "1.\tAdd a user" << std::endl;
     std::cout << "2.\tRemove a user" << std::endl;
+    std::cout << "3.\tFinish" << std::endl;
     std::cin >> opt;
     if(std::cin.fail()){
       continue;
@@ -34,12 +34,13 @@ int main(int argc, char** argv){
     auth.setStdinEcho(true);
     if(opt == 1){
       auth.mkUser(name, pass);
-    }
-    if(opt == 2){
-      std::cout << "Please implement" << std::endl;
-      //auth.rmUser(name, pass);
+    } else if(opt == 2){
+      auth.rmUser(name, pass);
+    } else if(opt == 3){
+      std::cout << "Quitting" << std::endl;
+      auth.writeUsers();
+      break;
     }
   }
   return 0;
 }
-

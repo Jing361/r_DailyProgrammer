@@ -8,14 +8,13 @@
 
 class authenticator{
 private:
-  std::fstream& handle;
+  std::string fileName;
 
   void parseUsers();
 
 public:
   std::map<std::string, std::size_t> users;
 
-  authenticator(std::fstream& inFile);
   authenticator(std::string file);
   bool authenticate(std::string name, std::string pass);
   void mkUser(std::string name, std::string pass);
@@ -27,4 +26,3 @@ public:
 };
 
 #endif
-

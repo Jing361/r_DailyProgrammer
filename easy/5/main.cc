@@ -5,8 +5,7 @@
 #include"authenticator.hh"
 
 int main(int argc, char** argv){
-  std::fstream inFile("user", std::fstream::in | std::fstream::out);
-  authenticator auth(inFile);
+  authenticator auth(std::string("user"));
 
   if(!auth.readUser()){
     std::cout << "you lose!" << std::endl;
@@ -18,4 +17,3 @@ int main(int argc, char** argv){
 
   return 0;
 }
-
