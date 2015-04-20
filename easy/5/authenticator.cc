@@ -1,6 +1,8 @@
 #include"authenticator.hh"
 #include<termios.h>
 #include<unistd.h>
+#include<functional>
+#include<exception>
 
 authenticator::authenticator(std::fstream& inFile):
   handle(inFile){
@@ -8,10 +10,22 @@ authenticator::authenticator(std::fstream& inFile):
 }
 
 bool authenticator::authenticate(std::string name, std::string pass){
-  return users[name] == pass;
+  std::hash<std::string> str_hash;
+  return users[name] == str_hash(pass);
 }
 
-bool authenticator::readUser(){
+void mkUser(std::string name, std::string pass){
+  std::hash<std::string> str_hash;
+  users[name] = str_hash(pass);
+}
+
+void rmUser(std::string name, std::string pass){
+  if(authenticate(name, pass)){
+    users.erase(name);
+  }
+}
+
+std::tuple<std::string, std::size_t> authenticator::readUser(){
   std::string username;
   std::string password;
 
@@ -32,7 +46,7 @@ bool authenticator::readUser(){
   }
   std::cout << std::endl;
 
-  return authenticate(username, password);
+  return std::tuple<std::string, std::size_t>(username, password);
 }
 
 void authenticator::parseUsers(){
@@ -41,7 +55,11 @@ void authenticator::parseUsers(){
     char cpass[256];
     handle.getline(cname, 255);
     handle.getline(cpass, 255);
-    users[std::string(cname)] = std::string(cpass);
+    try{
+      users[std::string(cname)] = std::stoi(std::string(cpass));
+    } catch(std::exception& e) {
+      users.erase(std::string(""));
+    }
   }
 }
 

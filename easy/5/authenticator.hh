@@ -5,19 +5,24 @@
 #include<string>
 #include<fstream>
 #include<map>
+#include<tuple>
 
 class authenticator{
 private:
   std::fstream& handle;
-  std::map<std::string, std::string> users;
 
   void parseUsers();
   void setStdinEcho(bool enable);
 
 public:
+  std::map<std::string, std::size_t> users;
+
   authenticator(std::fstream& inFile);
   bool authenticate(std::string name, std::string pass);
-  bool readUser();
+  void mkUser(std::string name, std::string pass);
+  void rmUser(std::string name, std::string pass);
+  std::tuple<std::string, std::size_t> readUser();
+  void writeUsers();
 };
 
 #endif

@@ -5,7 +5,7 @@ cflags:=-c $(dflags)
 
 name:=main
 
-default:main fix
+default:main fix manager
 
 main:main.o authenticator.o
 	$(CC) authenticator.o main.o -o $(name)
@@ -15,6 +15,12 @@ main.o:main.cc
 
 authenticator.o:authenticator.cc
 	$(CC) $(cflags) $(flags) authenticator.cc
+
+manager:manager.o authenticator.o
+	$(CC) authenticator.o manager.o -o manager
+
+manager.o:manager.cc
+	$(CC) $(cflags) $(flags) manager.cc
 
 fix:fix.o
 	$(CC) fix.o -o fix
