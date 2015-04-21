@@ -9,7 +9,8 @@ int main(int argc, char** argv){
   unsigned int i = 0;
   for(auto it = auth.users.begin(); it != auth.users.end(); ++it){
     std::cout << std::get<0>(*it) << std::endl;
-    std::cout << std::get<1>(*it) << std::endl;
+    std::cout << std::get<0>(std::get<1>(*it)) << std::endl;
+    std::cout << std::get<1>(std::get<1>(*it)) << std::endl;
     std::cout << std::endl;
   }
   while(true){

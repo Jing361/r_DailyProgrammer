@@ -5,6 +5,7 @@
 #include<string>
 #include<fstream>
 #include<map>
+#include<tuple>
 
 class authenticator{
 private:
@@ -14,7 +15,7 @@ private:
   std::string genSalt();
 
 public:
-  std::map<std::string, std::size_t> users;
+  std::map<std::string, std::pair<std::string, std::size_t>> users;
 
   authenticator(std::string file);
   bool authenticate(std::string name, std::string pass);

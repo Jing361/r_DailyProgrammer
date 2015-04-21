@@ -13,12 +13,17 @@ authenticator::authenticator(std::string file):
 
 bool authenticator::authenticate(std::string name, std::string pass){
   std::hash<std::string> str_hash;
-  return users[name] == str_hash(pass);
+  std::pair<std::string, std::size_t> user = users[name];
+  std::string salt = std::get<0>(user);
+  std::size_t hash = std::get<1>(user);
+  return hash == str_hash(salt + pass);
 }
 
 void authenticator::mkUser(std::string name, std::string pass){
   std::hash<std::string> str_hash;
-  users[name] = str_hash(pass);
+  std::string salt = genSalt();
+
+  users[name] = std::pair<std::string, std::size_t>(salt, str_hash(salt + pass));
 }
 
 void authenticator::rmUser(std::string name, std::string pass){
@@ -55,7 +60,8 @@ void authenticator::writeUsers(){
   std::fstream handle(fileName.c_str(), std::fstream::out | std::fstream::trunc);
   for(auto it = users.begin(); it != users.end(); ++it){
     handle << std::get<0>(*it) << std::endl;
-    handle << std::get<1>(*it) << std::endl;
+    handle << std::get<0>(std::get<1>(*it)) << std::endl;
+    handle << std::get<1>(std::get<1>(*it)) << std::endl;
   }
   handle.close();
 }
@@ -68,13 +74,15 @@ void authenticator::parseUsers(){
     
     char cname[256];
     char cpass[256];
+    char csalt[256];
     handle.getline(cname, 255);
+    handle.getline(csalt, 255);
     handle.getline(cpass, 255);
     stream << std::string(cpass);
     stream >> hash;
-    users[std::string(cname)] = hash;
-    users.erase(std::string(""));
+    users[std::string(cname)] = std::pair<std::string, std::size_t>(std::string(csalt), hash);
   }
+  users.erase(std::string(""));
   handle.close();
 }
 
