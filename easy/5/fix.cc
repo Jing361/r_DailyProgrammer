@@ -12,7 +12,7 @@ void setStdinEcho(bool enable){
   (void) tcsetattr(STDIN_FILENO, TCSANOW, &tty);
 }
 
-int main(int argc, char** argv){
+int main(){
   setStdinEcho(true);
 }
 

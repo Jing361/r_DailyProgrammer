@@ -4,7 +4,7 @@
 #include<fstream>
 #include"authenticator.hh"
 
-int main(int argc, char** argv){
+int main(){
   authenticator auth(std::string("user"));
 
   if(!auth.readUser()){
@@ -17,3 +17,4 @@ int main(int argc, char** argv){
 
   return 0;
 }
+

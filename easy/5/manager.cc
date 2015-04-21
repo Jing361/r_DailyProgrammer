@@ -2,11 +2,10 @@
 #include<tuple>
 #include"authenticator.hh"
 
-int main(int argc, char** argv){
+int main(){
   authenticator auth(std::string("user"));
   std::string user;
 
-  unsigned int i = 0;
   for(auto it = auth.users.begin(); it != auth.users.end(); ++it){
     std::cout << std::get<0>(*it) << std::endl;
     std::cout << std::get<0>(std::get<1>(*it)) << std::endl;
@@ -45,3 +44,4 @@ int main(int argc, char** argv){
   }
   return 0;
 }
+
