@@ -11,6 +11,7 @@ private:
   std::string fileName;
 
   void parseUsers();
+  std::string genSalt();
 
 public:
   std::map<std::string, std::size_t> users;

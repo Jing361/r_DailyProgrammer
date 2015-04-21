@@ -8,16 +8,19 @@ name:=main
 default:main fix manager
 
 main:main.o authenticator.o
-	$(CC) authenticator.o main.o -o $(name)
+	$(CC) gen.o authenticator.o main.o -o $(name)
 
 main.o:main.cc
 	$(CC) $(cflags) $(flags) main.cc
 
-authenticator.o:authenticator.cc
+authenticator.o:authenticator.cc gen.o
 	$(CC) $(cflags) $(flags) authenticator.cc
 
+gen.o:gen.cc
+	$(CC) $(cflags) $(flags) gen.cc
+
 manager:manager.o authenticator.o
-	$(CC) authenticator.o manager.o -o manager
+	$(CC) authenticator.o gen.o manager.o -o manager
 
 manager.o:manager.cc
 	$(CC) $(cflags) $(flags) manager.cc
@@ -29,5 +32,5 @@ fix.o:fix.cc
 	$(CC) $(cflags) $(flags) fix.cc
 
 clean:
-	rm *.o core $(name) fix
+	rm *.o core $(name) fix manager
 

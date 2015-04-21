@@ -1,4 +1,5 @@
 #include"authenticator.hh"
+#include"gen.hh"
 #include<termios.h>
 #include<unistd.h>
 #include<functional>
@@ -75,6 +76,16 @@ void authenticator::parseUsers(){
     users.erase(std::string(""));
   }
   handle.close();
+}
+
+std::string authenticator::genSalt(){
+  rGen gen(33, 126);
+  std::string salt;
+
+  for(unsigned int i = 0; i < 15; ++i){
+    salt += (char)gen();
+  }
+  return salt;
 }
 
 void authenticator::setStdinEcho(bool enable){
