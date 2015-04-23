@@ -1,5 +1,6 @@
 #include<iostream>
 #include<tuple>
+#include<limits>
 #include"authenticator.hh"
 
 int main(){
@@ -20,6 +21,8 @@ int main(){
                     << "2.\tRemove a user\n"
                     << "3.\tFinish\n" &&
         (!(std::cin >> opt) || opt < 1 || opt > 3)){
+      std::cin.clear(); 
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
       std::cout << "Invalid input\n";
     }
     std::string name;
