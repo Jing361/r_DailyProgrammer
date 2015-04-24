@@ -68,22 +68,14 @@ void authenticator::writeUsers(){
 
 void authenticator::parseUsers(){
   std::fstream handle(fileName.c_str(), std::fstream::in);
-  while(!handle.eof()){
-    std::stringstream stream;
-    size_t hash;
-    
-    char cname[256];
-    char cpass[256];
-    char csalt[256];
-    handle.getline(cname, 255);
-    handle.getline(csalt, 255);
-    handle.getline(cpass, 255);
-    stream << std::string(cpass);
-    stream >> hash;
-    users[std::string(cname)] = std::pair<std::string, std::size_t>(std::string(csalt), hash);
+
+  std::string name;
+  std::string salt;
+  size_t hash;
+
+  while(handle >> name && handle >> salt && handle >> hash){
+    users[name] = std::pair<std::string, std::size_t>(salt, hash);
   }
-  users.erase(std::string(""));
-  handle.close();
 }
 
 std::string authenticator::genSalt(){
