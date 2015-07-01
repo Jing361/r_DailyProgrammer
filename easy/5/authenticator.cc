@@ -1,10 +1,10 @@
-#include"authenticator.hh"
-#include"gen.hh"
 #include<termios.h>
 #include<unistd.h>
 #include<functional>
 #include<exception>
 #include<sstream>
+#include"authenticator.hh"
+#include"gen.hh"
 
 authenticator::authenticator(std::string file):
   fileName(file){
