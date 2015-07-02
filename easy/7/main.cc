@@ -9,12 +9,14 @@ int main(){
   std::string line;
   std::string output;
   std::map<std::string, std::string> words;
+  std::map<std::string, std::string> morse;
 
   words[std::string("/")] = std::string(" ");
   while(mFile >> line){
     std::string letter;
     mFile >> letter;
     words[line] = letter;
+    morse[letter] = line;//use to translate text into morse
   }
 
   while(file >> line){
