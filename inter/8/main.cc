@@ -2,20 +2,30 @@
 #include<string>
 #include<sstream>
 
-int main(){
+int main(int argc, char** argv){
   std::string input;
   std::string number;
   unsigned int test;
   bool good;
 
-  do{
+  if(argc > 1){
     std::stringstream ss;
 
-    std::cout << "Input an integer\t" << std::flush;
-    std::cin >> input;
+    input = argv[1];
     ss << input;
-    good = (ss >> test);
-  }while(!good && (std::cout << "Try again!  We need an integer." << std::endl));
+    ss >> test;
+  }
+
+  if(input == "" || test == 0){
+    do{
+      std::stringstream ss;
+
+      std::cout << "Input an integer\t" << std::flush;
+      std::cin >> input;
+      ss << input;
+      good = (ss >> test);
+    }while(!good && (std::cout << "Try again!  We need an integer." << std::endl));
+  }
 
   std::stringstream ss;
   unsigned int siz;
