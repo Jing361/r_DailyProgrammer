@@ -4,35 +4,28 @@
 #include<vector>
 #include<algorithm>
 
-using std::cout;
-using std::endl;
-using std::ifstream;
-using std::string;
-using std::vector;
-using std::sort;
-
 //Utility functions
-void sortstring(string& str){
-  sort(str.begin(), str.end());
+void sortstring(std::string& str){
+  std::sort(str.begin(), str.end());
 }
-bool sortvect(string str1, string str2){
+bool sortvect(std::string str1, std::string str2){
   return str1.size() < str2.size();
 }
 
 int main(int argc, char** argv){
   int i;
-  ifstream scramFile;
-  ifstream dictFile;
-  vector<string> scram, dict, dctOrg, scrmOrg;
-  vector<string> foundWord, foundScram;
-  vector<string>::iterator itr;
+  std::ifstream scramFile;
+  std::ifstream dictFile;
+  std::vector<std::string> scram, dict, dctOrg, scrmOrg;
+  std::vector<std::string> foundWord, foundScram;
+  std::vector<std::string>::iterator itr;
 
   scramFile.open("scrambled");
   dictFile.open("dictionary");
 
-  for(string str; scramFile.good() && getline(scramFile, str); scram.push_back(str))
+  for(std::string str; scramFile.good() && getline(scramFile, str); scram.push_back(str))
     scrmOrg.push_back(str);
-  for(string str; dictFile.good() && getline(dictFile, str); dict.push_back(str))
+  for(std::string str; dictFile.good() && getline(dictFile, str); dict.push_back(str))
     dctOrg.push_back(str);
 
   for_each(scram.begin(), scram.end(), &sortstring);
@@ -46,11 +39,11 @@ int main(int argc, char** argv){
     ++i;
   }
 
-  sort(foundScram.begin(), foundScram.end(), sortvect);
-  sort(foundWord.begin(), foundWord.end(), sortvect);
+  std::sort(foundScram.begin(), foundScram.end(), sortvect);
+  std::sort(foundWord.begin(), foundWord.end(), sortvect);
 
   for(unsigned int i = 0; i < foundWord.size() && i < foundScram.size(); ++i){
-    cout << "Scrambled word:\t" << foundScram[i] << "\tbecomes:\t" << foundWord[i] << endl;
+    std::cout << "Scrambled word:\t" << foundScram[i] << "\tbecomes:\t" << foundWord[i] << std::endl;
   }
 
   scramFile.close();
