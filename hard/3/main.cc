@@ -19,14 +19,19 @@ int main(int argc, char** argv){
   std::vector<std::string> scram, dict, dctOrg, scrmOrg;
   std::vector<std::string> foundWord, foundScram;
   std::vector<std::string>::iterator itr;
+  std::string str;
 
   scramFile.open("scrambled");
   dictFile.open("dictionary");
 
-  for(std::string str; scramFile.good() && getline(scramFile, str); scram.push_back(str))
+  while(scramFile >> str){
     scrmOrg.push_back(str);
-  for(std::string str; dictFile.good() && getline(dictFile, str); dict.push_back(str))
+    scram.push_back(str);
+  }
+  while(dictFile >> str){
     dctOrg.push_back(str);
+    dict.push_back(str);
+  }
 
   for_each(scram.begin(), scram.end(), &sortstring);
   for_each(dict.begin(), dict.end(), &sortstring);
