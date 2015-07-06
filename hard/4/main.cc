@@ -20,11 +20,44 @@ int main(){
     vals.pop_back();
     if(i * j == k){
       std::cout << i << " * " << j << " == " << k << std::endl;
-    } else if(i * k == j){
+    }
+    if(i * k == j){
       std::cout << i << " * " << k << " == " << j << std::endl;
-    } else if(j * k == i){
+    }
+    if(j * k == i){
       std::cout << j << " * " << k << " == " << i << std::endl;
     }
+
+    if(i / j == k){
+      std::cout << i << " / " << j << " == " << k << std::endl;
+    }
+    if(i / k == j){
+      std::cout << i << " / " << k << " == " << j << std::endl;
+    }
+    if(j / k == i){
+      std::cout << j << " / " << k << " == " << i << std::endl;
+    }
+
+    if(i + j == k){
+      std::cout << i << " + " << j << " == " << k << std::endl;
+    }
+    if(i + k == j){
+      std::cout << i << " + " << k << " == " << j << std::endl;
+    }
+    if(j + k == i){
+      std::cout << j << " + " << k << " == " << i << std::endl;
+    }
+
+    if(i - j == k){
+      std::cout << i << " - " << j << " == " << k << std::endl;
+    }
+    if(i - k == j){
+      std::cout << i << " - " << k << " == " << j << std::endl;
+    }
+    if(j - k == i){
+      std::cout << j << " - " << k << " == " << i << std::endl;
+    }
+    std::cout << std::endl;
   }
 
   return 0;
