@@ -4,24 +4,18 @@
 #include<sstream>
 #include<cmath>
 
-using std::cout;
-using std::cin;
-using std::endl;
-using std::string;
-using std::stringstream;
-
 int main(int argc, char** argv){
   int max = 100;
   int min = 0;
   int guesses = 0;
   int guess;
   char test[256];
-  string input;
+  std::string input;
 
   if(argc > 3){
-    cout << "Incorrect number of arguments." << endl;
-    cout << "Expected at most 3." << endl;
-    cout << "main [[min] max]" << endl;
+    std::cout << "Incorrect number of arguments." << std::endl;
+    std::cout << "Expected at most 3." << std::endl;
+    std::cout << "main [[min] max]" << std::endl;
     return 1;
   }else if(argc == 2){
     max = atoi(argv[1]);
@@ -32,19 +26,19 @@ int main(int argc, char** argv){
   int upperBound = max;
   int lowerBound = min;
 
-  stringstream inputS;
-  cout << endl;
-  cout << "You need to choose a number between " << min << " and " << max << "." << endl;
-  cout << "I will guess it in about " << log2(max - min) << " guesses." << endl;
-  cout << "Keep it in your mind." << endl;
+  std::stringstream inputS;
+  std::cout << std::endl;
+  std::cout << "You need to choose a number between " << min << " and " << max << "." << std::endl;
+  std::cout << "I will guess it in about " << log2(max - min) << " guesses." << std::endl;
+  std::cout << "Keep it in your mind." << std::endl;
   do{
-    cout << "I will try to guess your number; are you ready?[y/n]" << endl;
-    cin.getline(test, 255);
+    std::cout << "I will try to guess your number; are you ready?[y/n]" << std::endl;
+    std::cin.getline(test, 255);
     input = test;
   }while(input.length() > 1 || (input[0] != 'y' && input[0] != 'n'));
 
   if(input[0] == 'n'){
-    cout << "O, ok..Bye!" << endl;
+    std::cout << "O, ok..Bye!" << std::endl;
     return 0;
   }
 
@@ -52,8 +46,8 @@ int main(int argc, char** argv){
     ++guesses;
     guess = (upperBound + lowerBound) / 2;
     do{
-      cout << "Ok, is your number above, below, or equal to:\t" << guess << "?[a/b/e]" << endl;
-      cin.getline(test, 255);
+      std::cout << "Ok, is your number above, below, or equal to:\t" << guess << "?[a/b/e]" << std::endl;
+      std::cin.getline(test, 255);
       input = test;
     }while(input[0] != 'a' && input[0] != 'b' && input[0] != 'e');
 
@@ -62,15 +56,15 @@ int main(int argc, char** argv){
     }else if(input[0] == 'b'){
       upperBound = guess;
     }else if(input[0] == 'e'){
-      cout << "AHA!! I win.  Your number was " << guess << "." << endl;
-      cout << "I got it in " << guesses << " guesses." << endl;
-      cout << "I told you I could get it." << endl;
-      cout << "Better luck next time! :)" << endl;
+      std::cout << "AHA!! I win.  Your number was " << guess << "." << std::endl;
+      std::cout << "I got it in " << guesses << " guesses." << std::endl;
+      std::cout << "I told you I could get it." << std::endl;
+      std::cout << "Better luck next time! :)" << std::endl;
       return 0;
     }else if(upperBound == lowerBound){
-      cout << "What the hell?" << endl;
-      cout << "How'd you do that?" << endl;
-      cout << "O well, you win. :(" << endl;
+      std::cout << "What the hell?" << std::endl;
+      std::cout << "How'd you do that?" << std::endl;
+      std::cout << "O well, you win. :(" << std::endl;
       return 1;
     }
   }
