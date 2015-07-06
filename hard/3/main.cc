@@ -49,7 +49,7 @@ int main(int argc, char** argv){
   sort(foundScram.begin(), foundScram.end(), sortvect);
   sort(foundWord.begin(), foundWord.end(), sortvect);
 
-  for(int i = 0; i < foundWord.size() && i < foundScram.size(); ++i){
+  for(unsigned int i = 0; i < foundWord.size() && i < foundScram.size(); ++i){
     cout << "Scrambled word:\t" << foundScram[i] << "\tbecomes:\t" << foundWord[i] << endl;
   }
 
