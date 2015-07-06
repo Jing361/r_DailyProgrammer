@@ -3,6 +3,7 @@
 #include<string>
 #include<vector>
 #include<algorithm>
+#include<map>
 
 //Utility functions
 void sortstring(std::string& str){
@@ -18,7 +19,6 @@ int main(int argc, char** argv){
   std::ifstream dictFile;
   std::vector<std::string> scram, dict, dctOrg, scrmOrg;
   std::vector<std::string> foundWord, foundScram;
-  std::vector<std::string>::iterator itr;
   std::string str;
 
   scramFile.open("scrambled");
@@ -38,7 +38,7 @@ int main(int argc, char** argv){
 
   i = 0;
   for(auto it = scram.begin(); it != scram.end(); ++it){
-    itr = find(dict.begin(), dict.end(), *it);
+    auto itr = find(dict.begin(), dict.end(), *it);
     foundWord.push_back(dctOrg.at(itr - dict.begin()));
     foundScram.push_back(scrmOrg[i]);
     ++i;
