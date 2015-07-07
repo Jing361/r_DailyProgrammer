@@ -12,7 +12,6 @@ int main(int argc, char** argv){
   double maxGuess;
   char test[256];
   std::string input;
-  std::stringstream inputS;
 
   if(argc > 3){
     std::cout << "Incorrect number of arguments." << std::endl;
@@ -20,10 +19,13 @@ int main(int argc, char** argv){
     std::cout << "main [[min] max]" << std::endl;
     return 1;
   }else if(argc == 2){
-    max = atoi(argv[1]);
+    std::stringstream ss(argv[1]);
+    ss >> max;
   }else if(argc == 3){
-    min = atoi(argv[1]);
-    max = atoi(argv[2]);
+    std::stringstream ss(argv[1]);
+    ss >> min;
+    ss << argv[2];
+    ss >> max;
   }
   int upperBound = max;
   int lowerBound = min;
