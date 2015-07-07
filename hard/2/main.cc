@@ -1,51 +1,44 @@
 #include<iostream>
+#include<string>
 #include<ctime>
-
-using std::cout;
-using std::endl;
-using std::cin;
-using std::string;
 
 int main(int argc, char** argv){
   time_t start;
   time_t stop;
-  char cinput[256];
-  string sinput;
+  std::string sinput;
 
-  cout << "This is a stopwatch." << endl;
+  std::cout << "This is a stopwatch." << std::endl;
   while(true){
-    cout << "When you want to start tracking time, press enter." << endl;
-    cout << "While the timer is running, you can stop the timer, or lap it." << endl;
-    cout << "Type 's' to stop it and 'l' to lap." << endl;
-    cout << "If you want to quit, type 'q'." << endl;
-    cin.getline(cinput, 255);
+    std::cout << "When you want to start tracking time, press enter." << std::endl;
+    std::cout << "While the timer is running, you can stop the timer, or lap it." << std::endl;
+    std::cout << "Type 's' to stop it and 'l' to lap." << std::endl;
+    std::cout << "If you want to quit, type 'q'." << std::endl;
+    std::cin >> sinput;
     time(&start);
 
-    sinput = cinput;
     if(sinput[0] == 'q'){
       break;
     } else {
-      cout << "Starting.." << endl;
+      std::cout << "Starting.." << std::endl;
     }
 
     while(true){
       do{
-        cin.getline(cinput, 255);
-        sinput = cinput;
+        std::cin >> sinput;
       }while(sinput[0] != 's' && sinput[0] != 'l');
 
       if(sinput[0] == 's'){
         time(&stop);
-        cout << "Time elapsed:\t" << difftime(stop, start) << endl;
+        std::cout << "Time elapsed:\t" << difftime(stop, start) << std::endl;
         break;
       }else if(sinput[0] == 'l'){
         time(&stop);
-        cout << "Lap:\t" << difftime(stop, start) << endl;
+        std::cout << "Lap:\t" << difftime(stop, start) << std::endl;
       }
     }
   }
 
-  cout << "Quitting.." << endl;
+  std::cout << "Quitting.." << std::endl;
 
   return 0;
 }
