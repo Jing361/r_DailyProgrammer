@@ -10,13 +10,13 @@ int main(){
   std::vector<std::string> sorted;
   std::map<std::string, std::vector<std::string> > anagrams;
 
-  std::cout << "Processing dictionary...\n" << std::flush;
+  std::cout << "Reading dictionary...\n" << std::flush;
 
   for(std::string line; dictFile >> line;){
     words.push_back(line);
   }
 
-  std::cout << "\tDictionary read.\n" << std::flush;
+  std::cout << "\tProcessing dictionary....\n" << std::flush;
 
   sorted = words;
 
@@ -24,7 +24,7 @@ int main(){
     std::sort((*it).begin(), (*it).end());
   }
 
-  std::cout << "\tWords processed.\n" << std::flush;
+  std::cout << "\tProcessing anagrams...\n" << std::flush;
 
   for(unsigned int i = 0; i < sorted.size(); ++i){
     std::string tmp(sorted[i]);
@@ -35,7 +35,7 @@ int main(){
     }
   }
 
-  std::cout << "Dictionary processed!\n" << std::flush;
+  std::cout << "Words processed!\n" << std::flush;
 
   std::string input;
   while(std::cout << "I'd like to see anagrams for " && (std::cin >> input)){
