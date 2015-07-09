@@ -16,7 +16,7 @@ void create(std::vector<event>& list);
 void remove(std::vector<event>& list);
 void enumerate(std::vector<event>& list);
 
-int main(int argc, char **argv){
+int main(){
   int choice = 0;
   std::vector<event> calendar;
 
@@ -31,7 +31,7 @@ int main(int argc, char **argv){
     std::cout << "+=======================================+" << std::endl;
     std::cout << "Choose an option: ";
     std::cin >> choice;
-    getchar();
+
     switch(choice){
       // Show events
       case 1:{
@@ -63,8 +63,9 @@ void enumerate(std::vector<event>& list){
   if(list.empty()){
     std::cout << "No events!" << std::endl;
   } else {
-    for(std::vector<event>::iterator it = list.begin(); it != list.end(); ++it){
-      std::cout << "Date:" << (*it).date << std::endl << "Event:" << (*it).evt << std::endl;
+    for(auto it = list.begin(); it != list.end(); ++it){
+      std::cout << "Date:" << (*it).date << std::endl;
+      std::cout << "Event:" << (*it).evt << std::endl;
       std::cout << std::endl;
     }
   }
@@ -72,13 +73,13 @@ void enumerate(std::vector<event>& list){
 
 void create(std::vector<event>& list){
   int time;
-  char thing[255];
+  std::string thing;
 
   std::cout << "When would you like to schedule: ";
   std::cin >> time;
   std::cout << "What would you like to schedule: ";
   std::cin >> thing;
-  list.push_back(event(time, std::string(thing) ) );
+  list.push_back(event(time, thing));
 }
 
 void remove(std::vector<event>& list){
@@ -86,7 +87,7 @@ void remove(std::vector<event>& list){
 
   std::cout << "When would you like to unschedule: ";
   std::cin >> time;
-  for(std::vector<event>::iterator it = list.begin(); it != list.end(); ++it){
+  for(auto it = list.begin(); it != list.end(); ++it){
     if((*it).date == time){
       list.erase(it);
       break;
