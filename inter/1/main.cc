@@ -15,23 +15,14 @@ public:
 void create(std::vector<event>& list);
 void remove(std::vector<event>& list);
 void enumerate(std::vector<event>& list);
+int printMenu();
 
 int main(){
   int choice = 0;
   std::vector<event> calendar;
 
   while(choice != 4){
-    std::cout << "+=======================================+" << std::endl;
-    std::cout << "|\t\t\t\t\t|" << std::endl;
-    std::cout << "|\t1. View events\t\t\t|" << std::endl;
-    std::cout << "|\t2. Add event\t\t\t|" << std::endl;
-    std::cout << "|\t3. Delete event\t\t\t|" << std::endl;
-    std::cout << "|\t4. Exit\t\t\t\t|" << std::endl;
-    std::cout << "|\t\t\t\t\t|" << std::endl;
-    std::cout << "+=======================================+" << std::endl;
-    std::cout << "Choose an option: ";
-    std::cin >> choice;
-
+    choice = printMenu();
     switch(choice){
       // Show events
       case 1:{
@@ -95,3 +86,17 @@ void remove(std::vector<event>& list){
   }
 }
 
+int printMenu(){
+  int choice;
+  std::cout << "+=======================================+" << std::endl;
+  std::cout << "|\t\t\t\t\t|" << std::endl;
+  std::cout << "|\t1. View events\t\t\t|" << std::endl;
+  std::cout << "|\t2. Add event\t\t\t|" << std::endl;
+  std::cout << "|\t3. Delete event\t\t\t|" << std::endl;
+  std::cout << "|\t4. Exit\t\t\t\t|" << std::endl;
+  std::cout << "|\t\t\t\t\t|" << std::endl;
+  std::cout << "+=======================================+" << std::endl;
+  std::cout << "Choose an option: ";
+  std::cin >> choice;
+  return choice;
+}
