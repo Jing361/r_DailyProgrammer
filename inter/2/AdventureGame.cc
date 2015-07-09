@@ -33,7 +33,7 @@ AdventureGame::AdventureGame(){
 }
 
 AdventureGame::~AdventureGame(){
-  for(std::map<string, Menu*>::iterator it = world.begin(); it != world.end(); ++it){
+  for(std::map<std::string, Menu*>::iterator it = world.begin(); it != world.end(); ++it){
     delete std::get<1>(*it);
   }
 }
@@ -51,7 +51,7 @@ void AdventureGame::loop(){
 }
 
 void AdventureGame::render(){
-  cout << this->current->getPrompt() << endl;
+  std::cout << this->current->getPrompt() << std::endl;
 }
 
 void AdventureGame::tick(){

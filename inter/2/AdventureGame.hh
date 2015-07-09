@@ -9,17 +9,10 @@
 #include"Room.hh"
 #include"Menu.hh"
 
-using std::cout;
-using std::endl;
-using std::cin;
-using std::string;
-using std::map;
-using std::pair;
-
 class AdventureGame:public Game{
 protected:
   bool running;
-  map<string, Menu*> world;
+  std::map<std::string, Menu*> world;
   Menu* current;
 
   void loop();

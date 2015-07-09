@@ -5,19 +5,16 @@
 #include<functional>
 #include"Room.hh"
 
-using std::string;
-using std::function;
-
 //Forward declaration.
 class Room;
 
 class Action{
 public:
   //Printed to describe this action before it's taken.
-  string desc;
+  std::string desc;
   
   Room* next;
-  function<void(void)> func;
+  std::function<void(void)> func;
 };
 
 #endif
