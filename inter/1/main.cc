@@ -1,42 +1,36 @@
 #include<iostream>
 #include<vector>
 #include<string>
-#include<string.h>
-using std::cout;
-using std::cin;
-using std::endl;
-using std::vector;
-using std::string;
 
 class event{
 public:
   int date;
-  string evt;
-  event(int d, string evnt){
+  std::string evt;
+  event(int d, std::string evnt){
     this->date = d;
     this->evt = evnt;
   }
 };
 
-void create(vector<event>& list);
-void remove(vector<event>& list);
-void enumerate(vector<event>& list);
+void create(std::vector<event>& list);
+void remove(std::vector<event>& list);
+void enumerate(std::vector<event>& list);
 
 int main(int argc, char **argv){
   int choice = 0;
-  vector<event> calendar;
+  std::vector<event> calendar;
 
   while(choice != 4){
-    cout << "+=======================================+" << endl;
-    cout << "|\t\t\t\t\t|" << endl;
-    cout << "|\t1. View events\t\t\t|" << endl;
-    cout << "|\t2. Add event\t\t\t|" << endl;
-    cout << "|\t3. Delete event\t\t\t|" << endl;
-    cout << "|\t4. Exit\t\t\t\t|" << endl;
-    cout << "|\t\t\t\t\t|" << endl;
-    cout << "+=======================================+" << endl;
-    cout << "Choose an option: ";
-    cin >> choice;
+    std::cout << "+=======================================+" << std::endl;
+    std::cout << "|\t\t\t\t\t|" << std::endl;
+    std::cout << "|\t1. View events\t\t\t|" << std::endl;
+    std::cout << "|\t2. Add event\t\t\t|" << std::endl;
+    std::cout << "|\t3. Delete event\t\t\t|" << std::endl;
+    std::cout << "|\t4. Exit\t\t\t\t|" << std::endl;
+    std::cout << "|\t\t\t\t\t|" << std::endl;
+    std::cout << "+=======================================+" << std::endl;
+    std::cout << "Choose an option: ";
+    std::cin >> choice;
     getchar();
     switch(choice){
       // Show events
@@ -53,10 +47,10 @@ int main(int argc, char **argv){
       }break;
       // Exit program
       case 4:{
-        cout << "Exiting.." << endl;
+        std::cout << "Exiting.." << std::endl;
       }break;
       default:{
-        cout << "Invalid option! Try again." << endl;
+        std::cout << "Invalid option! Try again." << std::endl;
       }break;
     }
   }
@@ -64,34 +58,34 @@ int main(int argc, char **argv){
   return 0;
 }
 
-void enumerate(vector<event>& list){
-  cout << "Event listing:" << endl;
+void enumerate(std::vector<event>& list){
+  std::cout << "Event listing:" << std::endl;
   if(list.empty()){
-    cout << "No events!" << endl;
+    std::cout << "No events!" << std::endl;
   } else {
     for(std::vector<event>::iterator it = list.begin(); it != list.end(); ++it){
-      cout << "Date:" << (*it).date << endl << "Event:" << (*it).evt << endl;
-      cout << endl;
+      std::cout << "Date:" << (*it).date << std::endl << "Event:" << (*it).evt << std::endl;
+      std::cout << std::endl;
     }
   }
 }
 
-void create(vector<event>& list){
+void create(std::vector<event>& list){
   int time;
   char thing[255];
 
-  cout << "When would you like to schedule: ";
-  cin >> time;
-  cout << "What would you like to schedule: ";
-  cin >> thing;
-  list.push_back(event(time, string(thing) ) );
+  std::cout << "When would you like to schedule: ";
+  std::cin >> time;
+  std::cout << "What would you like to schedule: ";
+  std::cin >> thing;
+  list.push_back(event(time, std::string(thing) ) );
 }
 
-void remove(vector<event>& list){
+void remove(std::vector<event>& list){
   int time;
 
-  cout << "When would you like to unschedule: ";
-  cin >> time;
+  std::cout << "When would you like to unschedule: ";
+  std::cin >> time;
   for(std::vector<event>::iterator it = list.begin(); it != list.end(); ++it){
     if((*it).date == time){
       list.erase(it);
