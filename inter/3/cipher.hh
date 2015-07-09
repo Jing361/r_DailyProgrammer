@@ -5,16 +5,13 @@
 #include<string>
 #include<locale>
 
-using std::array;
-using std::string;
-
-class cipher:private string{
+class cipher:private std::string{
 private:
   unsigned int crypt;
   std::locale loc;
 public:
   cipher(char* c);
-  cipher(string cip);
+  cipher(std::string cip);
   char encypher(char c);
 };
 

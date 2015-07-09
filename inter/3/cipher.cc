@@ -1,10 +1,10 @@
 #include"cipher.hh"
 
-cipher::cipher(char* c):cipher(string(c)){
+cipher::cipher(char* c):cipher(std::string(c)){
 }
 
 //Establish cipher alphabet using cip as cypher word to start.
-cipher::cipher(string cip){
+cipher::cipher(std::string cip){
   bool match;
 
   for(auto it = cip.begin(); it != cip.end(); ++it){

@@ -3,28 +3,24 @@
 #include<array>
 #include"cipher.hh"
 
-using std::cout;
-using std::endl;
-using std::string;
-
 //TODO: Establish decryption.
 int main(int argc, char** argv){
   if(argc < 3){
-    cout << "Not enough arguments." << endl;
-    cout << "Use as " << argv[0] << " [key] [message]" << std::endl;
-    cout << "[key] is interpretted as a number, and [message] as text" << std::endl;
+    std::cout << "Not enough arguments." << std::endl;
+    std::cout << "Use as " << argv[0] << " [key] [message]" << std::endl;
+    std::cout << "[key] is interpretted as a number, and [message] as text" << std::endl;
     return 1;
   }
 
   cipher cypher(argv[1]);
-  string msg(argv[2]);
-  string result;
+  std::string msg(argv[2]);
+  std::string result;
 
-  for(string::iterator it = msg.begin(); it != msg.end(); ++it){
+  for(auto it = msg.begin(); it != msg.end(); ++it){
     result += cypher.encypher(*it);
   }
 
-  cout << result << endl;
+  std::cout << result << std::endl;
   return 0;
 }
 
