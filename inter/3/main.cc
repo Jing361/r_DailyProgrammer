@@ -7,8 +7,8 @@
 int main(int argc, char** argv){
   if(argc < 3){
     std::cout << "Not enough arguments." << std::endl;
-    std::cout << "Use as " << argv[0] << " [key] [message]" << std::endl;
-    std::cout << "[key] is interpretted as a number, and [message] as text" << std::endl;
+    std::cout << "Use as " << argv[0] << " key message" << std::endl;
+    std::cout << "key is interpretted as a number, and message as text" << std::endl;
     return 1;
   }
 
