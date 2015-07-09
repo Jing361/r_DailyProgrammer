@@ -11,23 +11,31 @@ int main(){
   
   pyramid.push_back(1);
 
-  for(unsigned int i = 2; i < row; ++i){
+  for(unsigned int i = 0; i < row; ++i){
     std::vector<unsigned int> tri;
-    auto first = pyramid.begin();
-    auto second = ++pyramid.begin();
 
-    tri.push_back(1);
+    unsigned int count = 0;
+    unsigned int cur = pyramid[0];
     for(auto it = pyramid.begin(); it != pyramid.end(); ++it){
-      tri.push_back((*first++) + (*second++));
-    }
+      if(*it != cur){
+        tri.push_back(count);
+        tri.push_back(cur);
 
+        cur = *it;
+        count = 1;
+      } else {
+        ++count;
+      }
+    }
+    tri.push_back(count);
+    tri.push_back(cur);
     pyramid = tri;
-
-    for(auto it = pyramid.begin(); it != pyramid.end(); ++it){
-      std::cout << *it << " ";
-    }
-    std::cout << std::endl;
   }
+
+  for(auto it = pyramid.begin(); it != pyramid.end(); ++it){
+    std::cout << *it;
+  }
+  std::cout << std::endl;
 
   return 0;
 }
