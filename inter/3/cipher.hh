@@ -1,7 +1,6 @@
-#ifndef __CIPHER_H__
-#define __CIPHER_H__
+#ifndef __CIPHER_HH__
+#define __CIPHER_HH__
 
-#include<array>
 #include<string>
 #include<locale>
 

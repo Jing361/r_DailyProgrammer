@@ -1,6 +1,4 @@
 #include<iostream>
-#include<queue>
-#include<array>
 #include"cipher.hh"
 
 //TODO: Establish decryption.
