@@ -3,9 +3,17 @@
 #include<iostream>
 #include<map>
 
-int main(){
-  std::ifstream mFile("morse");
-  std::ifstream file("text");
+int main(int argc, char** argv){
+  std::ifstream mFile;
+  std::ifstream file;
+  if(argc == 3){
+    mFile.open(argv[1]);
+    file.open(argv[2]);
+  } else {
+    mFile.open("morse");
+    file.open("text");
+  }
+
   std::string line;
   std::string output;
   std::map<std::string, std::string> words;
