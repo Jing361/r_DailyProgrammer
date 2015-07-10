@@ -4,14 +4,8 @@
 #include<cmath>
 #include"cipher.hh"
 
-using std::cout;
-using std::endl;
-using std::cin;
-using std::ofstream;
-using std::string;
-
-//string encrypt(string, int);
-//string decrypt(string, int);
+//std::string encrypt(std::string, int);
+//std::string decrypt(std::string, int);
 
 //TODO: Add input type checking.
 //TODO: Establish clearer differences between encrypt and decrypt.
@@ -22,15 +16,15 @@ int main(int argc, char** argv){
   bool encrypting;
 
   if(argc < 3){
-    cout << "Not enough arguments." << endl;
-    cout << "Use as " << argv[0] << " [key] [message]" << std::endl;
-    cout << "[key] is interpretted as a number, and [message] as text" << std::endl;
+    std::cout << "Not enough arguments." << std::endl;
+    std::cout << "Use as " << argv[0] << " [key] [message]" << std::endl;
+    std::cout << "[key] is interpretted as a number, and [message] as text" << std::endl;
     return 1;
   }
 
-  string msg(argv[2]);
-  string name(argv[0]);
-  string result;
+  std::string msg(argv[2]);
+  std::string name(argv[0]);
+  std::string result;
   crypt = atoi(argv[1]);
   cipher cypher(crypt);
 
@@ -39,7 +33,7 @@ int main(int argc, char** argv){
   } else if(name[name.length() - 7] == 'd'){
     encrypting = false;
   }else {
-    cout << "Invalid calling name" << endl;
+    std::cout << "Invalid calling name" << std::endl;
     return 2;
   }
 
@@ -51,7 +45,7 @@ int main(int argc, char** argv){
     }
   }
 
-  cout << result << endl;
+  std::cout << result << std::endl;
   return 0;
 }
 
