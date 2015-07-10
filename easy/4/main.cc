@@ -19,8 +19,7 @@ int main(int argc, char** argv){
   }
 
   for(int i = 0; i < len; ++i){
-    int x = generator();
-    passwd += (char)x;
+    passwd += (char)generator();
   }
 
   std::cout << passwd << std::endl;
