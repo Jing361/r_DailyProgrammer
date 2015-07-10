@@ -4,9 +4,6 @@
 #include<cmath>
 #include"cipher.hh"
 
-//std::string encrypt(std::string, int);
-//std::string decrypt(std::string, int);
-
 //TODO: Add input type checking.
 //TODO: Establish clearer differences between encrypt and decrypt.
 //          Whether the same number used to decrypt is used to encrypt etc

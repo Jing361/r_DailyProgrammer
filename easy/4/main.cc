@@ -2,23 +2,19 @@
 #include<string>
 #include"gen.hh"
 
-using std::cout;
-using std::endl;
-using std::string;
-
 int main(int argc, char** argv){
   int low = 33;
   int high = 126;
   int len;
   rGen generator(low, high);
-  string passwd;
+  std::string passwd;
 
   if(argc < 2){
     len = 10;
   } else if(argc == 2){
     len = atoi(argv[1]);
   } else {
-    cout << "Invalid number of arguments." << endl;
+    std::cout << "Invalid number of arguments." << std::endl;
     return 1;
   }
 
@@ -27,7 +23,7 @@ int main(int argc, char** argv){
     passwd += (char)x;
   }
 
-  cout << passwd << endl;
+  std::cout << passwd << std::endl;
 
   return 0;
 }
