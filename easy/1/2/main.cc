@@ -2,7 +2,6 @@
 #include<string>
 #include<vector>
 #include<stack>
-
 #include<set>
 
 std::vector<std::string> generateSuccessors(std::string state, std::string source){
