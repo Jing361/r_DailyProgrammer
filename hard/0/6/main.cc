@@ -18,6 +18,14 @@ public:
   std::string getName(){
     return prefix + suffix;
   }
+  virtual std::pair<unsigned int, unsigned int> getChoice() = 0;
+};
+
+class human:public player{
+public:
+  human(int num):player(num){
+  }
+
   std::pair<unsigned int, unsigned int> getChoice(){
     unsigned int group, num;
     while(std::cout << "Specify which group, and how many to take." << std::endl &&
@@ -32,6 +40,16 @@ public:
   }
 };
 
+class ai:public player{
+public:
+  ai(int num):player(num){
+  }
+
+  std::pair<unsigned int, unsigned int> getChoice(){
+    return std::pair<unsigned int, unsigned int>(1, 1);
+  }
+};
+
 int main(){
 /*  std::cout << "AI options are:\n";
   std::cout << "\tHuman Opponent\n";
@@ -42,13 +60,12 @@ int main(){
   std::cout << "\tminimax\n";
   std::cout << "\tKnown win strat\n";*/
   std::array<unsigned int, 3> nim{ 3, 4, 5 };
-  std::vector<player> players{ player(1), player(2) };
+  std::vector<player*> players{ new human(1), new ai(2) };
   unsigned int now = 0;
-  player* cur = &players[now % 2];
+  player* cur = players[now % 2];
 
   while(true){
-    std::cout << cur->getName();
-    std::cout << " it is your turn." << std::endl;
+    std::cout << cur->getName() << " it is your turn." << std::endl;
     for(auto it = nim.begin(); it != nim.end(); ++it){
       std::cout << *it << " ";
     }
@@ -71,12 +88,11 @@ int main(){
     }
     if(empty){
       std::cout << "Game over!!" << std::endl;
-      std::cout << cur->getName();
-      std::cout << " wins!!" << std::endl;
+      std::cout << cur->getName() << " wins!!" << std::endl;
       break;
     }
 
-    cur = &players[++now % 2];
+    cur = players[++now % 2];
   }
 
   return 0;
