@@ -59,7 +59,9 @@ private:
     std::set<Node> explored;
     std::vector<Node> answer;
 
-    frontier.push(Node(std::vector<Action>(), nim));
+    Node tmp(std::vector<Action>(), nim);
+    frontier.push(tmp);
+    explored.insert(tmp);
     while(!frontier.empty()){
       auto thisNode = frontier.front();
       frontier.pop();
@@ -74,7 +76,7 @@ private:
         }
       }
       if(over){
-        if(thisNode.first.size() % 2 == 0){
+        if(thisNode.first.size() % 2 == 1){
           return thisNode.first;
         }
       }
@@ -100,7 +102,7 @@ private:
     unsigned int col = 1;
 
     for(auto it = node.second.begin(); it != node.second.end(); ++it){
-      for(unsigned int i = 1; i < *it; ++i){
+      for(unsigned int i = 1; i <= *it; ++i){
         std::vector<Action> list(node.first);
         world w(node.second);
 
@@ -111,7 +113,7 @@ private:
       }
       ++col;
     }
-
+    
     return ret;
   }
 
