@@ -39,6 +39,25 @@ int main(){
     std::cout << std::endl << std::endl;
 
     nim[group - 1] -= num;
+
+    bool empty = true;
+    for(auto it = nim.begin(); it != nim.end(); ++it){
+      if(*it != 0){
+        empty = false;
+        break;
+      }
+    }
+    if(empty){
+      std::cout << "Game over!!" << std::endl;
+      std::cout << "Player";
+      if(player1){
+        std::cout << "1";
+      } else {
+        std::cout << "2";
+      }
+      std::cout << " wins!!" << std::endl;
+      break;
+    }
     player1 = !player1;
   }
 
