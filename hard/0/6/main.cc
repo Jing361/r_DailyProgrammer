@@ -1,7 +1,36 @@
 #include<iostream>
+#include<string>
 #include<vector>
 #include<array>
 #include<limits>
+
+class player{
+private:
+  std::string prefix;
+  std::string suffix;
+
+public:
+  player(int num):
+    prefix(std::string("Player")),
+    suffix(std::to_string(num)){
+  }
+    
+  std::string getName(){
+    return prefix + suffix;
+  }
+  std::pair<unsigned int, unsigned int> getChoice(){
+    unsigned int group, num;
+    while(std::cout << "Specify which group, and how many to take." << std::endl &&
+          !(std::cin >> group >> num)){
+      std::cin.clear(); 
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      std::cout << "Invalid input" << std::endl;
+    }
+    std::cout << std::endl << std::endl;
+
+    return std::pair<unsigned int, unsigned int>(group, num);
+  }
+};
 
 int main(){
 /*  std::cout << "AI options are:\n";
@@ -12,7 +41,7 @@ int main(){
   std::cout << "\tIterative deepening\n";
   std::cout << "\tminimax\n";
   std::cout << "\tKnown win strat\n";*/
-  std::array<int, 3> nim{ 3, 4, 5 };
+  std::array<unsigned int, 3> nim{ 3, 4, 5 };
   unsigned int group, num;
   bool player1 = true;
 
@@ -58,6 +87,7 @@ int main(){
       std::cout << " wins!!" << std::endl;
       break;
     }
+
     player1 = !player1;
   }
 
