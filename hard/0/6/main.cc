@@ -42,32 +42,25 @@ int main(){
   std::cout << "\tminimax\n";
   std::cout << "\tKnown win strat\n";*/
   std::array<unsigned int, 3> nim{ 3, 4, 5 };
-  unsigned int group, num;
-  bool player1 = true;
+  std::vector<player> players{ player(1), player(2) };
+  unsigned int now = 0;
+  player* cur = &players[now % 2];
 
   while(true){
-    std::cout << "Player";
-    if(player1){
-      std::cout << "1";
-    } else {
-      std::cout << "2";
-    }
+    std::cout << cur->getName();
     std::cout << " it is your turn." << std::endl;
     for(auto it = nim.begin(); it != nim.end(); ++it){
       std::cout << *it << " ";
     }
     std::cout << std::endl << std::endl;
 
-    while(std::cout << "Specify which group, and how many to take." << std::endl &&
-          !(std::cin >> group >> num) &&
-          num <= nim[group - 1]){
-      std::cin.clear(); 
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::pair<unsigned int, unsigned int> response(0, 0);
+    while((response = cur->getChoice()).first > 0 && 
+          (nim[response.first - 1] < response.second)){
       std::cout << "Invalid input" << std::endl;
     }
-    std::cout << std::endl << std::endl;
 
-    nim[group - 1] -= num;
+    nim[response.first - 1] -= response.second;
 
     bool empty = true;
     for(auto it = nim.begin(); it != nim.end(); ++it){
@@ -78,17 +71,12 @@ int main(){
     }
     if(empty){
       std::cout << "Game over!!" << std::endl;
-      std::cout << "Player";
-      if(player1){
-        std::cout << "1";
-      } else {
-        std::cout << "2";
-      }
+      std::cout << cur->getName();
       std::cout << " wins!!" << std::endl;
       break;
     }
 
-    player1 = !player1;
+    cur = &players[++now % 2];
   }
 
   return 0;
