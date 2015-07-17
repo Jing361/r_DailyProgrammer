@@ -57,7 +57,7 @@ private:
   std::vector<Action> bfs(){
     std::queue<Node> frontier;
     std::set<Node> explored;
-    std::vector<Node> answer;
+//    std::vector<std::vector<Action>> answers;
 
     Node tmp(std::vector<Action>(), nim);
     frontier.push(tmp);
@@ -77,6 +77,7 @@ private:
       }
       if(over){
         if(thisNode.first.size() % 2 == 1){
+//          answers.push_back(thisNode.first);
           return thisNode.first;
         }
       }
@@ -89,6 +90,7 @@ private:
         frontier.push(*it);
       }
     }
+//    return answers.back();
     //backup scenario.  remove 1 from the first available.
     std::cout << "SHIT" << std::endl;
   }
