@@ -1,53 +1,53 @@
 #include<iostream>
 #include<random>
-#include<list>
-#include<thread>
+#include<vector>
+#include<chrono>
 
-std::list<unsigned int> sort(std::list<unsigned int> v){
-  if(v.size() == 1){
-    return v;
-  }
-
-  unsigned int siz = v.size();
-  std::list<unsigned int> one;
-  std::list<unsigned int> two;
-  while(v.size() > siz / 2){
-    one.push_back(v.front());
-    v.pop_front();
-  }
-  while(!v.empty()){
-    two.push_back(v.front());
-    v.pop_front();
-  }
-
-  one = sort(one);
-  two = sort(two);
-
-  std::list<unsigned int> ret;
-  for(unsigned int i = 0; i < siz; ++i){
-    if(one.front() < two.front()){
-      ret.push_back(one.front());
-      one.pop_front();
-    } else {
-      ret.push_back(two.front());
-      two.pop_front();
+void sort(std::vector<unsigned int>& v){
+  //sublist size
+  for(unsigned int i = 2; i <= v.size(); i *= 2){
+    //current sublist starting index
+    for(unsigned int j = 0; j < v.size(); j += i){
+      std::vector<unsigned int> x;
+      std::vector<unsigned int> y;
+      std::vector<unsigned int> z;
+      for(unsigned int k = j + i; k > j; --k){
+        if(k <= j + (i / 2)){
+          x.push_back(v[k - 1]);
+        } else {
+          y.push_back(v[k - 1]);
+        }
+      }
+      while(x.size() > 0 || y.size() > 0){
+        if(x.back() < y.back()){
+          z.push_back(x.back());
+          x.pop_back();
+        } else {
+          z.push_back(y.back());
+          y.pop_back();
+        }
+      }
+      for(unsigned k = 0; k < z.size(); ++k){
+        v[j + k] = z[k];
+      }
     }
   }
-  return ret;
 }
 
 int main(){
-  std::random_device generator;
-  std::mt19937 engine{ generator() };
-  std::uniform_int_distribution<unsigned int> dist(0, 500);
-  std::list<unsigned int> arr;
+  std::mt19937::result_type seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+  std::mt19937 engine(seed);
+  std::uniform_int_distribution<unsigned int> dist(0, 1000);
+  std::vector<unsigned int> arr;
 
-  for(unsigned int i = 0; i < 1000000; ++i){
+  std::cout << "Generating list.." << std::endl;
+  for(unsigned int i = 0; i < 1024; ++i){
     arr.push_back(dist(engine));
   }
-
-  arr = sort(arr);
+  
+  std::cout << "Sorting list.." << std::endl;
+  sort(arr);
+  std::cout << "List sorted!" << std::endl;
 
   return 0;
 }
-
