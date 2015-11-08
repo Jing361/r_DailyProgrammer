@@ -1,16 +1,14 @@
 #include<iostream>
-#include<list>
 #include<fstream>
 #include<vector>
 #include<string>
+#include<algorithm>
 
 int main(){
   unsigned int k;
-  unsigned int i = 0;
+  unsigned int i = 1;
   std::ifstream listF("list");
   std::vector<std::string> list;
-  std::vector<std::string> tmp;
-  std::vector<std::string> out;
 
   std::string str;
   while(listF >> str){
@@ -20,19 +18,19 @@ int main(){
   std::cout << "Enter block size:\t" << std::endl;
   std::cin >> k;
 
-  for(auto it = list.begin(); it != list.end(); ++it){
-    tmp.push_back(*it);
-    ++i;
-    if(i == k){
-      while(!tmp.empty()){
-        out.push_back(tmp.back());
-        tmp.pop_back();
-      }
-      i = 0;
+  auto first = list.begin();
+  auto last = list.end();
+  while(first < last){
+    unsigned int inc = k;
+    if(k * i >= list.size()){
+      inc -= (k * i) - list.size();
     }
+    std::reverse(first, first + inc);
+    first += inc;
+    ++i;
   }
 
-  for(auto it = out.begin(); it != out.end(); ++it){
+  for(auto it = list.begin(); it != list.end(); ++it){
     std::cout << *it << " ";
   }
   std::cout << std::endl;
