@@ -35,8 +35,16 @@ void bfs(std::vector<std::string>& words, std::string source){
   }
 }
 
-int main(){
+int main(int argc, char** argv){
+  if(argc != 1 && argc != 2){
+    std::cout << "Invalid number of arguments" << std::endl;
+    return 1;
+  }
+
   std::string str("hi!");
+  if(argc == 2){
+    str = argv[1];
+  }
   std::vector<std::string> words;
 
   bfs(words, str);
