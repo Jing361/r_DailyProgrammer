@@ -3,6 +3,26 @@
 #include<vector>
 #include<stack>
 #include<set>
+#include<map>
+
+bool prune(std::string target, std::string source){
+  std::map<char, int> count;
+  std::map<char, int> comp;
+
+  for(auto it = source.begin(); it < source.end(); ++it){
+    count[*it]++;
+  }
+
+  for(auto it = target.begin(); it < target.end(); ++it){
+    comp[*it]++;
+  }
+
+  if(count == comp){
+    return false;
+  } else {
+    return true;
+  }
+}
 
 std::vector<std::string> generateSuccessors(std::string state, std::string source){
   std::vector<std::string> ret;
@@ -12,9 +32,10 @@ std::vector<std::string> generateSuccessors(std::string state, std::string sourc
   return ret;
 }
 
-void bfs(std::vector<std::string>& words, std::string source){
+std::vector<std::string> bfs(std::string source){
   std::stack<std::string> frontier;
   std::set<std::string> explored;
+  std::vector<std::string> words;
 
   frontier.push(std::string(""));
 
@@ -29,10 +50,13 @@ void bfs(std::vector<std::string>& words, std::string source){
     for(auto it = suc.begin(); it != suc.end(); ++it){
       if((explored.count(*it) > 0) || ((*it).length() > source.length())){
         continue;
+      } else if((*it).length() == source.length() && prune(*it, source)){
+        continue;
       }
       frontier.push(*it);
     }
   }
+  return words;
 }
 
 int main(int argc, char** argv){
@@ -47,7 +71,7 @@ int main(int argc, char** argv){
   }
   std::vector<std::string> words;
 
-  bfs(words, str);
+  words = bfs(str);
 
   for(auto it = words.begin(); it != words.end(); ++it){
     std::cout << *it << std::endl;
