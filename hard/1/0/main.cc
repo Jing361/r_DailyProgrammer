@@ -7,28 +7,35 @@ private:
   unsigned int m_tries;
   unsigned int m_attempts = 0;
   bool m_hasWon = false;
+  std::string m_guess;
 
 public:
   hangman(std::string target, unsigned int tries = 4):
     m_word(target),
-    m_tries(tries){
+    m_tries(tries),
+    m_guess(m_word.length(), ' '){
   }
 
-  bool guess(std::string word){
-    ++m_attempts;
-    if(word == m_word){
-      m_hasWon = true;
+  bool guess(char c){
+    std::string::size_type pos = m_word.find(c);
+    if(pos != std::string::npos){
+      m_guess[pos] = m_word[pos];
       return true;
     }
+    ++m_attempts;
     return false;
   }
 
   bool hasWon(){
-    return m_hasWon;
+    return m_guess.find(" ") == std::string::npos;
   }
 
   bool isOver(){
     return m_attempts >= m_tries || hasWon();
+  }
+
+  std::string guessState(){
+    return m_guess;
   }
 };
 
@@ -49,9 +56,16 @@ int main(int argc, char** argv){
 
   std::string guess;
   do{
-    std::cout << "Make a guess:\t" << std::endl;
-    std::cin >> guess; 
-    game.guess(guess);
+    std::cout << "Guess a letter:\t" << std::endl;
+    do{
+      std::cin >> guess; 
+    }while(guess.length() != 1);
+    if(game.guess(guess[0])){
+      std::cout << "Correct!" << std::endl;
+    } else {
+      std::cout << "Letter not found." << std::endl;
+    }
+    std::cout << game.guessState() << std::endl;
   }while(!game.isOver());
 
   if(game.hasWon()){
