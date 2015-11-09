@@ -1,16 +1,18 @@
 CC:=g++
-flags:=-Wall -std=c++11
+flags:=-Wall -Wextra -pedantic -std=c++11
 dflags:=-ggdb3
-cflags:=-c $(dflags)
+cflags:=-c
 
-default:main
+name:=main
 
-main:main.o
-	$(CC) main.o -o main
+default:$(name)
 
-main.o:main.cc
-	$(CC) $(cflags) $(flags) main.cc
+$(name):$(name).o
+	$(CC) $(name).o -o $(name)
+
+$(name).o:$(name).cc
+	$(CC) $(cflags) $(flags) $(name).cc
 
 clean:
-	rm *.o core main reverse
+	rm *.o core $(name) reverse
 
