@@ -22,6 +22,7 @@ public:
       m_guess[pos] = m_word[pos];
       return true;
     }
+
     ++m_attempts;
     return false;
   }
@@ -52,6 +53,7 @@ int main(int argc, char** argv){
     std::cin >> word;
   }
 
+  //TODO:Word could be chosen randomly from a dictionary file
   hangman game(word);
 
   std::string guess;
@@ -60,11 +62,13 @@ int main(int argc, char** argv){
     do{
       std::cin >> guess; 
     }while(guess.length() != 1);
+
     if(game.guess(guess[0])){
       std::cout << "Correct!" << std::endl;
     } else {
       std::cout << "Letter not found." << std::endl;
     }
+
     std::cout << game.guessState() << std::endl;
   }while(!game.isOver());
 
