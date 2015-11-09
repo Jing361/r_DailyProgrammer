@@ -6,20 +6,29 @@ private:
   std::string m_word;
   unsigned int m_tries;
   unsigned int m_attempts = 0;
+  bool m_hasWon = false;
 
 public:
   hangman(std::string target, unsigned int tries = 4):
-    word(target),
+    m_word(target),
     m_tries(tries){
   }
 
   bool guess(std::string word){
     ++m_attempts;
     if(word == m_word){
+      m_hasWon = true;
       return true;
-    } else if(m_attempts >= m_tries){
-      return false;
     }
+    return false;
+  }
+
+  bool hasWon(){
+    return m_hasWon;
+  }
+
+  bool isOver(){
+    return m_attempts >= m_tries || hasWon();
   }
 };
 
@@ -42,7 +51,14 @@ int main(int argc, char** argv){
   do{
     std::cout << "Make a guess:\t" << std::endl;
     std::cin >> guess; 
-  }while(game.guess(guess));
+    game.guess(guess);
+  }while(!game.isOver());
+
+  if(game.hasWon()){
+    std::cout << "Victory!" << std::endl;
+  } else {
+    std::cout << "Failure." << std::endl;
+  }
 
   return 0;
 }
