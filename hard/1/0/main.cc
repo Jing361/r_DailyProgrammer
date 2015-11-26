@@ -1,5 +1,6 @@
 #include<iostream>
 #include<string>
+#include<utility>
 
 class hangman{
 private:
@@ -19,7 +20,7 @@ public:
   bool guess(char c){
     std::string::size_type pos = m_word.find(c);
     if(pos != std::string::npos){
-      m_guess[pos] = m_word[pos];
+      std::swap(m_guess[pos], m_word[pos]);
       return true;
     }
 
