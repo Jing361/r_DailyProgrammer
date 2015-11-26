@@ -2,6 +2,8 @@
 #include<vector>
 #include<algorithm>
 #include<numeric>
+#include<limits>
+#include<sstream>
 
 unsigned int factor(unsigned int num){
   unsigned int i = 2;
@@ -16,8 +18,18 @@ unsigned int factor(unsigned int num){
   return i;
 }
 
-int main(){
-  unsigned int num = 12;
+int main(int argc, char** argv){
+  unsigned int num;
+  if(argc != 2){
+    while(std::cout << "Number:\t" && !(std::cin >> num)){
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      std::cout << "Invalid" << std::endl;
+    }
+  } else {
+    std::stringstream ss(argv[1]);
+    ss >> num;
+  }
   std::vector<unsigned int> factors;
 
   while(num != 1){
