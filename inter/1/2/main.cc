@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<algorithm>
+#include<numeric>
 
 unsigned int factor(unsigned int num){
   unsigned int i = 2;
@@ -10,10 +11,6 @@ unsigned int factor(unsigned int num){
       break;
     }
     ++i;
-  }
-
-  if(i == num){
-    i = 1;
   }
 
   return i;
