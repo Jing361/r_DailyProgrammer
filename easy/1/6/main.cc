@@ -11,8 +11,8 @@ int main(int argc, char** argv){
     auto it = find_if(second.begin(), second.end(), [&](char sc){
       return sc == fc;
     });
-    if(auto != second.end()){
-      result += *it;
+    if(it == second.end()){
+      result += fc;
     }
   });
 
