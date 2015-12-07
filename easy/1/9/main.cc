@@ -33,15 +33,8 @@ public:
   }
 
   static bool isRoman(std::string str){
-    std::regex exp("[VIXL]*(.)");
-    //return regex_search(str, exp);
-    bool ret = false;
-
-    if(std::regex_search(str, exp)){
-      std::cout << "roman\t" << str << std::endl;
-      ret = true;
-    }
-    return ret;
+    std::regex exp("[VIXL]+\\.");
+    return regex_search(str, exp);
   }
 
   bool isTitle(std::string tok){
@@ -74,7 +67,7 @@ int main(){
   story lock(sher);
 
   while(std::getline(sher, str)){
-    if(!lock.isTitle(str)){//&& !story::isRoman(str))
+    if(!lock.isTitle(str)){// && !story::isRoman(str))
       for_each(str.begin(), str.end(), [&](char c){
         ++counts[toupper(c)];
       });
