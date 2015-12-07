@@ -34,7 +34,14 @@ public:
 
   static bool isRoman(std::string str){
     std::regex exp("[VIXL]*(.)");
-    return regex_search(str, exp);
+    //return regex_search(str, exp);
+    bool ret = false;
+
+    if(std::regex_search(str, exp)){
+      std::cout << "roman\t" << str << std::endl;
+      ret = true;
+    }
+    return ret;
   }
 
   bool isTitle(std::string tok){
@@ -42,9 +49,10 @@ public:
     bool ret = false;
 
     for_each(chapters.begin(), chapters.end(), [&](std::string chapter){
-      if(tok.find(chapter) != std::string::npos){
+      std::string::size_type pos = tok.find(chapter);
+      //result is the last thing in the line
+      if(pos != std::string::npos && tok.size() - (pos + chapter.size()) == 0){
         ret = true;
-        std::cout << "line\t" << tok << "\tchapter\t" << chapter << std::endl;
       }
     });
     return ret;
