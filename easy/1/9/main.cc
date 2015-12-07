@@ -23,9 +23,9 @@ public:
     }
 
     do{
-      std::string ins;
+      std::string ins(str.begin()+6, str.end());
 
-      std::transform(str.begin()+6, str.end(), ins.begin(), specialUpper);
+      std::transform(ins.begin(), ins.end(), ins.begin(), specialUpper);
       chapters.insert(ins);
 
       std::getline(file, str);
@@ -34,17 +34,20 @@ public:
 
   static bool isRoman(std::string str){
     std::regex exp("[VIXL]*(.)");
-
-    return std::regex_search(str, exp);
+    return regex_search(str, exp);
   }
 
   bool isTitle(std::string tok){
     std::transform(tok.begin(), tok.end(), tok.begin(), specialUpper);
-    return chapters.count(tok) == 1;
-  }
+    bool ret = false;
 
-  bool isChapter(std::string tok){
-    return false;
+    for_each(chapters.begin(), chapters.end(), [&](std::string chapter){
+      if(tok.find(chapter) != std::string::npos){
+        ret = true;
+        std::cout << "line\t" << tok << "\tchapter\t" << chapter << std::endl;
+      }
+    });
+    return ret;
   }
 };
 
@@ -63,13 +66,10 @@ int main(){
   story lock(sher);
 
   while(std::getline(sher, str)){
-    sher >> str;
-    if(!lock.isTitle(str) && !lock.isChapter(str)){
+    if(!lock.isTitle(str)){//&& !story::isRoman(str))
       for_each(str.begin(), str.end(), [&](char c){
         ++counts[toupper(c)];
       });
-    } else {
-      std::cout << str << std::endl;
     }
   }
 
