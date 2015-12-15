@@ -4,13 +4,6 @@
 #include<chrono>
 #include<vector>
 
-/*
-  std::mt19937::result_type seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
-  std::mt19937 engine(seed);
-  std::uniform_int_distribution<unsigned int> dist(0, 1000);
-  dist(engine);
-*/
-
 class dice{
 private:
   unsigned int m_count;
