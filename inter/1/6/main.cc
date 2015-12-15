@@ -28,6 +28,13 @@ public:
     }
     return ret;
   }
+
+  template<class iterator>
+  void roll(iterator first, iterator last){
+    std::transform(first, last, first, [&](unsigned int val){
+      return gen();
+    });
+  }
 };
 
 int main(){
