@@ -18,7 +18,7 @@ public:
   dice(unsigned int count, unsigned int sides = 6):
   m_count(count),
   m_engine(std::chrono::high_resolution_clock::now().time_since_epoch().count()),
-  m_dist(0, sides){
+  m_dist(1, sides){
   }
 
   std::vector<unsigned int> roll(){
@@ -37,13 +37,21 @@ public:
   }
 };
 
+std::pair<unsigned int, unsigned int> translate(std::vector<unsigned int> v){
+  return std::pair<unsigned int, unsigned int>(v[0], v[1]);
+}
+
 int main(){
   dice cDice(2);
-  std::vector<unsigned int> roll(cDice.roll());
+  std::vector<unsigned int> rollv(cDice.roll());
+  std::pair<unsigned int, unsigned int> roll = translate(rollv);
+  unsigned int sum = roll.first + roll.second;
 
-  for_each(roll.begin(), roll.end(), [](unsigned int val){
+  for_each(rollv.begin(), rollv.end(), [](unsigned int val){
     std::cout << val << std::endl;
   });
+
+  std::cout << sum << std::endl;
 
   return 0;
 }
