@@ -47,12 +47,7 @@ int main(){
   std::pair<unsigned int, unsigned int> roll = translate(rollv);
   unsigned int sum = roll.first + roll.second;
 
-  for_each(rollv.begin(), rollv.end(), [](unsigned int val){
-    std::cout << val << std::endl;
-  });
-
-  std::cout << sum << std::endl;
-
+  //TODO: Should display the individual die
   while(true){
     //bet
     std::string response;
@@ -87,6 +82,20 @@ int main(){
     }
 
     //point roll
+    int nroll = 0;
+    do{
+      p = translate(cDice.roll());
+      val = p.first + p.second;
+      std::cout << "Roll number " << ++nroll << "\t" << val << std::endl;
+    }while(val != 7 && val != point);
+
+    if(val == 7){
+      std::cout << "Ya lose, kid" << std::endl;
+      continue;
+    } else if(val == point){
+      std::cout << "Ya win!" << std::endl;
+      continue;
+    }
   }
 
   return 0;
