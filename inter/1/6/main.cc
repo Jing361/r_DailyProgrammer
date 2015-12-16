@@ -53,6 +53,42 @@ int main(){
 
   std::cout << sum << std::endl;
 
+  while(true){
+    //bet
+    std::string response;
+    bool pass;
+    do{
+      while(std::cout << "Bet pass/fail:\t" << std::flush && !(std::cin >> response)){
+      }
+    }while(response != "pass" && response != "fail");
+
+    if(response == "pass"){
+      pass = true;
+    } else if(response == "fail"){
+      pass = false;
+    } else {
+      std::cerr << "Wat hapn" << std::endl;
+      return 1;
+    }
+
+    //come-out roll
+    auto p = translate(cDice.roll());
+    unsigned int val = p.first + p.second;
+    unsigned int point;
+    std::cout << "Your roll:" << val << std::endl;
+    if(val == 2 || val == 3 || val == 12){
+      std::cout << "Ya lose, kid" << std::endl;
+      continue;
+    } else if(val == 7 || val == 11){
+      std::cout << "Ya win!" << std::endl;
+      continue;
+    } else {
+      point = val;
+    }
+
+    //point roll
+  }
+
   return 0;
 }
 
