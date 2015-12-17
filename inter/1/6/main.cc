@@ -46,16 +46,25 @@ int main(){
   std::vector<unsigned int> rollv(cDice.roll());
   std::pair<unsigned int, unsigned int> roll = translate(rollv);
   unsigned int sum = roll.first + roll.second;
+  long long credit = 100;
 
   //TODO: Should display the individual die
-  while(true){
+  while(credit > 0){
     //bet
     std::string response;
     bool pass;
+    long long bet;
+
+    std::cout << "You have " << credit << " credits remaining." << std::endl;
     do{
       while(std::cout << "Bet pass/fail:\t" << std::flush && !(std::cin >> response)){
+        std::cout << "Invalid input." << std::endl;
       }
     }while(response != "pass" && response != "fail");
+
+    while(std::cout << "Bet amount:\t" << std::flush && !(std::cin >> bet) && bet > credit && bet < 1){
+      std::cout << "Invalid bet." << std::endl;
+    }
 
     if(response == "pass"){
       pass = true;
@@ -69,20 +78,35 @@ int main(){
     //come-out roll
     auto p = translate(cDice.roll());
     unsigned int val = p.first + p.second;
-    unsigned int point;
+    unsigned int point = 0;
+    bool rollPass;
+
+    std::cout << "Come-out roll." << std::endl;
     std::cout << "Your roll:" << val << std::endl;
     if(val == 2 || val == 3 || val == 12){
-      std::cout << "Ya lose, kid" << std::endl;
-      continue;
+      rollPass = false;
     } else if(val == 7 || val == 11){
-      std::cout << "Ya win!" << std::endl;
-      continue;
+      rollPass = true;
     } else {
       point = val;
     }
 
+    if(point == 0){
+      if(rollPass == pass){
+        std::cout << "Ya win!" << std::endl;
+        credit += bet;
+        continue;
+      } else {
+        std::cout << "Ya lose, kid" << std::endl;
+        credit -= bet;
+        continue;
+      }
+    }
+
     //point roll
     int nroll = 0;
+
+    std::cout << "Point roll." << std::endl;
     do{
       p = translate(cDice.roll());
       val = p.first + p.second;
@@ -91,9 +115,11 @@ int main(){
 
     if(val == 7){
       std::cout << "Ya lose, kid" << std::endl;
+      credit -= bet;
       continue;
     } else if(val == point){
       std::cout << "Ya win!" << std::endl;
+      credit += bet;
       continue;
     }
   }
