@@ -7,6 +7,25 @@
 #include<exception>
 #include<set>
 #include<cctype>
+#include<locale>
+#include<algorithm> 
+#include<functional> 
+
+static inline std::string &ltrim(std::string &s) {
+        s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::ispunct))));
+        return s;
+}
+
+// trim from end
+static inline std::string &rtrim(std::string &s) {
+        s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::ispunct))).base(), s.end());
+        return s;
+}
+
+// trim from both ends
+static inline std::string &trim(std::string &s) {
+        return ltrim(rtrim(s));
+}
 
 char specialUpper(char c){
   return (char)::toupper(c);
@@ -75,7 +94,7 @@ int main(){
         std::transform(word.begin(), word.end(), word.begin(), [&](char c){
           return specialUpper(c);
         });
-        ++counts[str];
+        ++counts[trim(word)];
       }
     }
   }
