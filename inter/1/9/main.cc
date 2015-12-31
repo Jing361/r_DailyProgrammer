@@ -64,19 +64,23 @@ void printRoman(std::string str){
 int main(){
   std::fstream sher("sherlock.txt");
   std::string str;
-  std::vector<std::map<char, unsigned int>> counts;
+  std::map<std::string, unsigned int> counts;
   story lock(sher);
 
   while(std::getline(sher, str)){
     if(!lock.isTitle(str)){
-      
-      for_each(str.begin(), str.end(), [&](char c){
-        ++counts[toupper(c)];
-      });
+      std::stringstream ss(str);
+      std::string word;
+      while(ss >> word){
+        std::transform(word.begin(), word.end(), word.begin(), [&](char c){
+          return specialUpper(c);
+        });
+        ++counts[str];
+      }
     }
   }
 
-  for_each(counts.begin(), counts.end(), [&](std::pair<char, unsigned int> p){
+  for_each(counts.begin(), counts.end(), [&](std::pair<std::string, unsigned int> p){
     std::cout << p.first << "\t" << p.second << std::endl;
   });
 
