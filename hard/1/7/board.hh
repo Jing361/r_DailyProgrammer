@@ -1,6 +1,8 @@
-#include<iostream>
+#ifndef __BOARD_HH__
+#define __BOARD_HH__
 
-enum marker{ None, Ecks, Oh };
+#include<iostream>
+#include"sharedTypes.hh"
 
 class board{
 private:
@@ -14,4 +16,6 @@ public:
   void render();
   operator bool();
 };
+
+#endif
 
