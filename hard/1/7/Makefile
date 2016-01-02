@@ -11,10 +11,10 @@ main:main.o board.o player.o
 main.o:main.cc
 	$(CC) $(cflags) $(flags) main.cc
 
-board.o:
+board.o:board.cc
 	$(CC) $(cflags) $(flags) board.cc
 
-player.o:
+player.o:player.cc
 	$(CC) $(cflags) $(flags) player.cc
 
 clean:
