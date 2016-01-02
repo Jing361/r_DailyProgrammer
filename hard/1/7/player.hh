@@ -7,10 +7,13 @@
 class player{
 private:
   marker m_token;
+
 public:
   player(marker token);
+
   virtual ~player(){  }
   virtual Action getChoice() = 0;
+  marker getToken();
 };
 
 class human:public player{

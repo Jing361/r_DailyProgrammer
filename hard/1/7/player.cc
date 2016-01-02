@@ -6,6 +6,10 @@ player::player(marker token):
   m_token(token){
 }
 
+marker player::getToken(){
+  return m_token;
+}
+
 human::human(marker token):
   player(token){
 }

@@ -30,6 +30,13 @@ void board::render(){
   std::cout << std::flush;
 }
 
+void board::makePlay(unsigned int x, unsigned int y, marker token){
+  m_board[x][y] = token;
+}
+
+void board::makePlay(Action act, marker token){
+}
+
 board::operator bool(){
   //using a for loop makes this easier to expand for bigger boards
   bool ret = false;

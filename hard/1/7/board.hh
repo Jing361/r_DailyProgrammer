@@ -14,6 +14,8 @@ public:
   board();
 
   void render();
+  void makePlay(unsigned int x, unsigned int y, marker token);
+  void makePlay(Action act, marker token);
   operator bool();
 };
 
