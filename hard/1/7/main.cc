@@ -1,4 +1,5 @@
 #include<iostream>
+#include<limits>
 #include<utility>
 #include"board.hh"
 
@@ -16,6 +17,8 @@ public:
   virtual Action getChoice(){
     unsigned int x, y;
     while(std::cout << "Input 2 integers as coordinates on the grid:\t" << std::flush && !(std::cin >> x >> y)){
+      std::cin.clear(); 
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
       std::cout << "Invalid input." << std::endl;
     }
     return Action(x, y);

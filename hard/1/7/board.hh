@@ -12,5 +12,6 @@ public:
   board();
 
   void render();
+  operator bool();
 };
 
