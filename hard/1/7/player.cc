@@ -30,5 +30,6 @@ Action human::getChoice(){
 
 Action ai::getChoice(){
   std::cout << "Thinking..." << std::endl;
+  return Action(0, 0);
 }
 

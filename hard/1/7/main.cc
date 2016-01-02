@@ -14,6 +14,8 @@ int main(){
     game.makePlay(p->getChoice(), p->getToken());
     ++turn;
   }
+  game.render();
+  std::cout << "Game over!" << std::endl;
 
   for(auto it:players){
     delete it;
