@@ -42,8 +42,8 @@ board::operator bool(){
   //using a for loop makes this easier to expand for bigger boards
   bool ret = false;
   for(unsigned int i = 0; i < 3; ++i){
-    ret = ret || ((m_board[i][0] == m_board[i][1] == m_board[i][2]) && m_board[i][0] != None);
-    ret = ret || ((m_board[0][i] == m_board[1][i] == m_board[2][i]) && m_board[i][0] != None);
+    ret = ret || (((m_board[i][0] == m_board[i][1]) && (m_board[i][1] == m_board[i][2])) && (m_board[i][0] != None));
+    ret = ret || (((m_board[0][i] == m_board[1][i]) && (m_board[1][i] == m_board[2][i])) && (m_board[0][i] != None));
   }
   //TODO:Implement diagonal checks.
   return ret;
