@@ -3,6 +3,7 @@
 
 enum marker{ None, Ecks, Oh };
 typedef std::pair<unsigned int, unsigned int> Action;
+typedef marker[3][3] world;
 
 #endif
 

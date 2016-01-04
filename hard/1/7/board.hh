@@ -6,9 +6,9 @@
 
 class board{
 private:
-  marker m_board[3][3]{ {None, None, None},
-                        {None, None, None},
-                        {None, None, None} };
+  world m_board{ {None, None, None},
+                 {None, None, None},
+                 {None, None, None} };
 
 public:
   board();

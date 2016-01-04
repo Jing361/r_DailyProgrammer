@@ -28,6 +28,17 @@ Action human::getChoice(){
   return Action(x, y);
 }
 
+std::vector<Action> ai::generateSuccessors(){
+}
+
+std::vector<Action> ai::bfs(){
+  std::queue<Node> frontier;
+  std::set<Node> explored;
+
+  while(!frontier.empty()){
+  }
+}
+
 Action ai::getChoice(){
   std::cout << "Thinking..." << std::endl;
   return Action(0, 0);

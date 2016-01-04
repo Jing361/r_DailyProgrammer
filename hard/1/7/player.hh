@@ -25,6 +25,12 @@ public:
 };
 
 class ai:public player{
+private:
+  typedef std::pair<std::vector<Action>, world> Node;
+
+  std::vector<Action> generateSuccessors();
+  std::vector<Action> bfs();
+
 public:
   ai(marker token);
 
