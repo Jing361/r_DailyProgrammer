@@ -3,6 +3,10 @@
 board::board(){
 }
 
+world& board::getModel(){
+  return m_board;
+}
+
 void board::render(){
   std::cout << "+-+-+-+\n";
   for(unsigned int i = 0; i < 3; ++i){

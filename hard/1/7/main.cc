@@ -6,7 +6,7 @@
 int main(){
   board game;
   unsigned long turn = 0;
-  std::vector<player*> players = { new human(Ecks), new ai(Oh) };
+  std::vector<player*> players = { new human(Ecks), new ai(Oh, game) };
 
   while(!game){
     game.render();

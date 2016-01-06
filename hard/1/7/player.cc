@@ -1,5 +1,8 @@
 #include<iostream>
 #include<limits>
+#include<queue>
+#include<set>
+#include"board.hh"
 #include"player.hh"
 
 player::player(marker token):
@@ -14,10 +17,6 @@ human::human(marker token):
   player(token){
 }
 
-ai::ai(marker token):
-  player(token){
-}
-
 Action human::getChoice(){
   unsigned int x, y;
   while(std::cout << "Input 2 integers as coordinates on the grid:\t" << std::flush && !(std::cin >> x >> y)){
@@ -28,14 +27,31 @@ Action human::getChoice(){
   return Action(x, y);
 }
 
-std::vector<Action> ai::generateSuccessors(){
+ai::ai(marker token, board& model):
+  player(token),
+  m_model(model){
+}
+
+std::vector<ai::Node> ai::expand(ai::Node node){
 }
 
 std::vector<Action> ai::bfs(){
-  std::queue<Node> frontier;
-  std::set<Node> explored;
+  std::queue<ai::Node> frontier;
+  std::set<ai::Node> explored;
 
+  frontier.push(ai::Node(std::vector<Action>(), m_model));
   while(!frontier.empty()){
+    auto thisNode = frontier.front();
+    frontier.pop();
+
+    explored.insert(thisNode);
+    std::vector<ai::Node> nodes(expand(thisNode));
+    for(auto it:nodes){
+      if(explored.count(it) > 0){
+        continue;
+      }
+      frontier.push(it);
+    }
   }
 }
 
