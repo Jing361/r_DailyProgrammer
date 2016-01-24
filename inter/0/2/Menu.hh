@@ -12,6 +12,7 @@ private:
   //choices should probably each include a callback
   std::vector<std::pair<std::string, std::string>> choices;
   std::function<void(void)> delegate;
+
 public:
   static const std::string menuend;
 

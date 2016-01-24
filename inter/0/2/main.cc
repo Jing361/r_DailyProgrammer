@@ -1,6 +1,6 @@
 #include"AdventureGame.hh"
 
-int main(int argc, char** argv){
+int main(){
   Game& game = *new AdventureGame;
   game.run();
   return 0;

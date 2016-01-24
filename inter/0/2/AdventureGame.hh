@@ -11,9 +11,9 @@
 
 class AdventureGame:public Game{
 protected:
-  bool running;
-  std::map<std::string, Menu*> world;
-  Menu* current;
+  bool m_running;
+  std::map<std::string, Menu*> m_world;
+  Menu* m_current;
 
   void loop();
   void render();
