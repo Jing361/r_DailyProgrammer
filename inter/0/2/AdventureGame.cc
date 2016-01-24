@@ -55,6 +55,7 @@ void AdventureGame::render(){
 }
 
 void AdventureGame::tick(){
+  m_current->callEntryDelegate(this);
   std::string tmp = m_current->getChoice();
   if(tmp == Menu::menuend){
     m_running = false;
