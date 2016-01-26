@@ -1,10 +1,50 @@
+#include<fstream>
 #include"Menu.hh"
 #include"AdventureGame.hh"
 
-AdventureGame::AdventureGame(){
+AdventureGame::AdventureGame(std::string pname){
+  std::fstream file(pname);
+  std::string line;
+  std::string name;
+  std::string prompt;
+  std::pair<std::string, std::string> pr;
+  std::vector<std::pair<std::string, std::string>> opts;
+
   m_running = false;
 
-  Menu* tmp;
+  while(std::getline(file, line)){
+    if(line.size() == 0 || line[0] == '#') continue;
+
+    int delim = line.find(':');
+    std::string tok = line.substr(0, delim);
+    std::string val = line.substr(delim);
+    if(tok == "room"){
+      if(name == ""){
+        name = val;
+        continue;
+      }
+      name = val;
+      Menu* tmp = new Menu(name, prompt, opts);
+      m_world.insert(std::pair<std::string, Menu*>(tmp->getName(), tmp));
+
+      name = "";
+      prompt = "";
+      pr.first = "";
+      pr.second = "";
+      opts.clear();
+    } else if(tok == "greet"){
+      prompt = val;
+    } else if(tok == "choice"){
+      pr.first = val;
+    } else if(tok == "target"){
+      pr.second = val;
+
+      opts.push_back(pr);
+      pr.first = "";
+      pr.second = "";
+    }
+  }
+  /*Menu* tmp;
 
   tmp = new Menu("MainMenu", "Welcome to the game!\n",
                  std::vector<std::pair<std::string, std::string> >{
@@ -29,6 +69,7 @@ AdventureGame::AdventureGame(){
   });
   m_world.insert(std::pair<std::string, Menu*>(tmp->getName(), tmp));
 
+*/
   m_current = m_world["MainMenu"];
 }
 

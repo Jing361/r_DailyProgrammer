@@ -1,0 +1,22 @@
+room:MainMenu
+greet:Welcome to the game!
+choice:This goes to the first room.
+target:StartRoom
+choice:This is an instant lose.
+target:LosingRoom
+choice:This is an instant win.
+target:WinningRoom
+
+room:StartRoom
+greet:This is the first room.  It's messy.
+choice:This goes to the winning room.
+target:WinningRoom
+choice:This goes to the losing room.
+target:LosingRoom
+
+room:WinningRoom
+greet:This is the winning room.  It's glorious.
+
+room:LosingRoom
+greet:This is the losing room.  It's a cesspool.
+

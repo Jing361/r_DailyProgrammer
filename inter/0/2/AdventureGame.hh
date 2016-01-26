@@ -20,7 +20,7 @@ protected:
   void tick();
 
 public:
-  AdventureGame();
+  AdventureGame(std::string name);
   ~AdventureGame();
   void run();
 };
