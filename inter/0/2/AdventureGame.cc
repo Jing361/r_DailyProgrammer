@@ -17,17 +17,16 @@ AdventureGame::AdventureGame(std::string pname){
 
     int delim = line.find(':');
     std::string tok = line.substr(0, delim);
-    std::string val = line.substr(delim);
+    std::string val = line.substr(delim + 1);
     if(tok == "room"){
       if(name == ""){
         name = val;
         continue;
       }
-      name = val;
       Menu* tmp = new Menu(name, prompt, opts);
       m_world.insert(std::pair<std::string, Menu*>(tmp->getName(), tmp));
 
-      name = "";
+      name = val;
       prompt = "";
       pr.first = "";
       pr.second = "";
@@ -44,32 +43,10 @@ AdventureGame::AdventureGame(std::string pname){
       pr.second = "";
     }
   }
-  /*Menu* tmp;
-
-  tmp = new Menu("MainMenu", "Welcome to the game!\n",
-                 std::vector<std::pair<std::string, std::string> >{
-                   {"This goes to the first room.", "StartRoom"}, 
-                   {"This is an instant lose.", "LosingRoom"},
-                   {"This is an instant win.", "WinningRoom"}
-                });
+  //add the final room
+  Menu* tmp = new Menu(name, prompt, opts);
   m_world.insert(std::pair<std::string, Menu*>(tmp->getName(), tmp));
 
-  tmp = new Menu("StartRoom", "This is the first room.  It's messy.\n",
-                 std::vector<std::pair<std::string, std::string> >{
-                   {"This goes to the winning room.", "WinningRoom"}, 
-                   {"This goes to the losing room.", "LosingRoom"}
-                 });
-  m_world.insert(std::pair<std::string, Menu*>(tmp->getName(), tmp));
-
-  tmp = new Menu("WinningRoom", "This is the winning room.  It's glorious.\n", std::vector<std::pair<std::string, std::string> >{
-  });
-  m_world.insert(std::pair<std::string, Menu*>(tmp->getName(), tmp));
-
-  tmp = new Menu("LosingRoom", "This is the losing room.  It's a cesspool.\n", std::vector<std::pair<std::string, std::string> >{
-  });
-  m_world.insert(std::pair<std::string, Menu*>(tmp->getName(), tmp));
-
-*/
   m_current = m_world["MainMenu"];
 }
 
