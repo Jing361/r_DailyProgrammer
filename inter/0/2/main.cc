@@ -1,11 +1,13 @@
+#include<iostream>
 #include"AdventureGame.hh"
 
 int main(int argc, char** argv){
-  Game* game;
   if(argc == 2){
-    game = new AdventureGame(argv[1]);
+    Game* game = new AdventureGame(argv[1]);
+    game->run();
+  } else {
+    std::cout << "Need a file name." << std::endl;
   }
-  game->run();
   return 0;
 }
 

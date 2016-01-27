@@ -13,7 +13,7 @@ Menu::Menu(std::string _name, std::string _prompt, std::vector<std::pair<std::st
 Menu::~Menu(){
 }
 
-const std::string& Menu::getChoice(){
+std::string Menu::getChoice(){
   if(choices.size() == 0){
     return Menu::menuend;
   }
