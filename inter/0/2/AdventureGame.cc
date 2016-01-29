@@ -1,4 +1,5 @@
 #include<fstream>
+#include<dlfcn.h>
 #include"Menu.hh"
 #include"AdventureGame.hh"
 
@@ -9,8 +10,10 @@ AdventureGame::AdventureGame(std::string pname){
   std::string prompt;
   std::pair<std::string, std::string> pr;
   std::vector<std::pair<std::string, std::string>> opts;
+  Menu::delegate entry = [](AdventureGame*, Menu*){};
 
   m_running = false;
+  m_handle = dlopen("./", RTLD_NODELETE);
 
   while(std::getline(file, line)){
     if(line.size() == 0 || line[0] == '#') continue;
@@ -24,6 +27,7 @@ AdventureGame::AdventureGame(std::string pname){
         continue;
       }
       Menu* tmp = new Menu(name, prompt, opts);
+      tmp->setEntryDelegate(entry);
       m_world.insert(std::pair<std::string, Menu*>(tmp->getName(), tmp));
 
       name = val;
@@ -31,8 +35,11 @@ AdventureGame::AdventureGame(std::string pname){
       pr.first = "";
       pr.second = "";
       opts.clear();
+      entry = [](AdventureGame*, Menu*){};
     } else if(tok == "greet"){
       prompt = val;
+    } else if(tok == "entry"){
+      entry = (void(*)(AdventureGame*, Menu*))dlsym(m_handle, val.data());
     } else if(tok == "choice"){
       pr.first = val;
     } else if(tok == "target"){
@@ -54,6 +61,7 @@ AdventureGame::~AdventureGame(){
   for(std::map<std::string, Menu*>::iterator it = m_world.begin(); it != m_world.end(); ++it){
     delete std::get<1>(*it);
   }
+  dlclose(m_handle);
 }
 
 void AdventureGame::run(){

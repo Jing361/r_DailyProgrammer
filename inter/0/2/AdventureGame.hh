@@ -14,6 +14,7 @@ protected:
   bool m_running;
   std::map<std::string, Menu*> m_world;
   Menu* m_current;
+  void* m_handle;
 
   void loop();
   void render();
