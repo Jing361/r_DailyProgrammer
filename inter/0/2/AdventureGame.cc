@@ -13,7 +13,6 @@ AdventureGame::AdventureGame(std::string pname){
   Menu::delegate entry = [](AdventureGame*, Menu*){};
 
   m_running = false;
-  m_handle = dlopen("./", RTLD_NODELETE);
 
   while(std::getline(file, line)){
     if(line.size() == 0 || line[0] == '#') continue;
@@ -39,7 +38,15 @@ AdventureGame::AdventureGame(std::string pname){
     } else if(tok == "greet"){
       prompt = val;
     } else if(tok == "entry"){
-      entry = (void(*)(AdventureGame*, Menu*))dlsym(m_handle, val.data());
+      char* error;
+      void* tmp = dlsym(m_handle, val.data());
+      if((error = dlerror()) != 0){
+        std::cerr << "Couldn't find " << val << '\n';
+        std::cerr << error << std::endl;
+        //TODO:throw an exception here
+      }
+
+      entry = (void(*)(AdventureGame*, Menu*))tmp;
     } else if(tok == "choice"){
       pr.first = val;
     } else if(tok == "target"){
@@ -48,6 +55,14 @@ AdventureGame::AdventureGame(std::string pname){
       opts.push_back(pr);
       pr.first = "";
       pr.second = "";
+    } else if(tok == "lib"){
+      //TODO:if supporting multiple libs, need to provide support to close all of them correctly
+      m_handle = dlopen(val.data(), RTLD_LAZY);
+      if(!m_handle){
+        std::cerr << "Failed to open library " << val << '\n';
+        std::cerr << dlerror() << std::endl;
+        //TODO:throw an exception here
+      }
     }
   }
   //add the final room

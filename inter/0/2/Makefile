@@ -13,18 +13,24 @@ AdventureGame.o:AdventureGame.cc
 Menu.o:Menu.cc
 	$(CC) $(cflags) $(flags) Menu.cc
 
-$(name):main.o AdventureGame.o Menu.o libTarSplit.so
-	$(CC) main.o AdventureGame.o Menu.o -ldl -o $(name)
+$(name):main.o AdventureGame.o Menu.o libTarSplit.a libMoon.so
+	$(CC) main.o AdventureGame.o Menu.o libTarSplit.a -ldl -o $(name)
 
 main.o:main.cc
 	$(CC) $(cflags) $(flags) main.cc
 
-tarSplit.o:tarSplit.cc
-	$(CC) $(cflags) $(flags) -fPIC tarSplit.cc
+moon.o:moon.cc
+	$(CC) $(cflags) $(flags) -fPIC moon.cc
 
-libTarSplit.so:tarSplit.o
-	$(CC) -shared -o libTarSplit.so tarSplit.o
+libMoon.so:moon.o
+	$(CC) -shared -o libMoon.so moon.o
+
+tarSplit.o:tarSplit.cc
+	$(CC) $(cflags) $(flags) tarSplit.cc
+
+libTarSplit.a:tarSplit.o
+	ar -cvq libTarSplit.a tarSplit.o
 
 clean:
-	rm *.o core $(name) libTarSplit.so
+	rm *.a *.so *.o core $(name)
 
