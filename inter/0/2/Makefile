@@ -35,5 +35,5 @@ moon.tar:moon/moon.adv moon/libMoon.so
 	cd moon && tar -cf moon.tar libMoon.so moon.adv && mv moon.tar ..
 
 clean:
-	rm *.a *.so *.o core $(name) moon.tar moon/*.a moon/*.so moon/*.o
+	rm *.a *.so *.o core $(name) moon.tar moon.adv moon/*.a moon/*.so moon/*.o
 
