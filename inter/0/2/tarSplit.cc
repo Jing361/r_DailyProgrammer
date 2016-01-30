@@ -1,5 +1,8 @@
 #include<fstream>
-#include<string>
+#include<sys/stat.h>
+#include"tarSplit.hh"
+
+#include<iostream>
 
 void tarSplit(std::string input){
   std::ifstream file(input, std::ios::binary | std::ios::ate);
@@ -12,6 +15,7 @@ void tarSplit(std::string input){
 
   while(idx < tarSize){
     std::string fileName(&mem[idx], 100);
+    std::string perm(&mem[idx + 100], 8);
     std::ofstream out(fileName);
     std::string sizeStr(&mem[idx + 124], 12);
     if(sizeStr[10] == '\0') break;
@@ -27,6 +31,8 @@ void tarSplit(std::string input){
     while(idx % 512 != 0){
       ++idx;
     }
+    out.close();
+    chmod(fileName.data(), stoi(perm, 0, 8));
   }
 
   delete mem;

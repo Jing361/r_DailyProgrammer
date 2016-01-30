@@ -2,9 +2,11 @@
 #include<dlfcn.h>
 #include"Menu.hh"
 #include"AdventureGame.hh"
+#include"tarSplit.hh"
 
 AdventureGame::AdventureGame(std::string pname){
-  std::fstream file(pname);
+  tarSplit(pname + ".tar");
+  std::fstream file(pname + ".adv");
   std::string line;
   std::string name;
   std::string prompt;

@@ -1,6 +1,6 @@
 #include<iostream>
-#include"AdventureGame.hh"
-#include"Menu.hh"
+#include"../AdventureGame.hh"
+#include"../Menu.hh"
 
 extern "C"{
 
