@@ -35,11 +35,45 @@ int main(int argc, char** argv){
   siz = input.length() + 1;
 
   for(auto it = input.begin(); it != input.end(); ++it){
+    std::string num;
     --siz;
     if(*it == '0'){
       continue;
-    } else if((siz + 1) % 3 == 0){//handle things like seventy
-      std::string num;
+    } else if(siz == 2 && *it == '1'){
+      switch(*(++it)){
+      case '0':
+        num = "ten ";
+      break;
+      case '1':
+        num = "eleven ";
+      break;
+      case '2':
+        num = "twelve ";
+      break;
+      case '3':
+        num = "thirteen ";
+      break;
+      case '4':
+        num = "fourteen ";
+      break;
+      case '5':
+        num = "fifteen ";
+      break;
+      case '6':
+        num = "sixteen ";
+      break;
+      case '7':
+        num = "seventeen ";
+      break;
+      case '8':
+        num = "eighteen ";
+      break;
+      case '9':
+        num = "nineteen ";
+      break;
+      }
+    //handle things like seventy
+    } else if((siz + 1) % 3 == 0){
       switch(*it){
       case '1':
         num = "one ";
@@ -69,9 +103,7 @@ int main(int argc, char** argv){
         num = "ninety ";
       break;
       }
-      number += num;
     } else {
-      std::string num;
       switch(*it){
       case '1':
         num = "one ";
@@ -102,9 +134,8 @@ int main(int argc, char** argv){
       break;
       };
 
-      number += num;
-
     }
+    number += num;
 
     std::string order;//of magnitude
     switch(siz){
@@ -132,7 +163,6 @@ int main(int argc, char** argv){
     };
 
     number += order;
-
   }
 
   std::cout << number << std::endl;
