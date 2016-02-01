@@ -71,9 +71,6 @@ AdventureGame::AdventureGame(std::string pname){
       char* error;
       void* tmp = dlsym(m_handle, val.data());
       if((error = dlerror()) != 0){
-        std::cerr << "Couldn't find " << val << '\n';
-        std::cerr << error << std::endl;
-        //TODO:throw an exception here
         throw symbolNotFoundException(val);
       }
 
@@ -90,8 +87,6 @@ AdventureGame::AdventureGame(std::string pname){
       //TODO:if supporting multiple libs, need to provide support to close all of them correctly
       m_handle = dlopen(val.data(), RTLD_LAZY);
       if(!m_handle){
-        std::cerr << "Failed to open library " << val << '\n';
-        std::cerr << dlerror() << std::endl;
         throw libraryNotFoundException(val);
       }
     }
