@@ -5,6 +5,7 @@
 #include<string>
 #include<iostream>
 #include<utility>
+#include<vector>
 #include"Game.hh"
 #include"Room.hh"
 #include"Menu.hh"
@@ -14,7 +15,7 @@ protected:
   bool m_running;
   std::map<std::string, Menu*> m_world;
   Menu* m_current;
-  void* m_handle;
+  std::vector<void*> m_handles;
 
   void loop();
   void render();

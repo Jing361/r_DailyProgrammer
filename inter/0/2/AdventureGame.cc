@@ -41,6 +41,7 @@ AdventureGame::AdventureGame(std::string pname){
   std::pair<std::string, std::string> pr;
   std::vector<std::pair<std::string, std::string>> opts;
   Menu::delegate entry = [](AdventureGame*, Menu*){};
+  void* handle;
 
   m_running = false;
 
@@ -69,7 +70,7 @@ AdventureGame::AdventureGame(std::string pname){
       prompt = val;
     } else if(tok == "entry"){
       char* error;
-      void* tmp = dlsym(m_handle, val.data());
+      void* tmp = dlsym(handle, val.data());
       if((error = dlerror()) != 0){
         throw symbolNotFoundException(val);
       }
@@ -85,8 +86,8 @@ AdventureGame::AdventureGame(std::string pname){
       pr.second = "";
     } else if(tok == "lib"){
       //TODO:if supporting multiple libs, need to provide support to close all of them correctly
-      m_handle = dlopen(val.data(), RTLD_LAZY);
-      if(!m_handle){
+      handle = dlopen(val.data(), RTLD_LAZY);
+      if(!handle){
         throw libraryNotFoundException(val);
       }
     }
@@ -102,7 +103,9 @@ AdventureGame::~AdventureGame(){
   for(std::map<std::string, Menu*>::iterator it = m_world.begin(); it != m_world.end(); ++it){
     delete std::get<1>(*it);
   }
-  dlclose(m_handle);
+  for(auto it:m_handles){
+    dlclose(it);
+  }
 }
 
 void AdventureGame::run(){
