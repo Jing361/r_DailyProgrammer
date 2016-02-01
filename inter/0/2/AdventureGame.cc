@@ -1,8 +1,36 @@
 #include<fstream>
 #include<dlfcn.h>
+#include<exception>
+#include<string>
 #include"Menu.hh"
 #include"AdventureGame.hh"
 #include"tarSplit.hh"
+
+class libraryNotFoundException:std::exception{
+private:
+  std::string message;
+public:
+  libraryNotFoundException(std::string lib):
+    message("Library:" + lib + " not found, or couldn't be opened."){
+  }
+
+  const char* what(){
+    return message.data();
+  }
+};
+
+class symbolNotFoundException:std::exception{
+private:
+  std::string message;
+public:
+  symbolNotFoundException(std::string lib):
+    message("Symbol:" + lib + " not found."){
+  }
+
+  const char* what(){
+    return message.data();
+  }
+};
 
 AdventureGame::AdventureGame(std::string pname){
   tarSplit(pname + ".tar");
@@ -46,6 +74,7 @@ AdventureGame::AdventureGame(std::string pname){
         std::cerr << "Couldn't find " << val << '\n';
         std::cerr << error << std::endl;
         //TODO:throw an exception here
+        throw symbolNotFoundException(val);
       }
 
       entry = (void(*)(AdventureGame*, Menu*))tmp;
@@ -63,7 +92,7 @@ AdventureGame::AdventureGame(std::string pname){
       if(!m_handle){
         std::cerr << "Failed to open library " << val << '\n';
         std::cerr << dlerror() << std::endl;
-        //TODO:throw an exception here
+        throw libraryNotFoundException(val);
       }
     }
   }

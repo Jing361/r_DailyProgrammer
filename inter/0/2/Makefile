@@ -37,3 +37,5 @@ moon.tar:moon/moon.adv moon/libMoon.so
 clean:
 	rm *.a *.so *.o core $(name) moon.tar moon.adv moon/*.a moon/*.so moon/*.o
 
+tidy:
+	rm moon.adv libMoon.so
