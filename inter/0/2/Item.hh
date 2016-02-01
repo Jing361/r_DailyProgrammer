@@ -3,10 +3,13 @@
 
 #include<string>
 
-using std::string;
-
 class Item{
-  string desc;
+private:
+  std::string m_name;
+  std::string m_desc;
+
+public:
+  Item(std::string pName, std::string pDesc = "");
 };
 
 #endif

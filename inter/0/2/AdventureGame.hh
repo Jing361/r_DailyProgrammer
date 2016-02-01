@@ -9,6 +9,7 @@
 #include"Game.hh"
 #include"Room.hh"
 #include"Menu.hh"
+#include"Player.hh"
 
 class AdventureGame:public Game{
 protected:
@@ -16,6 +17,8 @@ protected:
   std::map<std::string, Menu*> m_world;
   Menu* m_current;
   std::vector<void*> m_handles;
+  std::vector<Player*> m_players;
+  Player* m_player;
 
   void loop();
   void render();
@@ -24,7 +27,10 @@ protected:
 public:
   AdventureGame(std::string name);
   ~AdventureGame();
+
   void run();
+  void addPlayer(Player* plyr);
+  void setMain(Palyer* plyr);
 };
 
 #endif

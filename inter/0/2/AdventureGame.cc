@@ -113,6 +113,24 @@ void AdventureGame::run(){
   loop();
 }
 
+void AdventureGame::addPlayer(Player* plyr){
+  m_players.push_back(plyr);
+}
+
+void AdventureGame::setMain(Palyer* plyr){
+  bool found = false;
+  for(auto it:m_players){
+    if(plyr == it){
+      found = true;
+      break;
+    }
+  }
+  if(!found){
+    addPlayer(plyr);
+  }
+  m_player = plyr;
+}
+
 void AdventureGame::loop(){
   while(m_running){
     render();
