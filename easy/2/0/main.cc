@@ -1,3 +1,4 @@
+#include<cstdlib>
 #include<vector>
 #include<iostream>
 
@@ -10,10 +11,14 @@ bool isPrime(long long num){
   return true;
 }
 
-int main(){
+int main(int argc, char** argv){
+  long long val = 2000;
+  if(argc == 2){
+    val = atoi(argv[1]);
+  }
   std::vector<long long> primes;
 
-  for(long long i = 2; i < 2000; ++i){
+  for(long long i = 2; i < val; ++i){
     if(isPrime(i)){
       primes.push_back(i);
     }
