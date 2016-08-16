@@ -2,3 +2,7 @@
 main
 *.swp
 core
+*.exe
+*.stackdump
+*.so
+*.a
