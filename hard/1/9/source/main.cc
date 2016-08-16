@@ -113,9 +113,15 @@ int main(int argc, char** argv){
     }
   }
 
+  std::string lineWord;
   for(auto it = pages.begin(); it != pages.end(); ++it){
-   if(counts[(*it).first] < 100){
-      std::cout << (*it).first << "\t" << (*it).second << std::endl;
+    if(counts[(*it).first] < 15){
+      if(lineWord != (*it).first){
+        lineWord = (*it).first;
+        std::cout << std::endl << (*it).first << '\t';
+      }
+
+      std::cout << (*it).second << ", ";
     }
   }
 
