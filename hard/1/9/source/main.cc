@@ -11,117 +11,121 @@
 #include<algorithm> 
 #include<functional> 
 
-static inline std::string &ltrim(std::string &s) {
-  s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::ispunct))));
+using namespace std;
+
+static inline string &ltrim( string &s ) {
+  s.erase( s.begin(), find_if( s.begin(), s.end(), not1( ptr_fun<int, int>( ispunct ) ) ) );
   return s;
 }
 
 // trim from end
-static inline std::string &rtrim(std::string &s) {
-  s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::ispunct))).base(), s.end());
+static inline string &rtrim( string &s ) {
+  s.erase( find_if( s.rbegin(), s.rend(), not1( ptr_fun<int, int>( ispunct ) ) ).base(), s.end() );
   return s;
 }
 
 // trim from both ends
-static inline std::string &trim(std::string &s) {
-  return ltrim(rtrim(s));
+static inline string &trim( string &s ) {
+  return ltrim( rtrim( s ) );
 }
 
-char specialUpper(char c){
-  return (char)::toupper(c);
+char specialUpper( char c ){
+  return ( char )::toupper( c );
 }
 
 class story{
-  std::set<std::string> chapters;
+  set<string> chapters;
 
 public:
-  story(std::fstream& file){
-    std::string str;
+  story( fstream& file ){
+    string str;
 
-    for(unsigned int i = 0; i < 9; ++i){
-      std::getline(file, str);
+    for( unsigned int i = 0; i < 9; ++i ){
+      getline( file, str );
     }
 
     do{
-      std::string ins(str.begin()+6, str.end());
+      string ins( str.begin()+6, str.end() );
 
-      std::transform(ins.begin(), ins.end(), ins.begin(), specialUpper);
-      chapters.insert(ins);
+      transform( ins.begin(), ins.end(), ins.begin(), specialUpper );
+      chapters.insert( ins );
 
-      std::getline(file, str);
-    }while(str != "");
+      getline( file, str );
+    }while( str != "" );
   }
 
-  static bool isRoman(std::string str){
-    std::regex exp("[VIXL]+\\.");
-    return regex_search(str, exp);
+  static bool isRoman( string str ){
+    regex exp( "[VIXL]+\\." );
+    return regex_search( str, exp );
   }
 
-  bool isTitle(std::string tok){
-    std::transform(tok.begin(), tok.end(), tok.begin(), specialUpper);
+  bool isTitle( string tok ){
+    transform( tok.begin(), tok.end(), tok.begin(), specialUpper );
     bool ret = false;
 
-    for_each(chapters.begin(), chapters.end(), [&](std::string chapter){
-      std::string::size_type pos = tok.find(chapter);
+    for_each( chapters.begin(), chapters.end(), [&]( string chapter ){
+      string::size_type pos = tok.find( chapter );
       //result is the last thing in the line
-      if(pos != std::string::npos && tok.size() - (pos + chapter.size()) == 0){
+      if( pos != string::npos && tok.size() - ( pos + chapter.size() ) == 0 ){
         ret = true;
       }
-    });
+    } );
     return ret;
   }
 };
 
-void printRoman(std::string str){
-  std::cout << str << "\t";
-  if(story::isRoman(str))
-    std::cout << "roman" << std::endl;
+void printRoman( string str ){
+  cout << str << "\t";
+  if( story::isRoman( str ) )
+    cout << "roman" << endl;
   else
-    std::cout << "not roman" << std::endl;
+    cout << "not roman" << endl;
 }
 
-int main(int argc, char** argv){
-  std::string str;
-  if(argc == 2){
+int main( int argc, char** argv ){
+  string str;
+  if( argc == 2 ){
     str = argv[1];
   } else {
     str = "data/sherlock.txt";
   }
 
-  std::fstream sher(str);
-  std::map<std::string, unsigned int> counts;
-  std::multimap<std::string, unsigned int> pages;
-  story lock(sher);
+  fstream sher( str );
+  map<string, unsigned int> counts;
+  multimap<string, unsigned int> pages;
+  story lock( sher );
   unsigned long page = 0;
   unsigned long line = 0;
 
-  while(std::getline(sher, str)){
-    if(++line > 40){
+  // doc parsing
+  while( getline( sher, str ) ){
+    if( ++line > 40 ){
       ++page;
     }
-    if(!lock.isTitle(str)){
-      std::stringstream ss(str);
-      std::string word;
-      while(ss >> word){
-        trim(word);
-        std::transform(word.begin(), word.end(), word.begin(), [&](char c){
-          return specialUpper(c);
-        });
-        pages.insert(std::pair<std::string, unsigned int>(word, page));
+    if( !lock.isTitle( str ) ){
+      stringstream ss( str );
+      string word;
+      while( ss >> word ){
+        trim( word );
+        transform( word.begin(), word.end(), word.begin(), [&]( char c ){
+          return specialUpper( c );
+        } );
+        pages.insert( make_pair( word, page ) );
         ++counts[word];
       }
     }
   }
 
-  std::string lineWord;
-  for(auto it = pages.begin(); it != pages.end(); ++it){
-    if(counts[(*it).first] < 15){
-      if(lineWord != (*it).first){
-        lineWord = (*it).first;
-        std::cout << std::endl << (*it).first << '\t';
+  //output
+  string lineWord;
+  for( auto it = pages.begin(); it != pages.end(); ++it ){
+    if( counts[( *it ).first] < 30 ){
+      if( lineWord != ( *it ).first ){
+        lineWord = ( *it ).first;
+        cout << endl << ( *it ).first << '\t';
       }
 
-      std::cout << (*it).second << ", ";
+      cout << ( *it ).second << ", ";
     }
   }
 
