@@ -80,9 +80,15 @@ void printRoman(std::string str){
     std::cout << "not roman" << std::endl;
 }
 
-int main(){
-  std::fstream sher("sherlock.txt");
+int main(int argc, char** argv){
   std::string str;
+  if(argc == 2){
+    str = argv[1];
+  } else {
+    str = "data/sherlock.txt";
+  }
+
+  std::fstream sher(str);
   std::map<std::string, unsigned int> counts;
   std::multimap<std::string, unsigned int> pages;
   story lock(sher);
