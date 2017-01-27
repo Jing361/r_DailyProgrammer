@@ -19,9 +19,10 @@ int main(){
   }
 
   {
-    cout << "password:\t";
     hide_std_in hide;
-    while( cin >> password ){
+
+    cout << "password:\t";
+    while( !( cin >> password ) ){
       cerr << "format error!" << endl;
     }
   }
