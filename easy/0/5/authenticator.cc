@@ -1,6 +1,3 @@
-#include<iostream>
-#include<termios.h>
-#include<unistd.h>
 #include<functional>
 #include<exception>
 #include<sstream>
@@ -20,6 +17,7 @@ bool authenticator::authenticate( string name, string pass ){
   pair<string, size_t> user = users[name];
   string salt = get<0>( user );
   size_t hash = get<1>( user );
+
   return hash == str_hash( salt + pass );
 }
 
@@ -36,32 +34,9 @@ void authenticator::rmUser( string name, string pass ){
   }
 }
 
-bool authenticator::readUser(){
-  string username;
-  string password;
-
-  cout << "username:\t";
-  cin >> username;
-  if( cin.fail() ){
-    cerr << "format error!" << endl;
-    return false;
-  }
-
-  cout << "password:\t";
-  setStdinEcho( false );
-  cin >> password;
-  setStdinEcho( true );
-  if( cin.fail() ){
-    cerr << "format error!" << endl;
-    return false;
-  }
-  cout << endl;
-
-  return authenticate( username, password );
-}
-
 void authenticator::writeUsers(){
   fstream handle( fileName.c_str(), fstream::out | fstream::trunc );
+
   for( auto it = users.begin(); it != users.end(); ++it ){
     handle << get<0>( *it ) << endl;
     handle << get<0>( get<1>( *it ) ) << endl;
@@ -71,7 +46,6 @@ void authenticator::writeUsers(){
 
 void authenticator::parseUsers(){
   fstream handle( fileName.c_str(), fstream::in );
-
   string name;
   string salt;
   size_t hash;
@@ -93,14 +67,4 @@ string authenticator::genSalt(){
   return salt;
 }
 
-void authenticator::setStdinEcho( bool enable ){
-  struct termios tty;
-  tcgetattr( STDIN_FILENO, &tty );
-  if( !enable ){
-    tty.c_lflag &= ~ECHO;
-  } else {
-    tty.c_lflag |= ECHO;
-  }
-  ( void ) tcsetattr( STDIN_FILENO, TCSANOW, &tty );
-}
 

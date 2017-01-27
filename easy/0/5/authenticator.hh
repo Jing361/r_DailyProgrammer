@@ -21,10 +21,7 @@ public:
   bool authenticate( std::string name, std::string pass );
   void mkUser( std::string name, std::string pass );
   void rmUser( std::string name, std::string pass );
-  bool readUser();
   void writeUsers();
-
-  static void setStdinEcho( bool enable );
 };
 
 #endif
