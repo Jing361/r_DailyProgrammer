@@ -8,7 +8,7 @@ void hide_std_in::set_echo_hide( bool enable ){
 
   tcgetattr( STDIN_FILENO, &tty );
 
-  if( enable ){
+  if( !enable ){
     tty.c_lflag |= ECHO;
   } else {
     tty.c_lflag &= ~ECHO;
