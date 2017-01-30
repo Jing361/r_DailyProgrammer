@@ -98,6 +98,7 @@ int main(){
       kill( pid, SIGKILL );
       wait( NULL );
     }
+    success = false;
     cout << username << '\t' << password << '\n';
   }
 

@@ -12,7 +12,7 @@ using namespace std;
 int main(){
   fstream testout( "testout", ios::app );
 
-  authenticator auth( string( "user" ) );
+  authenticator auth( "user" );
   string username;
   string password;
 
