@@ -5,7 +5,7 @@ cflags:=-c
 
 name:=main
 
-default:main fix manager
+default:main fix manager crack
 
 main:main.o authenticator.o hide_std_in.o
 	$(CC) hide_std_in.o authenticator.o main.o -o $(name)
@@ -31,6 +31,12 @@ fix.o:fix.cc
 hide_std_in.o:hide_std_in.cc
 	$(CC) $(cflags) $(flags) hide_std_in.cc
 
+crack:crack.o
+	$(CC) crack.o -o crack
+
+crack.o:crack.cc
+	$(CC) $(cflags) $(flags) crack.cc
+
 clean:
-	rm *.o core $(name) fix manager
+	rm *.o core $(name) fix manager crack
 
