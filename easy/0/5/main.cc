@@ -24,7 +24,6 @@ int main(){
   }
 
 testout << 'A' << username << 'A' << endl;
-  cout << '\n';
 
   {
     hide_std_in hide;
@@ -37,7 +36,7 @@ testout << 'A' << username << 'A' << endl;
     }
   }
 
-testout << 'A' << password << 'A' << endl;
+testout << 'Z' << password << 'Z' << endl;
   cout << '\n';
 
   if( !auth.authenticate( username, password ) ){

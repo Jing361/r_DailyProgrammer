@@ -25,12 +25,13 @@ int main(){
   }
 
   userFile.close();
+  mkfifo( "data", 0666 );
 
   for( auto username : users ){
     string password = "a";
 
     while( !success ){
-      cout << "trying\t" << password << '\t' << username << '\t';
+      cout << "trying\t" << password << "\tfor\t" << username << '\t';
 
       switch( pid = fork() ){
       case -1:
@@ -42,57 +43,67 @@ int main(){
       case 0:
         //child
         {
-        int in = open( "out", O_RDWR );
-        int out = open( "in", O_RDWR );
-        dup2( in, 0 );
-        dup2( out, 1 );
-        close( in );
-        close( out );
-        execl( "./main", NULL );
+          int fd[2];
+          fd[0] = open( "data", O_WRONLY );
+          fd[1] = open( "data", O_RDONLY );
+
+          dup2( fd[0], 0 );
+          dup2( fd[1], 1 );
+
+          close( fd[0] );
+          close( fd[1] );
+
+          execl( "./main", NULL );
         }
      
       default:
         //parent
         {
-        //try password
-        ofstream outFile( "out", ios::trunc );
-        ifstream inFile( "in" );
-        string result;
-        string prompt1;
-        string prompt2;
+          //try password
+          ifstream inFile( "data" );
+          ofstream outFile( "data", ios::trunc );
+          string result;
+          string prompt1;
+          string prompt2;
 
-        getline( inFile, prompt1 );
-        if( prompt1 == "format error!" ){
-          cout << "bad format?" << endl;
-          exit( 1 );
-        }
-        outFile << username << endl;;
-        getline( inFile, prompt2 );
-        outFile << password << endl;;
-        getline( inFile, result );
+          getline( inFile, prompt1, '\t' );
+          outFile << username << endl;
 
-        if( result == "you win!" ){
-          cout << "success" << '\n';
-          success = true;
-        } else if( result == "you lose!" ){
-          cout << "failure" << '\n';
-          //construct next password
-          int idx = password.size() - 1;
+          getline( inFile, prompt2, '\t' );
+          outFile << password << endl;
+          (void)inFile.get();//dump \t
 
-          while( ( ++password[idx] ) == ( 'z' + 1 ) ){
-            password[idx] = 'a';
-            --idx;
-            if( idx == -1 ){
-              password = string( password.size() + 1, 'a' );
-              break;
-            }
+          getline( inFile, result, '\n' );
+
+          if( prompt1 != "username:" ){
+            cout << "bad format for username.\t" << prompt1 <<  endl;
+            exit( 1 );
           }
-        } else {
-          cout << "exception" << '\n';
-          cout << "received\n" << prompt1 << '\n' << prompt2 << '\n' << result << endl;;
-          exit( 1 );
-        }
+          if( prompt2 != "password:" ){
+            cout << "bad format for password.\t" << prompt2 <<  endl;
+            exit( 1 );
+          }
+          if( result == "you win!" ){
+            cout << "success" << '\n';
+            success = true;
+          } else if( result == "you lose!" ){
+            cout << "failure" << '\n';
+            //construct next password
+            int idx = password.size() - 1;
 
+            while( ( ++password[idx] ) == ( 'z' + 1 ) ){
+              password[idx] = 'a';
+              --idx;
+              if( idx == -1 ){
+                password = string( password.size() + 1, 'a' );
+                break;
+              }
+            }
+          } else {
+            cout << "exception" << '\n';
+            cout << "received\n" << prompt1 << '\n' << prompt2 << '\n' << result << endl;;
+            exit( 1 );
+          }
         }
       }
       kill( pid, SIGKILL );
@@ -101,6 +112,8 @@ int main(){
     success = false;
     cout << username << '\t' << password << '\n';
   }
+
+  unlink( "data" );
 
   return 0;
 }
