@@ -15,6 +15,7 @@ int main(){
   fstream userFile( "user" );
   string word;
   bool success = false;
+  string fifoName( "data" );
 
 
   while( userFile >> word ){
@@ -25,7 +26,7 @@ int main(){
   }
 
   userFile.close();
-  mkfifo( "data", 0666 );
+  mkfifo( fifoName.c_str(), 0666 );
 
   for( auto username : users ){
     string password = "a";
@@ -44,8 +45,8 @@ int main(){
         //child
         {
           int fd[2];
-          fd[0] = open( "data", O_WRONLY );
-          fd[1] = open( "data", O_RDONLY );
+          fd[0] = open( fifoName.c_str(), O_WRONLY );
+          fd[1] = open( fifoName.c_str(), O_RDONLY );
 
           dup2( fd[0], 0 );
           dup2( fd[1], 1 );
@@ -55,24 +56,24 @@ int main(){
 
           execl( "./main", NULL );
         }
+        break;
      
       default:
         //parent
         {
           //try password
-          ifstream inFile( "data" );
-          ofstream outFile( "data", ios::trunc );
+          ifstream inFile( fifoName );
+          ofstream outFile( fifoName, ios::trunc );
           string result;
           string prompt1;
           string prompt2;
 
-          getline( inFile, prompt1, '\t' );
           outFile << username << endl;
-
-          getline( inFile, prompt2, '\t' );
           outFile << password << endl;
-          (void)inFile.get();//dump \t
 
+          getline( inFile, prompt1, '\t' );
+          getline( inFile, prompt2, '\t' );
+          (void)inFile.get();//dump \n
           getline( inFile, result, '\n' );
 
           if( prompt1 != "username:" ){
@@ -105,6 +106,7 @@ int main(){
             exit( 1 );
           }
         }
+        break;
       }
       kill( pid, SIGKILL );
       wait( NULL );
@@ -113,7 +115,7 @@ int main(){
     cout << username << '\t' << password << '\n';
   }
 
-  unlink( "data" );
+  unlink( fifoName.c_str() );
 
   return 0;
 }
