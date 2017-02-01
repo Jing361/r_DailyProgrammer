@@ -20,7 +20,7 @@ int main(){
   while( !( cin >> username ) ){
     cin.clear();
     cin.ignore( numeric_limits<streamsize>::max(), '\n' );
-    cout << "format error!" << endl;
+    cout << "username format error!" << endl;
   }
 
 testout << 'A' << username << 'A' << endl;
@@ -32,7 +32,7 @@ testout << 'A' << username << 'A' << endl;
     while( !( cin >> password ) ){
       cin.clear();
       cin.ignore( numeric_limits<streamsize>::max(), '\n' );
-      cout << "format error!" << endl;
+      cout << "password format error!" << endl;
     }
   }
 
