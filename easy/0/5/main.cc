@@ -10,8 +10,6 @@
 using namespace std;
 
 int main(){
-  fstream testout( "testout", ios::app );
-
   authenticator auth( "user" );
   string username;
   string password;
@@ -23,8 +21,6 @@ int main(){
     cout << "username format error!" << endl;
   }
 
-testout << 'A' << username << 'A' << endl;
-
   {
     hide_std_in hide;
 
@@ -35,8 +31,6 @@ testout << 'A' << username << 'A' << endl;
       cout << "password format error!" << endl;
     }
   }
-
-testout << 'Z' << password << 'Z' << endl;
 
   if( !auth.authenticate( username, password ) ){
     cout << "you lose!" << endl;
