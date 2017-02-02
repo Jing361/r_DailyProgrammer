@@ -16,7 +16,7 @@ int main(){
   string username;
   string password;
 
-  cout << "username:\t";
+  cout << "username:\n";
   while( !( cin >> username ) ){
     cin.clear();
     cin.ignore( numeric_limits<streamsize>::max(), '\n' );
@@ -28,7 +28,7 @@ testout << 'A' << username << 'A' << endl;
   {
     hide_std_in hide;
 
-    cout << "password:\t";
+    cout << "password:\n";
     while( !( cin >> password ) ){
       cin.clear();
       cin.ignore( numeric_limits<streamsize>::max(), '\n' );
@@ -37,7 +37,6 @@ testout << 'A' << username << 'A' << endl;
   }
 
 testout << 'Z' << password << 'Z' << endl;
-  cout << '\n';
 
   if( !auth.authenticate( username, password ) ){
     cout << "you lose!" << endl;
