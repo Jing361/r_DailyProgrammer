@@ -13,19 +13,19 @@
 
 using namespace std;
 
-static inline string &ltrim( string &s ) {
+static inline string ltrim( const string& s ){
   s.erase( s.begin(), find_if( s.begin(), s.end(), not1( ptr_fun<int, int>( ispunct ) ) ) );
   return s;
 }
 
 // trim from end
-static inline string &rtrim( string &s ) {
+static inline string rtrim( const string& s ){
   s.erase( find_if( s.rbegin(), s.rend(), not1( ptr_fun<int, int>( ispunct ) ) ).base(), s.end() );
   return s;
 }
 
 // trim from both ends
-static inline string &trim( string &s ) {
+static inline string trim( const string& s ){
   return ltrim( rtrim( s ) );
 }
 
@@ -74,14 +74,6 @@ public:
   }
 };
 
-void printRoman( string str ){
-  cout << str << "\t";
-  if( story::isRoman( str ) )
-    cout << "roman" << endl;
-  else
-    cout << "not roman" << endl;
-}
-
 int main( int argc, char** argv ){
   string str;
   if( argc == 2 ){
@@ -106,10 +98,12 @@ int main( int argc, char** argv ){
       stringstream ss( str );
       string word;
       while( ss >> word ){
-        trim( word );
-        transform( word.begin(), word.end(), word.begin(), [&]( char c ){
+        word = trim( word );
+        transform( word.begin(), word.end(), word.begin(),
+        [&]( char c ){
           return specialUpper( c );
         } );
+
         pages.insert( make_pair( word, page ) );
         ++counts[word];
       }
