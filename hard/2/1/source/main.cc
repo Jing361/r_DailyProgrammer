@@ -10,62 +10,65 @@
 
 using namespace std;
 
-class formatFailureException : public exception{
-private:
-  string mMsg;
+int main(){
+  set<string> list;
+  map<string, tuple<int, int> > people;
+  set<tuple<string, string> > relations;
 
-public:
-  formatFailureException(string msg):
-    mMsg(msg){
+  // init list of scientists
+  list.emplace( "Einstein" );
+  list.emplace( "Feynmann" );
+  list.emplace( "Gell-Mann" );
+  list.emplace( "Thorne" );
+  list.emplace( "Lorentz" );
+  list.emplace( "Planck" );
+  list.emplace( "Hilbert" );
+  list.emplace( "Poincare" );
+  list.emplace( "Noether" );
+
+  // set initial position bounds
+  for( auto person : list ){
+    people.emplace( person, make_tuple( 1, list.size() ) );
   }
 
-  const char* what() const noexcept{
-    return mMsg.c_str();
+  // create set of smartness relations
+  relations.emplace( "Einstein",  "Feynmann" );
+  relations.emplace( "Feynmann",  "Gell-Mann" );
+  relations.emplace( "Gell-Mann", "Thorne" );
+  relations.emplace( "Einstein",  "Lorentz" );
+  relations.emplace( "Lorentz",   "Planck" );
+  relations.emplace( "Hilbert",   "Noether" );
+  relations.emplace( "Poincare",  "Noether" );
+
+  // increase minimum slot for smarter
+  // decrease maximum slot for less-smart
+  for( auto relation : relations ){
+    ++get<0>( people[get<1>( relation )] );
+    --get<1>( people[get<0>( relation )] );
   }
-};
 
-int main(int argc, char** argv){
-  if(argc != 2){
-    string msg("Incorrect number of parameters!");
-    if(argc == 1){
-      msg += " No file specified!";
+  vector<string> results( list.size() );
+
+  for( auto person : list ){
+    auto stats = people[person];
+
+    // if slot is obvious, put it in
+    if( get<0>( stats ) == get<1>( stats ) ){
+      int slot = get<0>( stats );
+      results[slot] = person;
+    } else {
+      //if the slot is less obvious, put it somewhere valid
+      for( auto i = 0; i < list.size(); ++i ){
+        if( i > get<0>( stats ) && i < get<1>( stats ) && results[i] == "" ){
+          results[i] = person;
+          break;
+        }
+      }
     }
-    throw formatFailureException(msg);
-    return 1;
   }
 
-  set<string> ppl;
-  vector<string> list;
-  multimap<string, string> relations;
-  fstream fs(argv[1]);
-
-  string line;
-  while(getline(fs, line)){
-    stringstream ss(line);
-    string tok;
-    string one;
-    string two;
-
-    ss >> tok;
-    if(!ppl.count(tok)){
-      list.push_back(tok);
-    }
-    one = tok;
-    ppl.insert(tok);
-
-    ss >> tok;
-    if(tok.size() != 1 && tok[0] != ':'){
-      throw formatFailureException("File: " + string(argv[1]) + " is incorrectly formatted.");
-    }
-
-    ss >> tok;
-    if(!ppl.count(tok)){
-      list.push_back(tok);
-    }
-    two = tok;
-    ppl.insert(tok);
-
-    relations.insert(make_pair(one, two));
+  for( auto name : results ){
+    cout << name << endl;
   }
 
   return 0;
