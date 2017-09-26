@@ -29,7 +29,7 @@ int main(){
 
   // set initial position bounds
   for( auto person : list ){
-    people.emplace( person, make_tuple( 1, list.size() ) );
+    people.emplace( person, make_tuple( 0, list.size() - 1 ) );
   }
 
   // create set of smartness relations
@@ -74,8 +74,8 @@ int main(){
       results[slot] = person;
     } else {
       //if the slot is less obvious, put it somewhere valid
-      for( auto i = 0; i < list.size(); ++i ){
-        if( i > get<0>( stats ) && i < get<1>( stats ) && results[i] == "" ){
+      for( auto i = get<0>( stats ); i <= get<1>( stats ); ++i ){
+        if( results[i] == "" ){
           results[i] = person;
           break;
         }
