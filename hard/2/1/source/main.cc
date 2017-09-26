@@ -1,3 +1,4 @@
+#include<algorithm>
 #include<iostream>
 #include<vector>
 #include<fstream>
@@ -40,6 +41,21 @@ int main(){
   relations.emplace( "Hilbert",   "Noether" );
   relations.emplace( "Poincare",  "Noether" );
 
+  {
+    int i = 1;
+    while( i != 0 ){
+      i = 0;
+      // generate new relations, based on the given ones
+      for( auto first : relations ){
+        for( auto second : relations ){
+          if( get<1>( first ) == get<0>( second ) && get<1>( relations.emplace( get<0>( first ), get<1>( second ) ) ) ){
+            ++i;
+          }
+        }
+      }
+    }
+  }
+
   // increase minimum slot for smarter
   // decrease maximum slot for less-smart
   for( auto relation : relations ){
@@ -65,6 +81,10 @@ int main(){
         }
       }
     }
+  }
+
+  if( any_of( results.begin(), results.end(), []( const string& str ){ return str == ""; } ) ){
+    cout << "Incomplete list" << endl;
   }
 
   for( auto name : results ){
