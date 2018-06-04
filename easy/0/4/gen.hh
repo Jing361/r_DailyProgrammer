@@ -7,8 +7,10 @@
 class rGen{
 private:
   int min, max;
+
 public:
-  rGen(int low, int high);
+  rGen( int low, int high );
+
   int operator()();
 };
 

@@ -5,76 +5,87 @@
 #include<set>
 #include<map>
 
-bool prune(std::string target, std::string source){
-  std::map<char, int> count;
-  std::map<char, int> comp;
+using namespace std;
 
-  for(auto it = source.begin(); it < source.end(); ++it){
-    count[*it]++;
+bool
+prune( string target, string source ){
+  map<char, int> count;
+  map<char, int> comp;
+
+  for( auto c : source ){
+    ++count[c];
   }
 
-  for(auto it = target.begin(); it < target.end(); ++it){
-    comp[*it]++;
+  for( auto c : target ){
+    ++comp[c];
   }
 
-  if(count == comp){
-    return false;
-  } else {
-    return true;
-  }
+  return count != comp;
 }
 
-std::vector<std::string> generateSuccessors(std::string state, std::string source){
-  std::vector<std::string> ret;
-  for(auto it = source.begin(); it != source.end(); ++it){
-    ret.push_back(state + *it);
+vector<string>
+generateSuccessors( string state, string source ){
+  vector<string> ret;
+
+  for( auto it = source.begin(); it != source.end(); ++it ){
+    ret.push_back( state + *it );
   }
+
   return ret;
 }
 
-std::vector<std::string> bfs(std::string source){
-  std::stack<std::string> frontier;
-  std::set<std::string> explored;
-  std::vector<std::string> words;
+vector<string>
+bfs( string source ){
+  stack<string> frontier;
+  set<string> explored;
+  vector<string> words;
 
-  frontier.push(std::string(""));
+  frontier.push( "" );
 
-  while(!frontier.empty()){
+  while( !frontier.empty() ){
     auto thisnode = frontier.top();
     frontier.pop();
-    explored.insert(thisnode);
-    if(thisnode.length() == source.length()){
-      words.push_back(thisnode);
+    explored.insert( thisnode );
+
+    if( thisnode.length() == source.length() ){
+      words.push_back( thisnode );
     }
-    auto suc = generateSuccessors(thisnode, source);
-    for(auto it = suc.begin(); it != suc.end(); ++it){
-      if((explored.count(*it) > 0) || ((*it).length() > source.length())){
+
+    auto suc = generateSuccessors( thisnode, source );
+
+    for( auto& successor : suc ){
+      if( ( explored.count( successor ) > 0 )
+       || ( successor.length() > source.length() ) ){
         continue;
-      } else if((*it).length() == source.length() && prune(*it, source)){
+      } else if( ( successor.length() == source.length() )
+              && ( prune( successor, source ) ) ){
         continue;
       }
-      frontier.push(*it);
+
+      frontier.push( successor );
     }
   }
   return words;
 }
 
-int main(int argc, char** argv){
-  if(argc != 1 && argc != 2){
-    std::cout << "Invalid number of arguments" << std::endl;
+int
+main( int argc, char** argv ){
+  if( argc != 1 && argc != 2 ){
+    cout << "Invalid number of arguments" << endl;
     return 1;
   }
 
-  std::string str("hi!");
-  if(argc == 2){
+  string str( "hi!" );
+  str = "123456";
+  if( argc == 2 ){
     str = argv[1];
   }
-  std::vector<std::string> words;
+  vector<string> words;
 
-  words = bfs(str);
+  words = bfs( str );
 
-  for(auto it = words.begin(); it != words.end(); ++it){
-    std::cout << *it << std::endl;
+  for( auto answer : words ){
+    cout << answer << endl;
   }
 
   return 0;

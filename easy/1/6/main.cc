@@ -1,22 +1,23 @@
-#include<algorithm>
+#include<set>
 #include<string>
 #include<iostream>
 
-int main(int argc, char** argv){
-  std::string first(argv[1]);
-  std::string second(argv[2]);
-  std::string result;
+using namespace std;
 
-  for_each(first.begin(), first.end(), [&](char fc){
-    auto it = find_if(second.begin(), second.end(), [&](char sc){
-      return sc == fc;
-    });
-    if(it == second.end()){
+int main( int argc, char** argv ){
+  string first( argv[1] );
+  string second( argv[2] );
+  string result;
+  set<char> bad( second.begin(), second.end() );
+
+  for( auto fc : first ){
+    if( bad.count( fc ) == 0 ){
       result += fc;
     }
-  });
+  }
 
-  std::cout << result << std::endl;
+  cout << result << endl;
+
   return 0;
 }
 

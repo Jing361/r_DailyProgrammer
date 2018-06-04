@@ -9,9 +9,10 @@ private:
   unsigned int crypt;
 
 public:
-  cipher(unsigned int cyp);
-  char encypher(char c);
-  char decypher(char c);
+  cipher( unsigned int cyp );
+
+  char encypher( char c );
+  char decypher( char c );
 };
 
 #endif

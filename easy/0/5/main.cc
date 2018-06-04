@@ -9,7 +9,8 @@
 
 using namespace std;
 
-int main(){
+int
+main(){
   authenticator auth( "user" );
   string username;
   string password;

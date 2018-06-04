@@ -9,12 +9,13 @@
 
 using namespace std;
 
-authenticator::authenticator( string file ):
-  fileName( file ){
+authenticator::authenticator( string file )
+  : fileName( file ){
   parseUsers();
 }
 
-bool authenticator::authenticate( string name, string pass ){
+bool
+authenticator::authenticate( string name, string pass ){
   hash<string> str_hash;
   pair<string, size_t> user = users[name];
   string salt = get<0>( user );
@@ -23,20 +24,23 @@ bool authenticator::authenticate( string name, string pass ){
   return hash == str_hash( salt + name + pass );
 }
 
-void authenticator::mkUser( string name, string pass ){
+void
+authenticator::mkUser( string name, string pass ){
   hash<string> str_hash;
   string salt = genSalt();
 
   users[name] = { salt, str_hash( salt + name + pass ) };
 }
 
-void authenticator::rmUser( string name, string pass ){
+void
+authenticator::rmUser( string name, string pass ){
   if( authenticate( name, pass ) ){
     users.erase( name );
   }
 }
 
-void authenticator::writeUsers(){
+void
+authenticator::writeUsers(){
   fstream handle( fileName.c_str(), fstream::out | fstream::trunc );
 
   for( auto it : users ){
@@ -46,7 +50,8 @@ void authenticator::writeUsers(){
   }
 }
 
-void authenticator::parseUsers(){
+void
+authenticator::parseUsers(){
   fstream handle( fileName.c_str(), fstream::in );
   string name;
   string salt;
@@ -57,13 +62,14 @@ void authenticator::parseUsers(){
   }
 }
 
-string authenticator::genSalt(){
+string
+authenticator::genSalt(){
   random_device rd;
   mt19937 rate( rd() );
   uniform_int_distribution<> gene( 33, 126 );
   string salt( 20, ' ' );
 
-  std::generate( salt.begin(), salt.end(), bind( gene, rate ) );
+  generate( salt.begin(), salt.end(), bind( gene, rate ) );
 
   return salt;
 }
