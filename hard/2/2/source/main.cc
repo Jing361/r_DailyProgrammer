@@ -16,21 +16,22 @@ enum class location{
   END,
 };
 
-struct position{
-  int x;
-  int y;
+template<typename T>
+struct xandy{
+  T x;
+  T y;
 
-  position()
-    : position( 0, 0 ){
+  xandy()
+    : xandy( 0, 0 ){
   }
 
-  position( int X, int Y )
+  xandy( T X, T Y )
     : x( X )
     , y( Y ){
   }
 
-  int&
-  operator[]( int idx ){
+  T&
+  operator[]( unsigned int idx ){
     switch( idx ){
     case 0:
       return x;
@@ -43,12 +44,12 @@ struct position{
   }
 
   bool
-  operator==( const position& other ) const{
+  operator==( const xandy& other ) const{
     return x == other.x && y == other.y;
   }
 
   bool
-  operator<( const position& other ) const{
+  operator<( const xandy& other ) const{
     if( x == other.x ){
       return y < other.y;
     } else {
@@ -56,6 +57,9 @@ struct position{
     }
   }
 };
+
+using position = xandy<int>;
+using size_pair = xandy<unsigned int>;
 
 bool
 coin_flip(){
@@ -68,101 +72,76 @@ coin_flip(){
 
 class world{
 private:
-  position size;
-  location** map;
+  size_pair mSize;
+  vector<vector<location> > mMap;
 
-  int
-  translate( int a ){
+  unsigned int
+  translate( unsigned int a ){
     return ( a * 2 ) + 1;
   }
 
-  position
-  translate( position a ){
+  size_pair
+  translate( size_pair a ){
     return {translate( a.x ), translate( a.y )};
+  }
+
+  world( size_pair p, const vector<vector<location> >& m )
+    : mSize( p )
+    , mMap( m ){
+    clear();
+  }
+
+  void
+  set( position p, location l ){
+    mMap[p.x][p.y] = l;
   }
 
 public:
   world( const world& w )
-    : world( w.size ){
-    for( int i = 0; i < size.x; ++i ){
-      for( int j = 0; j < size.y; ++j ){
-        map[i][j] = w.map[i][j];
-      }
-    }
-    cout << "copy ctor:" << map << endl;
+    : world( w.mSize, w.mMap ){
   }
 
-  world( world&& w ){
-    map = w.map;
-    w.map = nullptr;
-    cout << "move ctor:" << map << endl;
+  world( world&& w )
+    : mSize( w.mSize )
+    , mMap( forward<vector<vector<location> > >( w.mMap ) ){
   }
 
-  world( position size )
-    : world( size.x, size.y ){
+  world( size_pair size )
+    : world( translate( size ), {translate( size.x ), vector<location>( translate( size.y ) )} ){
   }
 
-  world( int x, int y )
-    : size( translate( x ), translate( y ) ){
-
-    map = new location*[size.x];
-    for( int i = 0; i < size.x; ++i ){
-      map[i] = new location[size.y];
-    }
-    cout << "basic ctor:" << map << endl;
-
-    clear();
-  }
-
-  ~world(){
-    cout << "dtor:" << map << endl;
-    if( !map ){
-      return;
-    }
-
-    for( int i = 0; i < size.x; ++i ){
-      delete[] map[i];
-    }
-    delete[] map;
+  world( unsigned int x, unsigned int y )
+    : world( {x, y}, {mSize.x, vector<location>( y )} ){
   }
 
   world&
   operator=( const world& other ){
-    cout << "copy assign" << endl;
-    for( int i = 0; i < size.x; ++i ){
-      for( int j = 0; j < size.x; ++j ){
-        map[i][j] = other.map[i][j];
-      }
-    }
+    mSize = other.mSize;
+    mMap = other.mMap;
 
     return *this;
   }
 
   world&
   operator=( world&& other ){
-    cout << "move assign" << endl;
-    map = other.map;
-    other.map = nullptr;
+    mSize = other.mSize;
+    mMap = forward<vector<vector<location> > >( other.mMap );
 
     return *this;
   }
 
   void
   clear(){
-    //cout << "clear:" << map << endl;
-    for( int i = 0; i < size.x; ++i ){
-      for( int j = 0; j < size.y; ++j ){
-        map[i][j] = location::WALL;
+    for( auto& row : mMap ){
+      for( auto& space : row ){
+        space = location::WALL;
       }
     }
   }
 
   location&
   operator[]( position p ){
-    //cout << "access:" << map << " " << p.x << ", " << p.y << endl;
-    //cout << "\t" << map[translate( p.x )] << endl;
-    //cout << "\t" << &map[translate( p.x )][translate( p.y )] << endl;
-    return map[translate( p.x )][translate( p.y )];
+    return mMap[translate( p.x )][translate( p.y )];
   }
 
   position
@@ -173,13 +152,13 @@ public:
     int randY;
 
     if( coin_flip() ){
-      uniform_int_distribution<> gene( 0, ( size.x - 1 ) / 2 );
+      uniform_int_distribution<> gene( 0, ( mSize.x - 1 ) / 2 );
       randX = gene( rate );
-      randY = coin_flip() ? 0 : ( size.y - 1 ) / 2;
+      randY = coin_flip() ? 0 : ( ( mSize.y - 1 ) / 2 ) - 1;
     } else {
-      uniform_int_distribution<> gene( 0, ( size.y - 1 ) / 2 );
+      uniform_int_distribution<> gene( 0, ( mSize.y - 1 ) / 2 );
       randY = gene( rate );
-      randX = coin_flip() ? 0 : ( size.x - 1 ) / 2;
+      randX = coin_flip() ? 0 : ( ( mSize.x - 1 ) / 2 ) - 1;
     }
 
     return {randX, randY};
@@ -187,18 +166,17 @@ public:
 
   void
   print() const{
-    //cout << "print:" << map << endl;
-    for( int i = 0; i < size.x; ++i ){
-      for( int j = 0; j < size.y; ++j ){
-        if( map[i][j] == location::OPEN ){
+    for( unsigned int i = 0; i < mSize.x; ++i ){
+      for( unsigned int j = 0; j < mSize.y; ++j ){
+        if( mMap[i][j] == location::OPEN ){
           cout << ' ';
-        } else if( map[i][j] == location::WALL ){
+        } else if( mMap[i][j] == location::WALL ){
           cout << '+';
-        } else if( map[i][j] == location::START ){
+        } else if( mMap[i][j] == location::START ){
           cout << 'S';
-        } else if( map[i][j] == location::END ){
+        } else if( mMap[i][j] == location::END ){
           cout << 'E';
-        } else if( map[i][j] == location::PATH ){
+        } else if( mMap[i][j] == location::PATH ){
           cout << '@';
         }
       }
@@ -209,28 +187,28 @@ public:
 
   void
   path( const position& a, const position& b ){
-    (*this)[a] = location::OPEN;
-    (*this)[b] = location::OPEN;
     int ax = translate( a.x );
     int ay = translate( a.y );
     int bx = translate( b.x );
     int by = translate( b.y );
+    position temp( ( ax + bx ) / 2, ( ay + by ) / 2 );
 
-    //cout << "path:" << map << endl;
-    map[( ax + bx ) / 2][( ay + by ) / 2] = location::OPEN;
+    set( a, location::OPEN );
+    set( b, location::OPEN );
+    set( temp, location::OPEN );
   }
 
   void
   route( const position& a, const position& b ){
-    (*this)[a] = location::PATH;
-    (*this)[b] = location::PATH;
     int ax = translate( a.x );
     int ay = translate( a.y );
     int bx = translate( b.x );
     int by = translate( b.y );
+    position mid( ( ax + bx ) / 2, ( ay + by ) / 2 );
 
-    //cout << "route:" << map << endl;
-    map[( ax + bx ) / 2][( ay + by ) / 2] = location::PATH;
+    set( a, location::PATH );
+    set( b, location::PATH );
+    set( mid, location::PATH );
   }
 };
 
@@ -264,7 +242,7 @@ filter( const set<position>& input, int filtX, int filtY ){
 class maze_generator{
 public:
   world
-  generate( position size ){
+  generate( const size_pair& size ){
     world w( size );
     set<position> explored;
     set<pair<position, position> > frontier;
@@ -305,7 +283,7 @@ public:
   }
 
   world
-  generate( int x, int y ){
+  generate( unsigned int x, unsigned int y ){
     return generate( {x, y} );
   }
 };
