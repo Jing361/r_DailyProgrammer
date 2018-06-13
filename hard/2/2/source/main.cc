@@ -90,7 +90,6 @@ private:
   world( size_pair p, const vector<vector<location> >& m )
     : mSize( p )
     , mMap( m ){
-    clear();
   }
 
   void
@@ -110,10 +109,12 @@ public:
 
   world( size_pair size )
     : world( translate( size ), {translate( size.x ), vector<location>( translate( size.y ) )} ){
+    clear();
   }
 
   world( unsigned int x, unsigned int y )
     : world( {x, y}, {mSize.x, vector<location>( y )} ){
+    clear();
   }
 
   world&
