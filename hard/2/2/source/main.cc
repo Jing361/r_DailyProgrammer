@@ -70,20 +70,22 @@ coin_flip(){
   return gene( rate ) ? 0 : 1;
 }
 
+template<typename T>
+T
+translate( T a ){
+  return ( a * 2 ) + 1;
+}
+
+template<typename T>
+xandy<T>
+translate( xandy<T> a ){
+  return {translate( a.x ), translate( a.y )};
+}
+
 class world{
 private:
   size_pair mSize;
   vector<vector<location> > mMap;
-
-  unsigned int
-  translate( unsigned int a ){
-    return ( a * 2 ) + 1;
-  }
-
-  size_pair
-  translate( size_pair a ){
-    return {translate( a.x ), translate( a.y )};
-  }
 
   world( size_pair p, const vector<vector<location> >& m )
     : mSize( p )
@@ -152,13 +154,13 @@ public:
     int randY;
 
     if( coin_flip() ){
-      uniform_int_distribution<> gene( 0, ( mSize.x - 1 ) / 2 );
+      uniform_int_distribution<> gene( 0, ( ( mSize.x - 1 ) / 2 ) - 1 );
       randX = gene( rate );
-      randY = coin_flip() ? 0 : ( ( mSize.y - 1 ) / 2 ) - 1;
+      randY = coin_flip() ? 0 : ( ( mSize.y - 1 ) / 2 ) - 1 - 0;
     } else {
-      uniform_int_distribution<> gene( 0, ( mSize.y - 1 ) / 2 );
+      uniform_int_distribution<> gene( 0, ( ( mSize.y - 1 ) / 2 ) - 1 );
       randY = gene( rate );
-      randX = coin_flip() ? 0 : ( ( mSize.x - 1 ) / 2 ) - 1;
+      randX = coin_flip() ? 0 : ( ( mSize.x - 1 ) / 2 ) - 1 - 0;
     }
 
     return {randX, randY};
@@ -166,17 +168,17 @@ public:
 
   void
   print() const{
-    for( unsigned int i = 0; i < mSize.x; ++i ){
-      for( unsigned int j = 0; j < mSize.y; ++j ){
-        if( mMap[i][j] == location::OPEN ){
+    for( auto row : mMap ){
+      for( auto space : row ){
+        if( space == location::OPEN ){
           cout << ' ';
-        } else if( mMap[i][j] == location::WALL ){
+        } else if( space == location::WALL ){
           cout << '+';
-        } else if( mMap[i][j] == location::START ){
+        } else if( space == location::START ){
           cout << 'S';
-        } else if( mMap[i][j] == location::END ){
+        } else if( space == location::END ){
           cout << 'E';
-        } else if( mMap[i][j] == location::PATH ){
+        } else if( space == location::PATH ){
           cout << '@';
         }
       }
@@ -187,27 +189,23 @@ public:
 
   void
   path( const position& a, const position& b ){
-    int ax = translate( a.x );
-    int ay = translate( a.y );
-    int bx = translate( b.x );
-    int by = translate( b.y );
-    position temp( ( ax + bx ) / 2, ( ay + by ) / 2 );
+    auto tran_a = translate( a );
+    auto tran_b = translate( b );
+    position temp( ( tran_a.x + tran_b.x ) / 2, ( tran_a.y + tran_b.y ) / 2 );
 
-    set( a, location::OPEN );
-    set( b, location::OPEN );
+    set( tran_a, location::OPEN );
+    set( tran_b, location::OPEN );
     set( temp, location::OPEN );
   }
 
   void
   route( const position& a, const position& b ){
-    int ax = translate( a.x );
-    int ay = translate( a.y );
-    int bx = translate( b.x );
-    int by = translate( b.y );
-    position mid( ( ax + bx ) / 2, ( ay + by ) / 2 );
+    auto tran_a = translate( a );
+    auto tran_b = translate( b );
+    position mid( ( tran_a.x + tran_b.x ) / 2, ( tran_a.y + tran_b.y ) / 2 );
 
-    set( a, location::PATH );
-    set( b, location::PATH );
+    set( tran_a, location::PATH );
+    set( tran_b, location::PATH );
     set( mid, location::PATH );
   }
 };
