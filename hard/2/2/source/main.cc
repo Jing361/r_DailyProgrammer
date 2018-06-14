@@ -167,6 +167,11 @@ public:
     return {randX, randY};
   }
 
+  size_pair
+  size() const{
+    return {( mSize.x - 1 ) / 2, ( mSize.y - 1 ) / 2};
+  }
+
   void
   print() const{
     for( auto row : mMap ){
@@ -245,8 +250,7 @@ public:
     world w( size );
     set<position> explored;
     set<pair<position, position> > frontier;
-    position start = w.rand_edge();
-    position end = w.rand_edge();
+    position start = {0, 0};
 
     frontier.emplace( start, start );
 
@@ -275,9 +279,6 @@ public:
       w.path( current.first, current.second );
     }
 
-    w[start] = location::START;
-    w[end] = location::END;
-
     return w;
   }
 
@@ -290,7 +291,33 @@ public:
 class maze_solver{
 public:
   world
-  solve( const world& w ) const{
+  solve( const world& w_in, position start, position end ) const{
+    world w( w_in );
+    set<position> explored;
+    stack<pair<position, position> > frontier;
+    auto size = w.size();
+
+    frontier.emplace( start, start );
+
+    while( !frontier.empty() ){
+      auto current = frontier.top();
+
+      frontier.pop();
+
+      if( explored.count( current.second ) > 0 ){
+        continue;
+      }
+
+      explored.emplace( current.second );
+
+      auto next = filter( generate_next( current.second ), size.x, size.y );
+      for( auto pos : next ){
+        frontier.emplace( current.second, pos );
+      }
+
+      w.route( current.first, current.second );
+    }
+
     return w;
   }
 };
@@ -298,8 +325,15 @@ public:
 int main(){
   maze_generator mg;
   maze_solver ms;
-  mg.generate( 7, 7 ).print();
-  ms.solve( mg.generate( 7, 7 ) ).print();
+  world w = mg.generate( 7, 7 );
+  position start = w.rand_edge();
+  position end   = w.rand_edge();
+
+  w[start] = location::START;
+  w[end]   = location::END;
+
+  w.print();
+  ms.solve( w, start, end ).print();
 
   return 0;
 }
