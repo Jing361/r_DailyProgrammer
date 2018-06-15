@@ -1,3 +1,4 @@
+#include<algorithm>
 #include<iostream>
 #include<random>
 #include<stack>
@@ -82,6 +83,45 @@ translate( xandy<T> a ){
   return {translate( a.x ), translate( a.y )};
 }
 
+template<typename T>
+T
+untranslate( T a ){
+  return ( a - 1 ) / 2;
+}
+
+template<typename T>
+xandy<T>
+untranslate( xandy<T> a ){
+  return {untranslate( a.x ), untranslate( a.y )};
+}
+
+set<position>
+generate_next( position p ){
+  set<position> ret;
+
+  ret.emplace( p.x + 1, p.y );
+  ret.emplace( p.x - 1, p.y );
+
+  ret.emplace( p.x, p.y + 1 );
+  ret.emplace( p.x, p.y - 1 );
+
+  return ret;
+}
+
+set<position>
+filter( const set<position>& input, int filtX, int filtY ){
+  set<position> output;
+
+  for( auto pos : input ){
+    if( pos.x >= 0 && pos.x < filtX
+     && pos.y >= 0 && pos.y < filtY ){
+      output.emplace( pos );
+    }
+  }
+
+  return output;
+}
+
 class world{
 private:
   size_pair mSize;
@@ -93,7 +133,7 @@ private:
   }
 
   void
-  set( position p, location l ){
+  set_data( position p, location l ){
     mMap[p.x][p.y] = l;
   }
 
@@ -199,9 +239,9 @@ public:
     auto tran_b = translate( b );
     position temp( ( tran_a.x + tran_b.x ) / 2, ( tran_a.y + tran_b.y ) / 2 );
 
-    set( tran_a, location::OPEN );
-    set( tran_b, location::OPEN );
-    set( temp, location::OPEN );
+    set_data( tran_a, location::OPEN );
+    set_data( tran_b, location::OPEN );
+    set_data( temp, location::OPEN );
   }
 
   void
@@ -210,38 +250,32 @@ public:
     auto tran_b = translate( b );
     position mid( ( tran_a.x + tran_b.x ) / 2, ( tran_a.y + tran_b.y ) / 2 );
 
-    set( tran_a, location::PATH );
-    set( tran_b, location::PATH );
-    set( mid, location::PATH );
+    set_data( tran_a, location::PATH );
+    set_data( tran_b, location::PATH );
+    set_data( mid, location::PATH );
+  }
+
+  set<position>
+  get_next( position p ) const{
+    auto unsize = untranslate( mSize );
+    auto candidates = filter( generate_next( p ), unsize.x, unsize.y );
+    set<position> results;
+    p = translate( p );
+
+    for( auto cand : candidates ){
+      auto cand_t = translate( cand );
+      position pos;
+      pos.x = ( cand_t.x + p.x ) / 2;
+      pos.y = ( cand_t.y + p.y ) / 2;
+
+      if( mMap[pos.x][pos.y] != location::WALL ){
+        results.insert( cand );
+      }
+    }
+
+    return results;
   }
 };
-
-set<position>
-generate_next( position p ){
-  set<position> ret;
-
-  ret.emplace( p.x + 1, p.y );
-  ret.emplace( p.x - 1, p.y );
-
-  ret.emplace( p.x, p.y + 1 );
-  ret.emplace( p.x, p.y - 1 );
-
-  return ret;
-}
-
-set<position>
-filter( const set<position>& input, int filtX, int filtY ){
-  set<position> output;
-
-  for( auto pos : input ){
-    if( pos.x >= 0 && pos.x < filtX
-     && pos.y >= 0 && pos.y < filtY ){
-      output.emplace( pos );
-    }
-  }
-
-  return output;
-}
 
 class maze_generator{
 public:
@@ -292,33 +326,58 @@ class maze_solver{
 public:
   world
   solve( const world& w_in, position start, position end ) const{
-    world w( w_in );
-    set<position> explored;
-    stack<pair<position, position> > frontier;
-    auto size = w.size();
+    using path = vector<position>;
 
-    frontier.emplace( start, start );
+    world w( w_in );
+    stack<pair<path,
+               set<position> > > frontier;
+    vector<path> answers;
+
+    frontier.push( {{start}, {start}} );
 
     while( !frontier.empty() ){
       auto current = frontier.top();
+      auto route    = current.first;
+      auto explored = current.second;
 
       frontier.pop();
 
-      if( explored.count( current.second ) > 0 ){
+      // collect answers
+      if( route.back() == end ){
+        answers.emplace_back( route );//move?
+
         continue;
       }
 
-      explored.emplace( current.second );
+      explored.emplace( route.back() );
 
-      auto next = filter( generate_next( current.second ), size.x, size.y );
+      auto next = w.get_next( route.back() );
       for( auto pos : next ){
-        frontier.emplace( current.second, pos );
+        // don't repeat
+        if( explored.count( pos ) == 0 ){
+          auto temp = route;
+          route.emplace_back( pos );
+          frontier.emplace( temp, explored );// move temp?
+        }
       }
+    }
 
-      w.route( current.first, current.second );
+cout << "found: " << answers.size() << " answers" << endl;
+    auto shortest = *min_element( answers.begin(), answers.end(),
+      []( const path& r1, const path& r2 ){
+        return r1.size() < r2.size();
+      } );
+
+    for( unsigned int i = 0, j = 1; j < shortest.size(); ++i, ++j ){
+      w.route( shortest[i], shortest[j] );
     }
 
     return w;
+  }
+
+  world
+  solve( const world& w_in, int start_x, int start_y, int end_x, int end_y ) const{
+    return solve( w_in, {start_x, start_y}, {end_x, end_y} );
   }
 };
 
