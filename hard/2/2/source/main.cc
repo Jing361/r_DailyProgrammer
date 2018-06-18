@@ -355,8 +355,10 @@ public:
       for( auto pos : next ){
         // don't repeat
         if( explored.count( pos ) == 0 ){
-          route.emplace_back( pos );
-          frontier.emplace( route, explored );// move temp?
+          auto temp = route;
+
+          temp.emplace_back( pos );
+          frontier.emplace( temp, explored );// move temp?
         }
       }
     }
