@@ -97,35 +97,22 @@ world::size() const{
 }
 
 void
-world::path( const position& a, const position& b ){
+world::path( const position& a, const position& b, location l ){
   auto tran_a = translate( a );
   auto tran_b = translate( b );
   position temp( ( tran_a.x + tran_b.x ) / 2,
                  ( tran_a.y + tran_b.y ) / 2,
                  ( tran_a.z + tran_b.z ) / 2 );
 
-  set_data( tran_a, location::OPEN );
-  set_data( tran_b, location::OPEN );
-  set_data( temp, location::OPEN );
-}
-
-void
-world::route( const position& a, const position& b ){
-  auto tran_a = translate( a );
-  auto tran_b = translate( b );
-  position mid( ( tran_a.x + tran_b.x ) / 2,
-                ( tran_a.y + tran_b.y ) / 2,
-                ( tran_a.z + tran_b.z ) / 2 );
-
-  set_data( tran_a, location::PATH );
-  set_data( tran_b, location::PATH );
-  set_data( mid, location::PATH );
+  set_data( tran_a, l );
+  set_data( tran_b, l );
+  set_data( temp, l );
 }
 
 set<position>
 world::get_next( position p ) const{
   auto unsize = untranslate( mSize );
-  auto candidates = filter( generate_next( p ), unsize.x, unsize.y );
+  auto candidates = filter( generate_next( p ), unsize );
   set<position> results;
   p = translate( p );
 

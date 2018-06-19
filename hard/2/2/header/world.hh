@@ -74,10 +74,7 @@ public:
   }
 
   void
-  path( const position& a, const position& b );
-
-  void
-  route( const position& a, const position& b );
+  path( const position& a, const position& b, location l );
 
   std::set<position>
   get_next( position p ) const;

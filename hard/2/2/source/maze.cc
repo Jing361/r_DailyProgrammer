@@ -38,7 +38,7 @@ maze::generate( const size_pair& size ){
       frontier.emplace( current.second, pos );
     }
 
-    w.path( current.first, current.second );
+    w.path( current.first, current.second, location::OPEN );
   }
 
   return w;

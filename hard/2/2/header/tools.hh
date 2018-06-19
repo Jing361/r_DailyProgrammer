@@ -72,7 +72,7 @@ std::set<position>
 generate_next( position p );
 
 std::set<position>
-filter( const std::set<position>& input, int filtX, int filtY, int filtZ = 1 );
+filter( const std::set<position>& input, int filtX, int filtY, int filtZ );
 
 std::set<position>
 filter( const std::set<position>& input, const size_pair& size );
