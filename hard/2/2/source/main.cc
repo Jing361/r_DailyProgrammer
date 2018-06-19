@@ -1,10 +1,5 @@
 #include<algorithm>
 #include<iostream>
-#include<stack>
-#include<set>
-#include<queue>
-#include<vector>
-#include<iterator>
 
 #include<tools.hh>
 #include<world.hh>

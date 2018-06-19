@@ -11,9 +11,9 @@
 class world{
 private:
   size_pair mSize;
-  std::vector<std::vector<location> > mMap;
+  std::vector<std::vector<std::vector<location> > > mMap;
 
-  world( size_pair p, const std::vector<std::vector<location> >& m );
+  world( size_pair p, const std::vector<std::vector<std::vector<location> > >& m );
 
   void
   set_data( position p, location l );
@@ -25,7 +25,7 @@ public:
 
   world( size_pair size );
 
-  world( unsigned int x, unsigned int y );
+  world( unsigned int x, unsigned int y, unsigned int z = 1 );
 
   world&
   operator=( const world& other );
@@ -39,6 +39,9 @@ public:
   location&
   operator[]( position p );
 
+  const location&
+  operator[]( position p ) const;
+
   position
   rand_edge() const;
 
@@ -48,19 +51,22 @@ public:
   template<typename OSTREAM>
   void
   print( OSTREAM& os ) const{
-    for( auto row : mMap ){
-      for( auto space : row ){
-        if( space == location::OPEN ){
-          os << ' ';
-        } else if( space == location::WALL ){
-          os << '+';
-        } else if( space == location::START ){
-          os << 'S';
-        } else if( space == location::END ){
-          os << 'E';
-        } else if( space == location::PATH ){
-          os << '@';
+    for( auto pillar : mMap ){
+      for( auto row : pillar ){
+        for( auto space : row ){
+          if( space == location::OPEN ){
+            os << ' ';
+          } else if( space == location::WALL ){
+            os << '+';
+          } else if( space == location::START ){
+            os << 'S';
+          } else if( space == location::END ){
+            os << 'E';
+          } else if( space == location::PATH ){
+            os << '@';
+          }
         }
+        os << '\n';
       }
       os << '\n';
     }

@@ -1,7 +1,9 @@
 #include<set>
 #include<stack>
+#include<utility>
 
 #include<maze.hh>
+#include<world.hh>
 
 using namespace std;
 
@@ -10,7 +12,7 @@ maze::generate( const size_pair& size ){
   world w( size );
   set<position> explored;
   set<pair<position, position> > frontier;
-  position start = {0, 0};
+  position start = {0, 0, 0};
 
   frontier.emplace( start, start );
 
@@ -31,7 +33,7 @@ maze::generate( const size_pair& size ){
 
     explored.emplace( current.second );
 
-    auto next = filter( generate_next( current.second ), size.x, size.y );
+    auto next = filter( generate_next( current.second ), size );
     for( auto pos : next ){
       frontier.emplace( current.second, pos );
     }
@@ -43,8 +45,8 @@ maze::generate( const size_pair& size ){
 }
 
 world
-maze::generate( unsigned int x, unsigned int y ){
-  return generate( {x, y} );
+maze::generate( unsigned int x, unsigned int y, unsigned int z ){
+  return generate( {x, y, z} );
 }
 
 set<path>
@@ -91,3 +93,4 @@ set<path>
 maze::solve( const world& w_in, int start_x, int start_y, int end_x, int end_y ){
   return solve( w_in, {start_x, start_y}, {end_x, end_y} );
 }
+

@@ -15,14 +15,16 @@ template<typename T>
 struct xandy{
   T x;
   T y;
+  T z;
 
   xandy()
     : xandy( 0, 0 ){
   }
 
-  xandy( T X, T Y )
+  xandy( T X, T Y, T Z = 0 )
     : x( X )
-    , y( Y ){
+    , y( Y )
+    , z( Z ){
   }
 
   T&
@@ -35,20 +37,30 @@ struct xandy{
     case 1:
       return y;
     break;
+
+    case 2:
+      return z;
+    break;
+
+    //! @todo throw an error
+    //default:
+      //throw;
     }
   }
 
   bool
   operator==( const xandy& other ) const{
-    return x == other.x && y == other.y;
+    return x == other.x && y == other.y && z == other.z;
   }
 
   bool
   operator<( const xandy& other ) const{
-    if( x == other.x ){
+    if( x != other.x ){
+      return x < other.x;
+    } else if( y != other.y ){
       return y < other.y;
     } else {
-      return x < other.x;
+      return z < other.z;
     }
   }
 };
@@ -60,7 +72,10 @@ std::set<position>
 generate_next( position p );
 
 std::set<position>
-filter( const std::set<position>& input, int filtX, int filtY );
+filter( const std::set<position>& input, int filtX, int filtY, int filtZ = 1 );
+
+std::set<position>
+filter( const std::set<position>& input, const size_pair& size );
 
 bool
 coin_flip();
@@ -72,12 +87,6 @@ translate( T a ){
 }
 
 template<typename T>
-xandy<T>
-translate( xandy<T> a ){
-  return {translate( a.x ), translate( a.y )};
-}
-
-template<typename T>
 T
 untranslate( T a ){
   return ( a - 1 ) / 2;
@@ -85,8 +94,14 @@ untranslate( T a ){
 
 template<typename T>
 xandy<T>
+translate( xandy<T> a ){
+  return {translate( a.x ), translate( a.y ), translate( a.z )};
+}
+
+template<typename T>
+xandy<T>
 untranslate( xandy<T> a ){
-  return {untranslate( a.x ), untranslate( a.y )};
+  return {untranslate( a.x ), untranslate( a.y ), untranslate( a.z )};
 }
 
 #endif

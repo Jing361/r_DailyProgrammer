@@ -17,7 +17,7 @@ public:
 
   static
   world
-  generate( unsigned int x, unsigned int y );
+  generate( unsigned int x, unsigned int y, unsigned int z = 1 );
 
   static
   std::set<path>

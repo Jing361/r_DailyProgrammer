@@ -3,14 +3,14 @@
 
 using namespace std;
 
-world::world( size_pair p, const vector<vector<location> >& m )
+world::world( size_pair p, const vector<vector<vector<location> > >& m )
   : mSize( p )
   , mMap( m ){
 }
 
 void
 world::set_data( position p, location l ){
-  mMap[p.x][p.y] = l;
+  mMap[p.z][p.y][p.x] = l;
 }
 
 world::world( const world& w )
@@ -19,17 +19,16 @@ world::world( const world& w )
 
 world::world( world&& w )
   : mSize( w.mSize )
-  , mMap( forward<vector<vector<location> > >( w.mMap ) ){
+  , mMap( forward<vector<vector<vector<location> > > >( w.mMap ) ){
 }
 
 world::world( size_pair size )
-  : world( translate( size ), {translate( size.x ), vector<location>( translate( size.y ) )} ){
+  : world( translate( size ), {translate( size.z ), vector<vector<location> >( {translate( size.y ), vector<location>( translate( size.x ) )} )} ){
   clear();
 }
 
-world::world( unsigned int x, unsigned int y )
-  : world( {x, y}, {mSize.x, vector<location>( y )} ){
-  clear();
+world::world( unsigned int x, unsigned int y, unsigned int z )
+  : world( size_pair( x, y, z ) ){
 }
 
 world&
@@ -43,23 +42,30 @@ world::operator=( const world& other ){
 world&
 world::operator=( world&& other ){
   mSize = other.mSize;
-  mMap = forward<vector<vector<location> > >( other.mMap );
+  mMap = forward<vector<vector<vector<location> > > >( other.mMap );
 
   return *this;
 }
 
 void
 world::clear(){
-  for( auto& row : mMap ){
-    for( auto& space : row ){
-      space = location::WALL;
+  for( auto& layer : mMap ){
+    for( auto& row : layer ){
+      for( auto& space : row ){
+        space = location::WALL;
+      }
     }
   }
 }
 
 location&
 world::operator[]( position p ){
-  return mMap[translate( p.x )][translate( p.y )];
+  return mMap[translate( p.z )][translate( p.y )][translate( p.x )];
+}
+
+const location&
+world::operator[]( position p ) const{
+  return (*this)[p];
 }
 
 position
@@ -68,30 +74,35 @@ world::rand_edge() const{
   mt19937 rate( rd() );
   int randX;
   int randY;
+  int randZ;
 
   if( coin_flip() ){
-    uniform_int_distribution<> gene( 0, ( ( mSize.x - 1 ) / 2 ) - 1 );
+    uniform_int_distribution<> gene( 0, untranslate( mSize.x ) - 1 );
     randX = gene( rate );
-    randY = coin_flip() ? 0 : ( ( mSize.y - 1 ) / 2 ) - 1 - 0;
+    randY = coin_flip() ? 0 : untranslate( mSize.y ) - 1;
   } else {
-    uniform_int_distribution<> gene( 0, ( ( mSize.y - 1 ) / 2 ) - 1 );
+    uniform_int_distribution<> gene( 0, untranslate( mSize.y ) - 1 );
     randY = gene( rate );
-    randX = coin_flip() ? 0 : ( ( mSize.x - 1 ) / 2 ) - 1 - 0;
+    randX = coin_flip() ? 0 : untranslate( mSize.x ) - 1;
   }
 
-  return {randX, randY};
+  randZ = coin_flip() ? 0 : untranslate( mSize.z ) - 1;
+
+  return {randX, randY, randZ};
 }
 
 size_pair
 world::size() const{
-  return {( mSize.x - 1 ) / 2, ( mSize.y - 1 ) / 2};
+  return {untranslate( mSize.x ), untranslate( mSize.y ), untranslate( mSize.z )};
 }
 
 void
 world::path( const position& a, const position& b ){
   auto tran_a = translate( a );
   auto tran_b = translate( b );
-  position temp( ( tran_a.x + tran_b.x ) / 2, ( tran_a.y + tran_b.y ) / 2 );
+  position temp( ( tran_a.x + tran_b.x ) / 2,
+                 ( tran_a.y + tran_b.y ) / 2,
+                 ( tran_a.z + tran_b.z ) / 2 );
 
   set_data( tran_a, location::OPEN );
   set_data( tran_b, location::OPEN );
@@ -102,7 +113,9 @@ void
 world::route( const position& a, const position& b ){
   auto tran_a = translate( a );
   auto tran_b = translate( b );
-  position mid( ( tran_a.x + tran_b.x ) / 2, ( tran_a.y + tran_b.y ) / 2 );
+  position mid( ( tran_a.x + tran_b.x ) / 2,
+                ( tran_a.y + tran_b.y ) / 2,
+                ( tran_a.z + tran_b.z ) / 2 );
 
   set_data( tran_a, location::PATH );
   set_data( tran_b, location::PATH );
@@ -121,8 +134,9 @@ world::get_next( position p ) const{
     position pos;
     pos.x = ( cand_t.x + p.x ) / 2;
     pos.y = ( cand_t.y + p.y ) / 2;
+    pos.z = ( cand_t.z + p.z ) / 2;
 
-    if( mMap[pos.x][pos.y] != location::WALL ){
+    if( mMap[pos.z][pos.y][pos.x] != location::WALL ){
       results.insert( cand );
     }
   }
