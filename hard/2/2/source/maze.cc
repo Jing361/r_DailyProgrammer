@@ -1,3 +1,4 @@
+#include<algorithm>
 #include<set>
 #include<stack>
 #include<utility>
@@ -47,6 +48,74 @@ maze::generate( const size_pair& size ){
 world
 maze::generate( unsigned int x, unsigned int y, unsigned int z ){
   return generate( {x, y, z} );
+}
+
+world
+maze::gen_kruskal( const size_pair& size ){
+  using wall = vector<position>;
+  world w( size );
+  vector<wall> walls;
+  vector<set<position> > cells;
+
+  // initialize
+  for( unsigned int i = 0; i < size.x; ++i ){
+    for( unsigned int j = 0; j < size.y; ++j ){
+      for( unsigned int k = 0; k < size.z; ++k ){
+        position pos( i, j, k );
+
+        cells.push_back( {pos} );
+
+        auto next = filter( generate_next( pos ), size );
+        for( auto spot : next ){
+          wall w;
+
+          w.push_back( pos );
+          w.push_back( spot );
+          sort( w.begin(), w.end() );
+
+          walls.emplace_back( w );
+        }
+      }
+    }
+  }
+
+  random_device rd;
+  mt19937 generator( rd() );
+  shuffle( walls.begin(), walls.end(), generator );
+  for( auto wal : walls ){
+    //if cells are members of distinct sets
+      //remove wall
+      w.path( wal[0], wal[1], location::OPEN );
+
+      //merge sets
+      // find sets to be merged
+      auto f = find_if( cells.begin(), cells.end(),
+        [wal]( const set<position>& s ){
+          return s.count( wal[0] ) > 0;
+        }
+      );
+      auto l = find_if( cells.begin(), cells.end(),
+        [wal]( const set<position>& s ){
+          return s.count( wal[1] ) > 0;
+        }
+      );
+
+      // merge the sets, and remove unneeded one
+      //merge is a new member
+      //f->merge( *l );
+      set<position> destination;
+      set_union( f->begin(), f->end(), l->begin(), l->end(), inserter( destination, destination.begin() ) );
+      cells.push_back( destination );
+      cells.erase( f );
+      cells.erase( l );
+  }
+
+  return w;
+}
+
+world
+maze::gen_kruskal( unsigned int x, unsigned int y, unsigned int z ){
+  return gen_kruskal( {x, y, z} );
 }
 
 set<path>

@@ -8,7 +8,7 @@
 using namespace std;
 
 int main(){
-  world w = maze::generate( 7, 7, 2 );
+  world w = maze::gen_kruskal( 7, 7, 2 );
   position start = w.rand_edge();
   position end   = w.rand_edge();
 

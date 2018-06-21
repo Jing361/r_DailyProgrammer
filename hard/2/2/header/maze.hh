@@ -20,6 +20,14 @@ public:
   generate( unsigned int x, unsigned int y, unsigned int z = 1 );
 
   static
+  world
+  gen_kruskal( const size_pair& size );
+
+  static
+  world
+  gen_kruskal( unsigned int x, unsigned int y, unsigned int z = 1 );
+
+  static
   std::set<path>
   solve( const world& w_in, position start, position end );
 

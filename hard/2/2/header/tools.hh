@@ -54,6 +54,11 @@ struct xandy{
   }
 
   bool
+  operator!=( const xandy& other ) const{
+    return !(*this == other );
+  }
+
+  bool
   operator<( const xandy& other ) const{
     if( x != other.x ){
       return x < other.x;
